@@ -47,9 +47,8 @@ public class SampleSceneManager : MonoBehaviour
     // game grid
     private void GenerateGrid()
     {
-        const int GALAXY_BUFFER = 200;
-        int galaxyLowerBound = -(GameSettings.GRID_SIZE / 2) - GALAXY_BUFFER;
-        int galaxyUpperBound = (GameSettings.GRID_SIZE / 2) + GALAXY_BUFFER;
+        int galaxyLowerBound = -(GameSettings.GRID_SIZE / 2);
+        int galaxyUpperBound = (GameSettings.GRID_SIZE / 2);
         for (int i = 0; i < galaxyUpperBound; i++)
         {
             this.CreateYGridLine(galaxyLowerBound, galaxyUpperBound, i);

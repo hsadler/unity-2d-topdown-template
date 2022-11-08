@@ -21,4 +21,8 @@ X setup environment:
 - UI:
     - inventory
     - pause
-    
+
+
+MAYBE:
+
+- variable game speed (tick system)
