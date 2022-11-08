@@ -1,0 +1,24 @@
+
+TODO:
+
+X setup environment:
+    X 2D
+    X top down
+    X camera movement
+    X camera zoom
+
+- game menu:
+    - restart
+    - quit
+
+- player controls:
+    - item select
+    - item placement
+    - item re-placement
+    - item orientation
+    - item destruction
+
+- UI:
+    - inventory
+    - pause
+    

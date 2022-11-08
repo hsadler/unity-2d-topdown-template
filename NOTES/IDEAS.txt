@@ -1,0 +1,15 @@
+
+What should the template have?:
+    - menu:
+        - restart
+        - quit
+    - pause
+    - camera control
+    - discrete grid for play area
+    - item select control
+    - item placement control
+    - item re-placement control
+    - item orientation control
+    - item destruction control
+    - inventory UI
+    - variable game speed (tick)
