@@ -7,9 +7,9 @@ X setup environment:
     X camera movement
     X camera zoom
 
-- game menu:
-    - restart
-    - quit
+X game menu:
+    X restart
+    X quit
 
 - player controls:
     - item select

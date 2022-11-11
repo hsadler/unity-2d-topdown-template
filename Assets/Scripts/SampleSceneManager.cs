@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SampleSceneManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class SampleSceneManager : MonoBehaviour
 
     // MonoBehaviour manager components
     public PlayerInput playerInput;
+
+    public GameObject MenuGO;
 
     // the static reference to the singleton instance
     public static SampleSceneManager instance;
@@ -32,17 +35,36 @@ public class SampleSceneManager : MonoBehaviour
 
     void Start()
     {
+        this.MenuGO.SetActive(false);
         this.GenerateGrid();
     }
 
     void Update()
     {
-
+        this.CheckPlayerInput();
     }
 
     // INTERFACE METHODS
 
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("SampleScene");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
     // IMPLEMENTATION METHODS
+
+    private void CheckPlayerInput()
+    {
+        if (Input.GetKeyDown(ConstPlayerInput.MENU_KEY))
+        {
+            this.MenuGO.SetActive(!this.MenuGO.activeSelf);
+        }
+    }
 
     // game grid
     private void GenerateGrid()
