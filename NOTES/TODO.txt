@@ -11,6 +11,9 @@ X game menu:
     X restart
     X quit
 
+- UI:
+    - inventory
+
 - player controls:
     - item select
     - item placement
@@ -18,11 +21,9 @@ X game menu:
     - item orientation
     - item destruction
 
-- UI:
-    - inventory
-    - pause
-
 
 MAYBE:
 
 - variable game speed (tick system)
+- game speed controls
+- pause

@@ -69,21 +69,22 @@ public class SampleSceneManager : MonoBehaviour
     // game grid
     private void GenerateGrid()
     {
+        const float OFFSET = 0.5f;
         int galaxyLowerBound = -(GameSettings.GRID_SIZE / 2);
         int galaxyUpperBound = (GameSettings.GRID_SIZE / 2);
-        for (int i = 0; i < galaxyUpperBound; i++)
+        for (int i = 0; i < galaxyUpperBound + 1; i++)
         {
-            this.CreateYGridLine(galaxyLowerBound, galaxyUpperBound, i);
-            this.CreateXGridLine(galaxyLowerBound, galaxyUpperBound, i);
+            this.CreateYGridLine(galaxyLowerBound - OFFSET, galaxyUpperBound - OFFSET, i - OFFSET);
+            this.CreateXGridLine(galaxyLowerBound - OFFSET, galaxyUpperBound - OFFSET, i - OFFSET);
             if (i > 0)
             {
-                this.CreateYGridLine(galaxyLowerBound, galaxyUpperBound, -i);
-                this.CreateXGridLine(galaxyLowerBound, galaxyUpperBound, -i);
+                this.CreateYGridLine(galaxyLowerBound - OFFSET, galaxyUpperBound - OFFSET, -i - OFFSET);
+                this.CreateXGridLine(galaxyLowerBound - OFFSET, galaxyUpperBound - OFFSET, -i - OFFSET);
             }
         }
     }
     // grid line creation helpers
-    private void CreateYGridLine(int lowerBound, int upperBound, int xAxisPos)
+    private void CreateYGridLine(float lowerBound, float upperBound, float xAxisPos)
     {
         GameObject yGridLine = Instantiate(this.gridLinePrefab, Vector3.zero, Quaternion.identity);
         LineRenderer yLr = yGridLine.GetComponent<LineRenderer>();
@@ -92,7 +93,7 @@ public class SampleSceneManager : MonoBehaviour
         yPoints[1] = new Vector3(xAxisPos, upperBound, 0);
         yLr.SetPositions(yPoints);
     }
-    private void CreateXGridLine(int lowerBound, int upperBound, int yAxisPos)
+    private void CreateXGridLine(float lowerBound, float upperBound, float yAxisPos)
     {
         GameObject xGridLine = Instantiate(this.gridLinePrefab, Vector3.zero, Quaternion.identity);
         LineRenderer xLr = xGridLine.GetComponent<LineRenderer>();
