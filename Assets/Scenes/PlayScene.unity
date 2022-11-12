@@ -305,7 +305,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridLinePrefab: {fileID: 4090466934950729721, guid: 6b1fbfc7fa0261f4381bccab1167786a, type: 3}
   playerInput: {fileID: 165152557}
-  MenuGO: {fileID: 1355896446}
 --- !u!1 &165152555
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,7 +316,7 @@ GameObject:
   - component: {fileID: 165152556}
   - component: {fileID: 165152557}
   m_Layer: 0
-  m_Name: PlayerInput
+  m_Name: PlayerInputManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -347,9 +346,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 165152555}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 985494880df1fc241848b7981a5222a8, type: 3}
+  m_Script: {fileID: 11500000, guid: 89ed508cd76924e4c80ef4842c232059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MenuGO: {fileID: 1355896446}
 --- !u!1 &194282150
 GameObject:
   m_ObjectHideFlags: 0

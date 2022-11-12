@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInput : MonoBehaviour
+public class PlayerInputManager : MonoBehaviour
 {
 
 
+    public GameObject MenuGO;
     private float cameraSize;
 
 
@@ -13,11 +14,14 @@ public class PlayerInput : MonoBehaviour
 
     void Start()
     {
+        this.MenuGO.SetActive(false);
         this.cameraSize = Camera.main.orthographicSize;
     }
 
     void Update()
     {
+        // player input
+        this.CheckPlayerInput();
         // camera
         this.HandleCameraMovement();
         this.HandleCameraZoom();
@@ -26,6 +30,14 @@ public class PlayerInput : MonoBehaviour
     // INTERFACE METHODS
 
     // IMPLEMENTATION METHODS
+
+    private void CheckPlayerInput()
+    {
+        if (Input.GetKeyDown(GameSettings.MENU_KEY))
+        {
+            this.MenuGO.SetActive(!this.MenuGO.activeSelf);
+        }
+    }
 
     // camera controls
     private void HandleCameraMovement()
@@ -43,11 +55,11 @@ public class PlayerInput : MonoBehaviour
     private void HandleCameraZoom()
     {
         float zoomMultiplier = GameSettings.CAMERA_ZOOM_AMOUNT_NORMAL;
-        if (Input.GetKey(ConstPlayerInput.SMALL_ZOOM_KEY))
+        if (Input.GetKey(GameSettings.SMALL_ZOOM_KEY))
         {
             zoomMultiplier = GameSettings.CAMERA_ZOOM_AMOUNT_SMALL;
         }
-        else if (Input.GetKey(ConstPlayerInput.LARGE_ZOOM_KEY))
+        else if (Input.GetKey(GameSettings.LARGE_ZOOM_KEY))
         {
             zoomMultiplier = GameSettings.CAMERA_ZOOM_AMOUNT_LARGE;
         }

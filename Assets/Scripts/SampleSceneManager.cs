@@ -11,9 +11,7 @@ public class SampleSceneManager : MonoBehaviour
     public GameObject gridLinePrefab;
 
     // MonoBehaviour manager components
-    public PlayerInput playerInput;
-
-    public GameObject MenuGO;
+    public PlayerInputManager playerInput;
 
     // the static reference to the singleton instance
     public static SampleSceneManager instance;
@@ -35,20 +33,16 @@ public class SampleSceneManager : MonoBehaviour
 
     void Start()
     {
-        this.MenuGO.SetActive(false);
         this.GenerateGrid();
     }
 
-    void Update()
-    {
-        this.CheckPlayerInput();
-    }
+    void Update() { }
 
     // INTERFACE METHODS
 
     public void RestartGame()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("PlayScene");
     }
 
     public void QuitGame()
@@ -57,14 +51,6 @@ public class SampleSceneManager : MonoBehaviour
     }
 
     // IMPLEMENTATION METHODS
-
-    private void CheckPlayerInput()
-    {
-        if (Input.GetKeyDown(ConstPlayerInput.MENU_KEY))
-        {
-            this.MenuGO.SetActive(!this.MenuGO.activeSelf);
-        }
-    }
 
     // game grid
     private void GenerateGrid()

@@ -6,8 +6,6 @@ public class GameSettings
 {
 
 
-    // GAME SETTINGS
-
     // camera settings
     public const float CAMERA_SIZE_MIN = 4f;
     public const float CAMERA_SIZE_MAX = 40f;
@@ -19,6 +17,13 @@ public class GameSettings
 
     // grid settings
     public const int GRID_SIZE = 50;
+
+    // player input mappings
+
+    public const KeyCode MENU_KEY = KeyCode.Escape;
+
+    public const KeyCode SMALL_ZOOM_KEY = KeyCode.LeftControl;
+    public const KeyCode LARGE_ZOOM_KEY = KeyCode.LeftShift;
 
 
 }
