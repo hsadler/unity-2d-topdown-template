@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SampleSceneManager : MonoBehaviour
+public class PlaySceneManager : MonoBehaviour
 {
 
 
@@ -11,10 +11,12 @@ public class SampleSceneManager : MonoBehaviour
     public GameObject gridLinePrefab;
 
     // MonoBehaviour manager components
-    public PlayerInputManager playerInput;
+    public PlayerInputManager playerInputManager;
 
     // the static reference to the singleton instance
-    public static SampleSceneManager instance;
+    public static PlaySceneManager instance;
+
+    public int inputMode;
 
 
     // UNITY HOOKS
@@ -33,6 +35,7 @@ public class SampleSceneManager : MonoBehaviour
 
     void Start()
     {
+        this.inputMode = GameSettings.INPUT_MODE_INIT;
         this.GenerateGrid();
     }
 

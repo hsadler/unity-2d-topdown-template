@@ -23,8 +23,11 @@ public class PlayerInputManager : MonoBehaviour
         // player input
         this.CheckPlayerInput();
         // camera
-        this.HandleCameraMovement();
-        this.HandleCameraZoom();
+        if (PlaySceneManager.instance.inputMode != GameSettings.INPUT_MODE_MENU)
+        {
+            this.HandleCameraMovement();
+            this.HandleCameraZoom();
+        }
     }
 
     // INTERFACE METHODS
@@ -36,6 +39,7 @@ public class PlayerInputManager : MonoBehaviour
         if (Input.GetKeyDown(GameSettings.MENU_KEY))
         {
             this.MenuGO.SetActive(!this.MenuGO.activeSelf);
+            PlaySceneManager.instance.inputMode = this.MenuGO.activeSelf ? GameSettings.INPUT_MODE_MENU : GameSettings.INPUT_MODE_INIT;
         }
     }
 

@@ -11,15 +11,22 @@ X game menu:
     X restart
     X quit
 
-- UI:
-    - inventory
-
 - player controls:
     - item select
     - item placement
-    - item re-placement
+    - item drag
     - item orientation
     - item destruction
+    - multi-select
+    - multi-drag
+    - multi-destroy
+
+- UI:
+    - inventory:
+        - drag from inventory
+        - drag to inventory to destroy
+    - play/pause/restart buttons
+    - time speedup/slowdown buttons
 
 
 MAYBE:
