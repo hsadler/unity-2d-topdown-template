@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5643451264563729100
 Transform:
   m_ObjectHideFlags: 0
@@ -98,8 +98,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.9839427, b: 0.2688679, a: 0.19607843}
-      key1: {r: 1, g: 0.9839427, b: 0.2688679, a: 0.19607843}
+      key0: {r: 1, g: 0.9839427, b: 0.2688679, a: 0.39215687}
+      key1: {r: 1, g: 0.9839427, b: 0.2688679, a: 0.39215687}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}

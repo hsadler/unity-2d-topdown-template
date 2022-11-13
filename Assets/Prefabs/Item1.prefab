@@ -162,6 +162,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SelectionIndicator
       objectReference: {fileID: 0}
+    - target: {fileID: 1592881032782179396, guid: 7c2c306d069bbfc45b6bda9737f98451, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5643451264563729100, guid: 7c2c306d069bbfc45b6bda9737f98451, type: 3}
       propertyPath: m_RootOrder
       value: 0
