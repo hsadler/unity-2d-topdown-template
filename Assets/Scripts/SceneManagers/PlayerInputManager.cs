@@ -6,8 +6,17 @@ public class PlayerInputManager : MonoBehaviour
 {
 
 
+    // menu
     public GameObject MenuGO;
+
+    // camera
     private float cameraSize;
+
+    // multiselect
+    public GameObject selectionBoxPrefab;
+    private GameObject selectionBoxGO;
+    private Vector3 initialMultiselectMousePosition;
+    private List<GameObject> currentEntitiesSelected = new List<GameObject>();
 
 
     // UNITY HOOKS
@@ -16,17 +25,20 @@ public class PlayerInputManager : MonoBehaviour
     {
         this.MenuGO.SetActive(false);
         this.cameraSize = Camera.main.orthographicSize;
+        this.selectionBoxGO = Instantiate(this.selectionBoxPrefab, Vector3.zero, Quaternion.identity);
+        this.selectionBoxGO.SetActive(false);
     }
 
     void Update()
     {
         // player input
-        this.CheckPlayerInput();
+        this.CheckMenuOpen();
         // camera
         if (PlaySceneManager.instance.inputMode != GameSettings.INPUT_MODE_MENU)
         {
             this.HandleCameraMovement();
             this.HandleCameraZoom();
+            this.HandleEntitySelection();
         }
     }
 
@@ -34,7 +46,7 @@ public class PlayerInputManager : MonoBehaviour
 
     // IMPLEMENTATION METHODS
 
-    private void CheckPlayerInput()
+    private void CheckMenuOpen()
     {
         if (Input.GetKeyDown(GameSettings.MENU_KEY))
         {
@@ -82,6 +94,98 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
         Camera.main.orthographicSize = Mathf.Lerp(currCameraSize, this.cameraSize, Time.deltaTime * GameSettings.CAMERA_ZOOM_SPEED);
+    }
+
+    private void HandleEntitySelection()
+    {
+        if (true) // can select
+        {
+            // initial mouse button press: activate and initialize the selection-box
+            if (Input.GetMouseButtonDown(0))
+            {
+                this.selectionBoxGO.SetActive(true);
+                this.selectionBoxGO.transform.localScale = Vector3.zero;
+                this.initialMultiselectMousePosition = Input.mousePosition;
+            }
+            // mouse button up: selection handling
+            else if (Input.GetMouseButtonUp(0))
+            {
+                this.DeselectAllEntities();
+                var entitiesToSelect = new List<GameObject>();
+                this.selectionBoxGO.SetActive(false);
+                // selection box handling
+                if (Input.mousePosition != this.initialMultiselectMousePosition)
+                {
+                    // detect what factory entities are within selection box
+                    Vector3 mPos1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector3 mPos2 = Camera.main.ScreenToWorldPoint(this.initialMultiselectMousePosition);
+                    Collider2D[] hits = Physics2D.OverlapAreaAll(mPos1, mPos2);
+                    foreach (Collider2D col in hits)
+                    {
+                        entitiesToSelect.Add(col.gameObject);
+                    }
+                }
+                // single-point click selection handling
+                else
+                {
+                    entitiesToSelect.Add(this.GetHoveredEntity());
+                }
+                this.SelectEntities(entitiesToSelect);
+            }
+            // mouse button held down: update the position and shape of the selection-box
+            else if (Input.GetMouseButton(0))
+            {
+                Vector3 mPos1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector3 mPos2 = Camera.main.ScreenToWorldPoint(this.initialMultiselectMousePosition);
+                float width = Mathf.Abs(mPos1.x - mPos2.x);
+                float height = Mathf.Abs(mPos1.y - mPos2.y);
+                Vector3 midpoint = (mPos1 - mPos2) / 2;
+                this.selectionBoxGO.transform.localScale = new Vector3(width, height, 0);
+                Vector3 boxPos = mPos1 - midpoint;
+                this.selectionBoxGO.transform.position = new Vector3(boxPos.x, boxPos.y, 0);
+            }
+        }
+    }
+
+    private GameObject GetHoveredEntity()
+    {
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Collider2D[] hits = Physics2D.OverlapPointAll(mousePos);
+        foreach (Collider2D hit in hits)
+        {
+            if (hit != null && this.EntityIsSelectable(hit.gameObject))
+            {
+                return hit.gameObject;
+            }
+        }
+        return null;
+    }
+
+    private bool EntityIsSelectable(GameObject entity)
+    {
+        return entity.GetComponent<Selectable>() != null;
+    }
+
+    private void SelectEntities(List<GameObject> entities)
+    {
+        foreach (GameObject entity in entities)
+        {
+            var selectable = entity?.GetComponent<Selectable>();
+            if (selectable != null)
+            {
+                this.currentEntitiesSelected.Add(entity);
+                selectable.SetSelected(true);
+            }
+        }
+    }
+
+    private void DeselectAllEntities()
+    {
+        foreach (GameObject e in this.currentEntitiesSelected)
+        {
+            e.GetComponent<Selectable>().SetSelected(false);
+        }
+        this.currentEntitiesSelected = new List<GameObject>();
     }
 
 

@@ -351,6 +351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MenuGO: {fileID: 1355896446}
+  selectionBoxPrefab: {fileID: 6734921932508682108, guid: 00096cb28fe9f86478357a27e071e049, type: 3}
 --- !u!1 &216651104
 GameObject:
   m_ObjectHideFlags: 0
