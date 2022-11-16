@@ -12,12 +12,12 @@ X game menu:
     X quit
 
 - player controls:
-    - item select
+    X item select
     - item placement
     - item drag
     - item orientation
     - item destruction
-    - multi-select
+    X multi-select
     - multi-drag
     - multi-destroy
 

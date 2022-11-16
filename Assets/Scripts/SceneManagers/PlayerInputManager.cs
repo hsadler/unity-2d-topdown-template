@@ -16,6 +16,7 @@ public class PlayerInputManager : MonoBehaviour
     public GameObject selectionBoxPrefab;
     private GameObject selectionBoxGO;
     private Vector3 initialMultiselectMousePosition;
+    private Vector3 lastSelectionPosition;
     private List<GameObject> currentEntitiesSelected = new List<GameObject>();
 
 
@@ -38,7 +39,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             this.HandleCameraMovement();
             this.HandleCameraZoom();
-            this.HandleEntitySelectionOrMove();
+            this.HandleEntitySelectionOrDrag();
         }
     }
 
@@ -96,23 +97,30 @@ public class PlayerInputManager : MonoBehaviour
         Camera.main.orthographicSize = Mathf.Lerp(currCameraSize, this.cameraSize, Time.deltaTime * GameSettings.CAMERA_ZOOM_SPEED);
     }
 
-    private void HandleEntitySelectionOrMove()
+    private void HandleEntitySelectionOrDrag()
     {
-        if (true) // can select
+        if (true) // TODO: can select
         {
             // initial mouse button press
             if (Input.GetMouseButtonDown(0))
             {
-                this.DeselectAllEntities();
                 GameObject hoveredEntity = this.GetHoveredEntity();
-                // single entity selection
-                if (hoveredEntity != null)
+                // start multi select drag
+                if (hoveredEntity != null && this.currentEntitiesSelected.Count > 0 && this.currentEntitiesSelected.Contains(hoveredEntity))
                 {
+                    this.lastSelectionPosition = Input.mousePosition;
+                }
+                // single entity selection
+                else if (hoveredEntity != null)
+                {
+                    this.DeselectAllEntities();
                     this.SelectEntities(new List<GameObject>() { hoveredEntity });
+                    this.lastSelectionPosition = Input.mousePosition;
                 }
                 // activate and initialize the selection-box
                 else
                 {
+                    this.DeselectAllEntities();
                     this.selectionBoxGO.SetActive(true);
                     this.selectionBoxGO.transform.localScale = Vector3.zero;
                     this.initialMultiselectMousePosition = Input.mousePosition;
@@ -123,11 +131,10 @@ public class PlayerInputManager : MonoBehaviour
             {
                 this.DeselectAllEntities();
                 this.selectionBoxGO.SetActive(false);
-                // selection box handling
+                // select the entities are within selection box
                 if (Input.mousePosition != this.initialMultiselectMousePosition)
                 {
                     var entitiesToSelect = new List<GameObject>();
-                    // detect what entities are within selection box
                     Vector3 mPos1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     Vector3 mPos2 = Camera.main.ScreenToWorldPoint(this.initialMultiselectMousePosition);
                     Collider2D[] hits = Physics2D.OverlapAreaAll(mPos1, mPos2);
@@ -153,9 +160,21 @@ public class PlayerInputManager : MonoBehaviour
                     Vector3 boxPos = mPos1 - midpoint;
                     this.selectionBoxGO.transform.position = new Vector3(boxPos.x, boxPos.y, 0);
                 }
+                // drag selected entities
                 else
                 {
-                    // STUB: move selected entities
+                    Vector3 mPos1 = Camera.main.ScreenToWorldPoint(this.lastSelectionPosition);
+                    Vector3 mPos2 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector3 direction = mPos2 - mPos1;
+                    float distance = Vector3.Distance(mPos2, mPos1);
+                    Debug.Log("Direction: " + direction.ToString());
+                    Debug.Log("Distance: " + distance.ToString());
+                    Debug.Log("Vector: " + (direction * distance).ToString());
+                    foreach (GameObject e in this.currentEntitiesSelected)
+                    {
+                        e.transform.position += (direction * distance);
+                    }
+                    this.lastSelectionPosition = Input.mousePosition;
                 }
             }
         }
