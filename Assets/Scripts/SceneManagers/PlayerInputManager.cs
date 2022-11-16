@@ -38,7 +38,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             this.HandleCameraMovement();
             this.HandleCameraZoom();
-            this.HandleEntitySelection();
+            this.HandleEntitySelectionOrMove();
         }
     }
 
@@ -96,27 +96,38 @@ public class PlayerInputManager : MonoBehaviour
         Camera.main.orthographicSize = Mathf.Lerp(currCameraSize, this.cameraSize, Time.deltaTime * GameSettings.CAMERA_ZOOM_SPEED);
     }
 
-    private void HandleEntitySelection()
+    private void HandleEntitySelectionOrMove()
     {
         if (true) // can select
         {
-            // initial mouse button press: activate and initialize the selection-box
+            // initial mouse button press
             if (Input.GetMouseButtonDown(0))
             {
-                this.selectionBoxGO.SetActive(true);
-                this.selectionBoxGO.transform.localScale = Vector3.zero;
-                this.initialMultiselectMousePosition = Input.mousePosition;
+                this.DeselectAllEntities();
+                GameObject hoveredEntity = this.GetHoveredEntity();
+                // single entity selection
+                if (hoveredEntity != null)
+                {
+                    this.SelectEntities(new List<GameObject>() { hoveredEntity });
+                }
+                // activate and initialize the selection-box
+                else
+                {
+                    this.selectionBoxGO.SetActive(true);
+                    this.selectionBoxGO.transform.localScale = Vector3.zero;
+                    this.initialMultiselectMousePosition = Input.mousePosition;
+                }
             }
-            // mouse button up: selection handling
-            else if (Input.GetMouseButtonUp(0))
+            // mouse button up
+            else if (Input.GetMouseButtonUp(0) && this.selectionBoxGO.activeSelf)
             {
                 this.DeselectAllEntities();
-                var entitiesToSelect = new List<GameObject>();
                 this.selectionBoxGO.SetActive(false);
                 // selection box handling
                 if (Input.mousePosition != this.initialMultiselectMousePosition)
                 {
-                    // detect what factory entities are within selection box
+                    var entitiesToSelect = new List<GameObject>();
+                    // detect what entities are within selection box
                     Vector3 mPos1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     Vector3 mPos2 = Camera.main.ScreenToWorldPoint(this.initialMultiselectMousePosition);
                     Collider2D[] hits = Physics2D.OverlapAreaAll(mPos1, mPos2);
@@ -124,25 +135,28 @@ public class PlayerInputManager : MonoBehaviour
                     {
                         entitiesToSelect.Add(col.gameObject);
                     }
+                    this.SelectEntities(entitiesToSelect);
                 }
-                // single-point click selection handling
-                else
-                {
-                    entitiesToSelect.Add(this.GetHoveredEntity());
-                }
-                this.SelectEntities(entitiesToSelect);
             }
-            // mouse button held down: update the position and shape of the selection-box
+            // mouse button held down
             else if (Input.GetMouseButton(0))
             {
-                Vector3 mPos1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector3 mPos2 = Camera.main.ScreenToWorldPoint(this.initialMultiselectMousePosition);
-                float width = Mathf.Abs(mPos1.x - mPos2.x);
-                float height = Mathf.Abs(mPos1.y - mPos2.y);
-                Vector3 midpoint = (mPos1 - mPos2) / 2;
-                this.selectionBoxGO.transform.localScale = new Vector3(width, height, 0);
-                Vector3 boxPos = mPos1 - midpoint;
-                this.selectionBoxGO.transform.position = new Vector3(boxPos.x, boxPos.y, 0);
+                // update the position and shape of the selection-box
+                if (this.selectionBoxGO.activeSelf)
+                {
+                    Vector3 mPos1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector3 mPos2 = Camera.main.ScreenToWorldPoint(this.initialMultiselectMousePosition);
+                    float width = Mathf.Abs(mPos1.x - mPos2.x);
+                    float height = Mathf.Abs(mPos1.y - mPos2.y);
+                    Vector3 midpoint = (mPos1 - mPos2) / 2;
+                    this.selectionBoxGO.transform.localScale = new Vector3(width, height, 0);
+                    Vector3 boxPos = mPos1 - midpoint;
+                    this.selectionBoxGO.transform.position = new Vector3(boxPos.x, boxPos.y, 0);
+                }
+                else
+                {
+                    // STUB: move selected entities
+                }
             }
         }
     }
