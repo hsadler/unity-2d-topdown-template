@@ -16,8 +16,8 @@ public class PlayerInputManager : MonoBehaviour
     public GameObject selectionBoxPrefab;
     private GameObject selectionBoxGO;
     private Vector3 initialMultiselectMousePosition;
-    private Vector3 lastSelectionPosition;
     private List<GameObject> currentEntitiesSelected = new List<GameObject>();
+    private IDictionary<int, Vector3> entityIdToMouseOffset;
 
 
     // UNITY HOOKS
@@ -101,21 +101,27 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (true) // TODO: can select
         {
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             // initial mouse button press
             if (Input.GetMouseButtonDown(0))
             {
+                this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
                 GameObject hoveredEntity = this.GetHoveredEntity();
                 // start multi select drag
                 if (hoveredEntity != null && this.currentEntitiesSelected.Count > 0 && this.currentEntitiesSelected.Contains(hoveredEntity))
                 {
-                    this.lastSelectionPosition = Input.mousePosition;
+                    // set selected entity initial offsets from mouse position
+                    foreach (GameObject e in this.currentEntitiesSelected)
+                    {
+                        this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - mousePosition);
+                    }
                 }
                 // single entity selection
                 else if (hoveredEntity != null)
                 {
                     this.DeselectAllEntities();
                     this.SelectEntities(new List<GameObject>() { hoveredEntity });
-                    this.lastSelectionPosition = Input.mousePosition;
+                    this.entityIdToMouseOffset.Add(hoveredEntity.GetInstanceID(), hoveredEntity.transform.position - mousePosition);
                 }
                 // activate and initialize the selection-box
                 else
@@ -124,25 +130,6 @@ public class PlayerInputManager : MonoBehaviour
                     this.selectionBoxGO.SetActive(true);
                     this.selectionBoxGO.transform.localScale = Vector3.zero;
                     this.initialMultiselectMousePosition = Input.mousePosition;
-                }
-            }
-            // mouse button up
-            else if (Input.GetMouseButtonUp(0) && this.selectionBoxGO.activeSelf)
-            {
-                this.DeselectAllEntities();
-                this.selectionBoxGO.SetActive(false);
-                // select the entities are within selection box
-                if (Input.mousePosition != this.initialMultiselectMousePosition)
-                {
-                    var entitiesToSelect = new List<GameObject>();
-                    Vector3 mPos1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Vector3 mPos2 = Camera.main.ScreenToWorldPoint(this.initialMultiselectMousePosition);
-                    Collider2D[] hits = Physics2D.OverlapAreaAll(mPos1, mPos2);
-                    foreach (Collider2D col in hits)
-                    {
-                        entitiesToSelect.Add(col.gameObject);
-                    }
-                    this.SelectEntities(entitiesToSelect);
                 }
             }
             // mouse button held down
@@ -163,18 +150,35 @@ public class PlayerInputManager : MonoBehaviour
                 // drag selected entities
                 else
                 {
-                    Vector3 mPos1 = Camera.main.ScreenToWorldPoint(this.lastSelectionPosition);
-                    Vector3 mPos2 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Vector3 direction = mPos2 - mPos1;
-                    float distance = Vector3.Distance(mPos2, mPos1);
-                    Debug.Log("Direction: " + direction.ToString());
-                    Debug.Log("Distance: " + distance.ToString());
-                    Debug.Log("Vector: " + (direction * distance).ToString());
                     foreach (GameObject e in this.currentEntitiesSelected)
                     {
-                        e.transform.position += (direction * distance);
+                        Vector3 offset = this.entityIdToMouseOffset[e.GetInstanceID()];
+                        e.transform.position = new Vector3(
+                            mousePosition.x + offset.x,
+                            mousePosition.y + offset.y,
+                            e.transform.position.z
+                        );
+                        Debug.Log(e.transform.position);
                     }
-                    this.lastSelectionPosition = Input.mousePosition;
+                }
+            }
+            // mouse button up
+            else if (Input.GetMouseButtonUp(0) && this.selectionBoxGO.activeSelf)
+            {
+                this.DeselectAllEntities();
+                this.selectionBoxGO.SetActive(false);
+                // select the entities are within selection box
+                if (Input.mousePosition != this.initialMultiselectMousePosition)
+                {
+                    var entitiesToSelect = new List<GameObject>();
+                    Vector3 mPos1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector3 mPos2 = Camera.main.ScreenToWorldPoint(this.initialMultiselectMousePosition);
+                    Collider2D[] hits = Physics2D.OverlapAreaAll(mPos1, mPos2);
+                    foreach (Collider2D col in hits)
+                    {
+                        entitiesToSelect.Add(col.gameObject);
+                    }
+                    this.SelectEntities(entitiesToSelect);
                 }
             }
         }
