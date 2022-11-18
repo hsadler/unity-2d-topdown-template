@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameSettings
 {
 
+    // general settings
+    public const bool ENTITY_POSITIONS_DISCRETE = true;
 
     // camera settings
     public const float CAMERA_SIZE_MIN = 4f;

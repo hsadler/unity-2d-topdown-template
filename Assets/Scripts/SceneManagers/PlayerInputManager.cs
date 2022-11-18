@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -108,10 +109,9 @@ public class PlayerInputManager : MonoBehaviour
             {
                 this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
                 GameObject hoveredEntity = this.GetHoveredEntity();
-                // start multi select drag
+                // set selected entity initial offsets from mouse position to prepare for entity drag
                 if (hoveredEntity != null && this.currentEntitiesSelected.Count > 0 && this.currentEntitiesSelected.Contains(hoveredEntity))
                 {
-                    // set selected entity initial offsets from mouse position
                     foreach (GameObject e in this.currentEntitiesSelected)
                     {
                         this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - mousePosition);
@@ -159,6 +159,10 @@ public class PlayerInputManager : MonoBehaviour
                             mousePosition.y + offset.y,
                             e.transform.position.z
                         );
+                        if (GameSettings.ENTITY_POSITIONS_DISCRETE)
+                        {
+                            this.RoundEntityPosition(e);
+                        }
                     }
                 }
             }
@@ -223,6 +227,15 @@ public class PlayerInputManager : MonoBehaviour
             e.GetComponent<Selectable>().SetSelected(false);
         }
         this.currentEntitiesSelected = new List<GameObject>();
+    }
+
+    private void RoundEntityPosition(GameObject entity)
+    {
+        entity.transform.position = new Vector3(
+            (int)Math.Round(entity.transform.position.x, 0),
+            (int)Math.Round(entity.transform.position.y, 0),
+            (int)Math.Round(entity.transform.position.z, 0)
+        );
     }
 
     private void HandleRotateSelectedEntities()
