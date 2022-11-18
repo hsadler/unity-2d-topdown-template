@@ -14,11 +14,12 @@ X game menu:
 - player controls:
     X item select
     - item placement
-    - item drag
-    - item orientation
+    X item drag
+    X item rotation
     - item destruction
     X multi-select
-    - multi-drag
+    X multi-drag
+    X multi-rotation
     - multi-destroy
 
 - UI:

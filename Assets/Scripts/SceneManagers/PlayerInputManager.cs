@@ -40,6 +40,7 @@ public class PlayerInputManager : MonoBehaviour
             this.HandleCameraMovement();
             this.HandleCameraZoom();
             this.HandleEntitySelectionOrDrag();
+            this.HandleRotateSelectedEntities();
         }
     }
 
@@ -158,7 +159,6 @@ public class PlayerInputManager : MonoBehaviour
                             mousePosition.y + offset.y,
                             e.transform.position.z
                         );
-                        Debug.Log(e.transform.position);
                     }
                 }
             }
@@ -223,6 +223,26 @@ public class PlayerInputManager : MonoBehaviour
             e.GetComponent<Selectable>().SetSelected(false);
         }
         this.currentEntitiesSelected = new List<GameObject>();
+    }
+
+    private void HandleRotateSelectedEntities()
+    {
+        int rot = 0;
+        if (Input.GetKeyDown(GameSettings.ROTATE_ITEM_LEFT_KEY))
+        {
+            rot = 90;
+        }
+        else if (Input.GetKeyDown(GameSettings.ROTATE_ITEM_RIGHT_KEY))
+        {
+            rot = -90;
+        }
+        if (rot != 0)
+        {
+            foreach (GameObject e in this.currentEntitiesSelected)
+            {
+                e.transform.Rotate(new Vector3(0, 0, rot));
+            }
+        }
     }
 
 
