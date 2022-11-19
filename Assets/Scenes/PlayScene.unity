@@ -216,7 +216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
-      value: ItemBoxUI
+      value: InventoryItem
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Layer
@@ -685,7 +685,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
-      value: ItemBoxUI
+      value: InventoryItem
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Layer
@@ -791,7 +791,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
-      value: ItemBoxUI
+      value: InventoryItem
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Layer
@@ -811,6 +811,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1473334571}
     m_Modifications:
+    - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: activeInventoryItem
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -897,7 +901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
-      value: ItemBoxUI
+      value: InventoryItem
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Layer
@@ -1482,6 +1486,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1473334571}
     m_Modifications:
+    - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: activeInventoryItem
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1568,7 +1576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
-      value: ItemBoxUI
+      value: InventoryItem
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Layer
@@ -1731,7 +1739,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
-      value: ItemBoxUI
+      value: InventoryItem
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Layer
@@ -1971,7 +1979,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
-      value: ItemBoxUI
+      value: InventoryItem
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Layer
@@ -2235,7 +2243,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
-      value: ItemBoxUI
+      value: InventoryItem
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Layer
@@ -2455,7 +2463,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
-      value: ItemBoxUI
+      value: InventoryItem
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Layer
@@ -2551,6 +2559,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1473334571}
     m_Modifications:
+    - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: activeInventoryItem
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2637,7 +2649,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
-      value: ItemBoxUI
+      value: InventoryItem
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}

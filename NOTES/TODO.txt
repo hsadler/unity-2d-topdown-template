@@ -33,6 +33,8 @@ X game menu:
 REFINEMENTS:
 
 - make zoom zoom on mouse hover location
+- make camera move on touch to edge of viewport
+- give entities a "drag" state, where they've not yet been moved and validation can be performed 
 
 
 MAYBE:
