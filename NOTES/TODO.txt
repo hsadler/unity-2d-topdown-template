@@ -30,6 +30,11 @@ X game menu:
     - time speedup/slowdown buttons
 
 
+REFINEMENTS:
+
+- make zoom zoom on mouse hover location
+
+
 MAYBE:
 
 - variable game speed (tick system)
