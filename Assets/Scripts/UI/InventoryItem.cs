@@ -29,14 +29,13 @@ public class InventoryItem : MonoBehaviour
 
     // INTERFACE METHODS
 
-    public void CreateItemFromInventory()
+    public GameObject CreateEntityFromInventory()
     {
-        // STUB
-        Debug.Log("Creating item from inventory");
-        Vector3 camPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Instantiate(
-            this.itemPrefabs[this.activeInventoryItem - 1],
-            new Vector3(camPos.x, camPos.y, 0),
+        GameObject prefab = this.itemPrefabs[this.activeInventoryItem - 1];
+        Debug.Log("Creating entity from inventory: " + prefab.name);
+        return Instantiate(
+            prefab,
+            new Vector3(this.transform.position.x, this.transform.position.y, 0),
             Quaternion.identity
         );
     }
