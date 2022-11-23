@@ -907,6 +907,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5195551029631365884, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
 --- !u!224 &467231310 stripped
@@ -1244,7 +1248,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -1757909989
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1007808889
@@ -1486,6 +1490,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1473334571}
     m_Modifications:
+    - target: {fileID: 711044346392358573, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: activeInventoryItem
       value: 3
@@ -2650,6 +2658,10 @@ PrefabInstance:
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
       value: InventoryItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 7692405296505204049, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}

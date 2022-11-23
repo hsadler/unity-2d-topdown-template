@@ -47,6 +47,15 @@ public class PlayerInputManager : MonoBehaviour
 
     // INTERFACE METHODS
 
+    public void SelectSingleEntity(GameObject entity)
+    {
+        Debug.Log("Selecting single entity: " + entity.name);
+        this.DeselectAllEntities();
+        this.SelectEntities(new List<GameObject>() { entity });
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        this.entityIdToMouseOffset.Add(entity.GetInstanceID(), entity.transform.position - mousePosition);
+    }
+
     // IMPLEMENTATION METHODS
 
     private void CheckMenuOpen()
@@ -107,16 +116,6 @@ public class PlayerInputManager : MonoBehaviour
         {
             this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
             Collider2D[] hits = Physics2D.OverlapPointAll(mousePosition);
-            GameObject hoveredInventoryItem = this.GetHoveredInventoryItem(hits);
-            // inventory item select
-            if (hoveredInventoryItem != null)
-            {
-                this.DeselectAllEntities();
-                GameObject spawnedEntity = hoveredInventoryItem.GetComponent<InventoryItem>().CreateEntityFromInventory();
-                this.SelectEntities(new List<GameObject>() { spawnedEntity });
-                this.entityIdToMouseOffset.Add(spawnedEntity.GetInstanceID(), spawnedEntity.transform.position - mousePosition);
-                return;
-            }
             GameObject hoveredEntity = this.GetHoveredSelectableEntity(hits);
             // multi entity start drag
             if (hoveredEntity != null && this.currentEntitiesSelected.Count > 0 && this.currentEntitiesSelected.Contains(hoveredEntity))
@@ -130,9 +129,7 @@ public class PlayerInputManager : MonoBehaviour
             // single entity selection
             else if (hoveredEntity != null)
             {
-                this.DeselectAllEntities();
-                this.SelectEntities(new List<GameObject>() { hoveredEntity });
-                this.entityIdToMouseOffset.Add(hoveredEntity.GetInstanceID(), hoveredEntity.transform.position - mousePosition);
+                this.SelectSingleEntity(hoveredEntity);
             }
             // activate and initialize the selection-box
             else
@@ -171,7 +168,7 @@ public class PlayerInputManager : MonoBehaviour
                     );
                     if (GameSettings.ENTITY_POSITIONS_DISCRETE)
                     {
-                        this.RoundEntityPosition(e);
+                        e.transform.position = Functions.RoundVector(e.transform.position);
                     }
                 }
             }
@@ -228,6 +225,7 @@ public class PlayerInputManager : MonoBehaviour
             var selectable = entity?.GetComponent<Selectable>();
             if (selectable != null)
             {
+                Debug.Log("Setting entity as selected: " + entity.name);
                 this.currentEntitiesSelected.Add(entity);
                 selectable.SetSelected(true);
             }
@@ -241,15 +239,6 @@ public class PlayerInputManager : MonoBehaviour
             e.GetComponent<Selectable>().SetSelected(false);
         }
         this.currentEntitiesSelected = new List<GameObject>();
-    }
-
-    private void RoundEntityPosition(GameObject entity)
-    {
-        entity.transform.position = new Vector3(
-            (int)Math.Round(entity.transform.position.x, 0),
-            (int)Math.Round(entity.transform.position.y, 0),
-            (int)Math.Round(entity.transform.position.z, 0)
-        );
     }
 
     private void HandleRotateSelectedEntities()

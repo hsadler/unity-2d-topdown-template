@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [ExecuteAlways]
-public class InventoryItem : MonoBehaviour
+public class InventoryItem : MonoBehaviour, IPointerDownHandler
 {
 
 
@@ -27,17 +28,20 @@ public class InventoryItem : MonoBehaviour
 
     }
 
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        pos.z = 0;
+        GameObject spawned = this.CreateEntityFromInventory(pos);
+        PlaySceneManager.instance.playerInputManager.SelectSingleEntity(spawned);
+    }
+
     // INTERFACE METHODS
 
-    public GameObject CreateEntityFromInventory()
+    public GameObject CreateEntityFromInventory(Vector3 position)
     {
         GameObject prefab = this.itemPrefabs[this.activeInventoryItem - 1];
-        Debug.Log("Creating entity from inventory: " + prefab.name);
-        return Instantiate(
-            prefab,
-            new Vector3(this.transform.position.x, this.transform.position.y, 0),
-            Quaternion.identity
-        );
+        return Instantiate(prefab, position, Quaternion.identity);
     }
 
     // IMPLEMENTATION METHODS
