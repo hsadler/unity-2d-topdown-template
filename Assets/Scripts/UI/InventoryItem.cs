@@ -12,6 +12,8 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     public List<GameObject> inventoryItems;
     public List<GameObject> itemPrefabs;
 
+    private bool schedCreateEntity;
+
 
     // UNITY HOOKS
 
@@ -25,26 +27,34 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
 
     void Update()
     {
-
+        if (this.schedCreateEntity)
+        {
+            this.CreateEntityFromInventory();
+            this.schedCreateEntity = false;
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        pos.z = 0;
-        GameObject spawned = this.CreateEntityFromInventory(pos);
-        PlaySceneManager.instance.playerInputManager.SelectSingleEntity(spawned);
+        this.schedCreateEntity = true;
     }
 
     // INTERFACE METHODS
 
-    public GameObject CreateEntityFromInventory(Vector3 position)
-    {
-        GameObject prefab = this.itemPrefabs[this.activeInventoryItem - 1];
-        return Instantiate(prefab, position, Quaternion.identity);
-    }
-
     // IMPLEMENTATION METHODS
+
+    private void CreateEntityFromInventory()
+    {
+        PlaySceneManager.instance.playerInputManager.InitEntitySelect();
+        if (this.activeInventoryItem > 0)
+        {
+            Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            pos.z = 0;
+            GameObject prefab = this.itemPrefabs[this.activeInventoryItem - 1];
+            GameObject spawned = Instantiate(prefab, pos, Quaternion.identity);
+            PlaySceneManager.instance.playerInputManager.SelectSingleEntity(spawned);
+        }
+    }
 
 
 }

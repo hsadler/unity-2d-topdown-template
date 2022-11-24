@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerInputManager : MonoBehaviour
 {
@@ -13,12 +15,18 @@ public class PlayerInputManager : MonoBehaviour
     // camera
     private float cameraSize;
 
-    // multiselect
+    // entity mouse interaction
     public GameObject selectionBoxPrefab;
     private GameObject selectionBoxGO;
     private Vector3 initialMultiselectMousePosition;
     private List<GameObject> currentEntitiesSelected = new List<GameObject>();
     private IDictionary<int, Vector3> entityIdToMouseOffset;
+    private Vector3 currentMousePosition;
+    private bool mouseIsUIHovered;
+    private GameObject hoveredEntity;
+
+    // inventory canvas
+    public GameObject inventoryCanvas;
 
 
     // UNITY HOOKS
@@ -40,17 +48,26 @@ public class PlayerInputManager : MonoBehaviour
         {
             this.HandleCameraMovement();
             this.HandleCameraZoom();
-            this.HandleMouseLeftClick();
-            this.HandleRotateSelectedEntities();
+            this.HandleMouseEntityInteraction();
+            this.HandleEntityRotation();
         }
     }
 
     // INTERFACE METHODS
 
+    public void InitEntitySelect()
+    {
+        foreach (GameObject e in this.currentEntitiesSelected)
+        {
+            e.GetComponent<Selectable>().SetSelected(false);
+        }
+        this.currentEntitiesSelected = new List<GameObject>();
+        this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
+    }
+
     public void SelectSingleEntity(GameObject entity)
     {
         Debug.Log("Selecting single entity: " + entity.name);
-        this.DeselectAllEntities();
         this.SelectEntities(new List<GameObject>() { entity });
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         this.entityIdToMouseOffset.Add(entity.GetInstanceID(), entity.transform.position - mousePosition);
@@ -108,46 +125,40 @@ public class PlayerInputManager : MonoBehaviour
         Camera.main.orthographicSize = Mathf.Lerp(currCameraSize, this.cameraSize, Time.deltaTime * GameSettings.CAMERA_ZOOM_SPEED);
     }
 
-    private void HandleMouseLeftClick()
+    private void HandleMouseEntityInteraction()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        this.mouseIsUIHovered = this.MouseIsUIHovered();
+        this.currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Collider2D[] mousePointHits = Physics2D.OverlapPointAll(this.currentMousePosition);
+        this.hoveredEntity = this.GetHoveredSelectableEntity(mousePointHits);
         // button down
         if (Input.GetMouseButtonDown(0))
         {
-            this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
-            Collider2D[] hits = Physics2D.OverlapPointAll(mousePosition);
-            GameObject hoveredEntity = this.GetHoveredSelectableEntity(hits);
-            // multi entity start drag
-            if (hoveredEntity != null && this.currentEntitiesSelected.Count > 0 && this.currentEntitiesSelected.Contains(hoveredEntity))
+            if (!this.MouseIsUIHovered())
             {
-                // set selected entity initial offsets from mouse position to prepare for entity drag
-                foreach (GameObject e in this.currentEntitiesSelected)
+                // entity click
+                if (this.hoveredEntity != null)
                 {
-                    this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - mousePosition);
+                    this.HandleEntityClicked();
+                }
+                // initialize the selection-box
+                else
+                {
+                    this.InitEntitySelect();
+                    this.selectionBoxGO.SetActive(true);
+                    this.selectionBoxGO.transform.localScale = Vector3.zero;
+                    this.initialMultiselectMousePosition = this.currentMousePosition;
                 }
             }
-            // single entity selection
-            else if (hoveredEntity != null)
-            {
-                this.SelectSingleEntity(hoveredEntity);
-            }
-            // activate and initialize the selection-box
-            else
-            {
-                this.DeselectAllEntities();
-                this.selectionBoxGO.SetActive(true);
-                this.selectionBoxGO.transform.localScale = Vector3.zero;
-                this.initialMultiselectMousePosition = Input.mousePosition;
-            }
         }
-        // button held down
+        // button held
         else if (Input.GetMouseButton(0))
         {
             // update the position and shape of the selection-box
             if (this.selectionBoxGO.activeSelf)
             {
-                Vector3 mPos1 = mousePosition;
-                Vector3 mPos2 = Camera.main.ScreenToWorldPoint(this.initialMultiselectMousePosition);
+                Vector3 mPos1 = this.currentMousePosition;
+                Vector3 mPos2 = this.initialMultiselectMousePosition;
                 float width = Mathf.Abs(mPos1.x - mPos2.x);
                 float height = Mathf.Abs(mPos1.y - mPos2.y);
                 Vector3 midpoint = (mPos1 - mPos2) / 2;
@@ -158,52 +169,99 @@ public class PlayerInputManager : MonoBehaviour
             // drag selected entities
             else
             {
-                foreach (GameObject e in this.currentEntitiesSelected)
-                {
-                    Vector3 offset = this.entityIdToMouseOffset[e.GetInstanceID()];
-                    e.transform.position = new Vector3(
-                        mousePosition.x + offset.x,
-                        mousePosition.y + offset.y,
-                        e.transform.position.z
-                    );
-                    if (GameSettings.ENTITY_POSITIONS_DISCRETE)
-                    {
-                        e.transform.position = Functions.RoundVector(e.transform.position);
-                    }
-                }
+                this.HandleEntityDrag();
             }
         }
         // button up
-        else if (Input.GetMouseButtonUp(0) && this.selectionBoxGO.activeSelf)
+        else if (Input.GetMouseButtonUp(0))
         {
-            this.DeselectAllEntities();
-            this.selectionBoxGO.SetActive(false);
-            // select the entities are within selection box
-            if (Input.mousePosition != this.initialMultiselectMousePosition)
+            // box selection
+            if (this.selectionBoxGO.activeSelf)
             {
-                var entitiesToSelect = new List<GameObject>();
-                Vector3 mPos1 = mousePosition;
-                Vector3 mPos2 = Camera.main.ScreenToWorldPoint(this.initialMultiselectMousePosition);
-                Collider2D[] hits = Physics2D.OverlapAreaAll(mPos1, mPos2);
-                foreach (Collider2D col in hits)
+                this.InitEntitySelect();
+                this.selectionBoxGO.SetActive(false);
+                if (this.currentMousePosition != this.initialMultiselectMousePosition)
                 {
-                    entitiesToSelect.Add(col.gameObject);
+                    var entitiesToSelect = new List<GameObject>();
+                    Vector3 mPos1 = this.currentMousePosition;
+                    Vector3 mPos2 = this.initialMultiselectMousePosition;
+                    Collider2D[] selectionBoxHits = Physics2D.OverlapAreaAll(mPos1, mPos2);
+                    foreach (Collider2D col in selectionBoxHits)
+                    {
+                        entitiesToSelect.Add(col.gameObject);
+                    }
+                    this.SelectEntities(entitiesToSelect);
                 }
-                this.SelectEntities(entitiesToSelect);
             }
         }
     }
 
-    private GameObject GetHoveredInventoryItem(Collider2D[] hits)
+    private void HandleEntityClicked()
     {
-        foreach (Collider2D hit in hits)
+        this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
+        // multi entity start drag
+        if (hoveredEntity != null && this.currentEntitiesSelected.Count > 0 && this.currentEntitiesSelected.Contains(hoveredEntity))
         {
-            if (hit != null && hit.gameObject.CompareTag("InventoryItem"))
+            // set selected entity initial offsets from mouse position to prepare for entity drag
+            foreach (GameObject e in this.currentEntitiesSelected)
             {
-                return hit.gameObject;
+                this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - this.currentMousePosition);
             }
         }
-        return null;
+        // single entity selection
+        else if (hoveredEntity != null)
+        {
+            this.InitEntitySelect();
+            this.SelectSingleEntity(hoveredEntity);
+        }
+
+    }
+
+    private void HandleEntityDrag()
+    {
+        foreach (GameObject e in this.currentEntitiesSelected)
+        {
+            Vector3 offset = this.entityIdToMouseOffset[e.GetInstanceID()];
+            e.transform.position = new Vector3(
+                this.currentMousePosition.x + offset.x,
+                this.currentMousePosition.y + offset.y,
+                e.transform.position.z
+            );
+            if (GameSettings.ENTITY_POSITIONS_DISCRETE)
+            {
+                e.transform.position = Functions.RoundVector(e.transform.position);
+            }
+        }
+    }
+
+    private void HandleEntityRotation()
+    {
+        int rot = 0;
+        if (Input.GetKeyDown(GameSettings.ROTATE_ITEM_LEFT_KEY))
+        {
+            rot += 90;
+        }
+        if (Input.GetKeyDown(GameSettings.ROTATE_ITEM_RIGHT_KEY))
+        {
+            rot -= 90;
+        }
+        if (rot != 0)
+        {
+            foreach (GameObject e in this.currentEntitiesSelected)
+            {
+                e.transform.Rotate(new Vector3(0, 0, rot));
+            }
+        }
+    }
+
+    private bool MouseIsUIHovered()
+    {
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem es = this.inventoryCanvas.GetComponent<EventSystem>();
+        PointerEventData ped = new PointerEventData(es);
+        ped.position = Input.mousePosition;
+        this.inventoryCanvas.GetComponent<GraphicRaycaster>().Raycast(ped, raycastResults);
+        return raycastResults.Count > 0;
     }
 
     private GameObject GetHoveredSelectableEntity(Collider2D[] hits)
@@ -222,41 +280,12 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject entity in entities)
         {
-            var selectable = entity?.GetComponent<Selectable>();
+            var selectable = entity.GetComponent<Selectable>();
             if (selectable != null)
             {
                 Debug.Log("Setting entity as selected: " + entity.name);
                 this.currentEntitiesSelected.Add(entity);
                 selectable.SetSelected(true);
-            }
-        }
-    }
-
-    private void DeselectAllEntities()
-    {
-        foreach (GameObject e in this.currentEntitiesSelected)
-        {
-            e.GetComponent<Selectable>().SetSelected(false);
-        }
-        this.currentEntitiesSelected = new List<GameObject>();
-    }
-
-    private void HandleRotateSelectedEntities()
-    {
-        int rot = 0;
-        if (Input.GetKeyDown(GameSettings.ROTATE_ITEM_LEFT_KEY))
-        {
-            rot = 90;
-        }
-        else if (Input.GetKeyDown(GameSettings.ROTATE_ITEM_RIGHT_KEY))
-        {
-            rot = -90;
-        }
-        if (rot != 0)
-        {
-            foreach (GameObject e in this.currentEntitiesSelected)
-            {
-                e.transform.Rotate(new Vector3(0, 0, rot));
             }
         }
     }
