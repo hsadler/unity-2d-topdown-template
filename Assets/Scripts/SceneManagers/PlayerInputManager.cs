@@ -67,7 +67,7 @@ public class PlayerInputManager : MonoBehaviour
 
     public void SelectSingleEntity(GameObject entity)
     {
-        Debug.Log("Selecting single entity: " + entity.name);
+        // Debug.Log("Selecting single entity: " + entity.name);
         this.SelectEntities(new List<GameObject>() { entity });
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         this.entityIdToMouseOffset.Add(entity.GetInstanceID(), entity.transform.position - mousePosition);
@@ -283,7 +283,7 @@ public class PlayerInputManager : MonoBehaviour
             var selectable = entity.GetComponent<Selectable>();
             if (selectable != null)
             {
-                Debug.Log("Setting entity as selected: " + entity.name);
+                // Debug.Log("Setting entity as selected: " + entity.name);
                 this.currentEntitiesSelected.Add(entity);
                 selectable.SetSelected(true);
             }

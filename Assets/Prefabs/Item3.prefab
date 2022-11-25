@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 6587159645365726412}
   - component: {fileID: 4546946383666534828}
   m_Layer: 0
-  m_Name: Hexagon Pointed-Top
+  m_Name: HexagonRender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -264,7 +264,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8003478679713146020, guid: 165c349048099d647b43a9e0a3555364, type: 3}
       propertyPath: m_Name
-      value: ItemPointer
+      value: ItemPointerRender
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 165c349048099d647b43a9e0a3555364, type: 3}
@@ -282,11 +282,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1592881032782179396, guid: 7c2c306d069bbfc45b6bda9737f98451, type: 3}
       propertyPath: m_Name
-      value: SelectionIndicator
+      value: SelectionIndicatorRender
       objectReference: {fileID: 0}
     - target: {fileID: 1592881032782179396, guid: 7c2c306d069bbfc45b6bda9737f98451, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5643451264563729100, guid: 7c2c306d069bbfc45b6bda9737f98451, type: 3}
       propertyPath: m_RootOrder

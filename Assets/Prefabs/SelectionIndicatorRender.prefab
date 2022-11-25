@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5643451264563729100}
   - component: {fileID: 1230291732589613565}
   m_Layer: 0
-  m_Name: SelectionIndicator
+  m_Name: SelectionIndicatorRender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

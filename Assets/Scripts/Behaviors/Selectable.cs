@@ -14,7 +14,7 @@ public class Selectable : MonoBehaviour
 
     void Start()
     {
-        this.Deselect();
+
     }
 
     void Update()
@@ -36,6 +36,7 @@ public class Selectable : MonoBehaviour
 
     public void SetSelected(bool isSelected)
     {
+        // Debug.Log("setting entity selected state to: " + isSelected.ToString());
         this.isSelected = isSelected;
         this.selectionIndicator.SetActive(isSelected);
     }
