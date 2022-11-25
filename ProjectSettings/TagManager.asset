@@ -45,3 +45,6 @@ TagManager:
   - name: Inventory
     uniqueID: 2537057307
     locked: 0
+  - name: EntitySelected
+    uniqueID: 3604453449
+    locked: 0

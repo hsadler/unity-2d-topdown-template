@@ -115,6 +115,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionIndicator: {fileID: 7310873968425467009}
+  renders:
+  - {fileID: 7429123663600729190}
+  - {fileID: 8424242066282145903}
 --- !u!114 &-3268694216450137227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,6 +274,11 @@ PrefabInstance:
 --- !u!4 &3275004198866160812 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3929914065874583655, guid: 165c349048099d647b43a9e0a3555364, type: 3}
+  m_PrefabInstance: {fileID: 2016199704266706123}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8424242066282145903 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8003478679713146020, guid: 165c349048099d647b43a9e0a3555364, type: 3}
   m_PrefabInstance: {fileID: 2016199704266706123}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8317724098618069189
