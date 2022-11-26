@@ -73,6 +73,15 @@ public class PlayerInputManager : MonoBehaviour
         this.entityIdToMouseOffset.Add(entity.GetInstanceID(), entity.transform.position - mousePosition);
     }
 
+    public void DeleteSelectedEntities()
+    {
+        foreach (GameObject e in this.currentEntitiesSelected)
+        {
+            Destroy(e);
+        }
+        this.InitEntitySelect();
+    }
+
     // IMPLEMENTATION METHODS
 
     private void CheckMenuOpen()

@@ -16,16 +16,16 @@ X game menu:
     X item placement
     X item drag
     X item rotation
-    - item destruction
+    X item destruction
     X multi-select
     X multi-drag
     X multi-rotation
-    - multi-destroy
+    X multi-destroy
 
 - UI:
-    - inventory:
+    X inventory:
         X drag from inventory
-        - drag to inventory to destroy
+        X drag to inventory to destroy
     - play/pause/restart buttons
     - time speedup/slowdown buttons
 
