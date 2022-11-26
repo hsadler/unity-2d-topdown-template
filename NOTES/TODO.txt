@@ -13,7 +13,7 @@ X game menu:
 
 - player controls:
     X item select
-    - item placement
+    X item placement
     X item drag
     X item rotation
     - item destruction
@@ -24,7 +24,7 @@ X game menu:
 
 - UI:
     - inventory:
-        - drag from inventory
+        X drag from inventory
         - drag to inventory to destroy
     - play/pause/restart buttons
     - time speedup/slowdown buttons
@@ -34,7 +34,9 @@ REFINEMENTS:
 
 - make zoom zoom on mouse hover location
 - make camera move on touch to edge of viewport
-- give entities a "drag" state, where they've not yet been moved and validation can be performed 
+- give entities a "drag" state, where they've not yet been moved and validation can be performed
+- fix entity->inventory sorting layers do be only when "dragging" state
+- add numbers to inventory for quick inventory selection and placement
 
 
 MAYBE:

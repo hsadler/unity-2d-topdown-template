@@ -12,8 +12,6 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     public List<GameObject> inventoryItems;
     public List<GameObject> itemPrefabs;
 
-    private bool schedCreateEntity;
-
 
     // UNITY HOOKS
 
@@ -27,16 +25,12 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
 
     void Update()
     {
-        if (this.schedCreateEntity)
-        {
-            this.CreateEntityFromInventory();
-            this.schedCreateEntity = false;
-        }
+
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        this.schedCreateEntity = true;
+        this.CreateEntityFromInventory();
     }
 
     // INTERFACE METHODS

@@ -28,16 +28,6 @@ public class Selectable : MonoBehaviour
 
     // INTERFACE METHODS
 
-    public void Select()
-    {
-        this.SetSelected(true);
-    }
-
-    public void Deselect()
-    {
-        this.SetSelected(false);
-    }
-
     public void SetSelected(bool isSelected)
     {
         // Debug.Log("setting entity selected state to: " + isSelected.ToString());
