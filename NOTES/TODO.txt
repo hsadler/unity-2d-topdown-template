@@ -11,7 +11,7 @@ X game menu:
     X restart
     X quit
 
-- player controls:
+X player controls:
     X item select
     X item placement
     X item drag
@@ -22,12 +22,10 @@ X game menu:
     X multi-rotation
     X multi-destroy
 
-- UI:
+X UI:
     X inventory:
         X drag from inventory
         X drag to inventory to destroy
-    - play/pause/restart buttons
-    - time speedup/slowdown buttons
 
 
 REFINEMENTS:
@@ -42,5 +40,5 @@ REFINEMENTS:
 MAYBE:
 
 - variable game speed (tick system)
-- game speed controls
-- pause
+- play/pause/restart
+- time speedup/slowdown

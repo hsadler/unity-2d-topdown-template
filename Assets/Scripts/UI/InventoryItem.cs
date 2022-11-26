@@ -33,9 +33,9 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         this.CreateEntityFromInventory();
     }
 
-    // INTERFACE METHODS
+    // INTF METHODS
 
-    // IMPLEMENTATION METHODS
+    // IMPL METHODS
 
     private void CreateEntityFromInventory()
     {

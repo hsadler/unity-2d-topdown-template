@@ -14,7 +14,7 @@ public class GameEntity : MonoBehaviour
 
     // INTF METHODS
 
-    // IMPLEMENTATION METHODS
+    // IMPL METHODS
 
 
 }

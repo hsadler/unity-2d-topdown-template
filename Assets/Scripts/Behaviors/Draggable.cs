@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class Draggable : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+
+    // UNITY HOOKS
+
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
 
     }
+
+    // INTF METHODS
+
+    // IMPL METHODS
+
+
 }

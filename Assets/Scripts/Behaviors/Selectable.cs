@@ -26,7 +26,7 @@ public class Selectable : MonoBehaviour
 
     }
 
-    // INTERFACE METHODS
+    // INTF METHODS
 
     public void SetSelected(bool isSelected)
     {
@@ -46,7 +46,7 @@ public class Selectable : MonoBehaviour
         this.SetSelected(!this.isSelected);
     }
 
-    // IMPLEMENTATION METHODS
+    // IMPL METHODS
 
 
 }

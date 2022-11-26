@@ -55,7 +55,7 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    // INTERFACE METHODS
+    // INTF METHODS
 
     public void InitEntitySelect()
     {
@@ -84,7 +84,7 @@ public class PlayerInputManager : MonoBehaviour
         this.InitEntitySelect();
     }
 
-    // IMPLEMENTATION METHODS
+    // IMPL METHODS
 
     private void CheckMenuOpen()
     {

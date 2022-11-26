@@ -17,7 +17,7 @@ public class ProceduralEnvironmentManager : MonoBehaviour
 
     void Update() { }
 
-    // INTERFACE METHODS
+    // INTF METHODS
 
     public void GenerateGrid()
     {
@@ -36,7 +36,7 @@ public class ProceduralEnvironmentManager : MonoBehaviour
         }
     }
 
-    // IMPLEMENTATION METHODS
+    // IMPL METHODS
 
     private void CreateYGridLine(float lowerBound, float upperBound, float xAxisPos)
     {
