@@ -16,14 +16,16 @@ public class PlayerInputManager : MonoBehaviour
     private float cameraSize;
 
     // entity mouse interaction
+    private Vector3 currentMousePosition;
+    private Vector3 initialMultiselectMousePosition;
     public GameObject selectionBoxPrefab;
     private GameObject selectionBoxGO;
-    private Vector3 initialMultiselectMousePosition;
-    private List<GameObject> currentEntitiesSelected = new List<GameObject>();
-    private IDictionary<int, Vector3> entityIdToMouseOffset;
-    private Vector3 currentMousePosition;
     private bool mouseIsUIHovered;
     private GameObject hoveredEntity;
+
+    // entity selection
+    private List<GameObject> currentEntitiesSelected = new List<GameObject>();
+    private IDictionary<int, Vector3> entityIdToMouseOffset;
 
     // inventory canvas
     public GameObject inventoryCanvas;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class GameEntity : MonoBehaviour
 {
 
 
@@ -12,7 +12,7 @@ public class Item : MonoBehaviour
 
     void Update() { }
 
-    // INTERFACE METHODS
+    // INTF METHODS
 
     // IMPLEMENTATION METHODS
 
