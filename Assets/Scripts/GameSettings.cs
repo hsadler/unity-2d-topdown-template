@@ -29,8 +29,9 @@ public class GameSettings
     public const KeyCode MENU_KEY = KeyCode.Escape;
     public const KeyCode SMALL_ZOOM_KEY = KeyCode.LeftControl;
     public const KeyCode LARGE_ZOOM_KEY = KeyCode.LeftShift;
-    public const KeyCode ROTATE_ITEM_LEFT_KEY = KeyCode.Q;
-    public const KeyCode ROTATE_ITEM_RIGHT_KEY = KeyCode.E;
+    public const KeyCode ROTATE_ENTITIES_LEFT_KEY = KeyCode.Q;
+    public const KeyCode ROTATE_ENTITIES_RIGHT_KEY = KeyCode.E;
+    public const KeyCode DELETE_ENTITIES_KEY = KeyCode.Backspace;
 
 
 }

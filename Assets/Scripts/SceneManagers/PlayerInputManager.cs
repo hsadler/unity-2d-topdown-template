@@ -15,15 +15,15 @@ public class PlayerInputManager : MonoBehaviour
     // camera
     private float cameraSize;
 
-    // entity mouse interaction
+    // mouse interaction
     private Vector3 currentMousePosition;
     private Vector3 initialMultiselectMousePosition;
     public GameObject selectionBoxPrefab;
     private GameObject selectionBoxGO;
     private bool mouseIsUIHovered;
-    private GameObject hoveredEntity;
 
     // entity selection
+    private GameObject hoveredEntity;
     private List<GameObject> currentEntitiesSelected = new List<GameObject>();
     private IDictionary<int, Vector3> entityIdToMouseOffset;
 
@@ -50,6 +50,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             this.HandleCameraMovement();
             this.HandleCameraZoom();
+            this.HandleEntityDeleteByKeyDown();
             this.HandleMouseEntityInteraction();
             this.HandleEntityRotation();
         }
@@ -248,11 +249,11 @@ public class PlayerInputManager : MonoBehaviour
     private void HandleEntityRotation()
     {
         int rot = 0;
-        if (Input.GetKeyDown(GameSettings.ROTATE_ITEM_LEFT_KEY))
+        if (Input.GetKeyDown(GameSettings.ROTATE_ENTITIES_LEFT_KEY))
         {
             rot += 90;
         }
-        if (Input.GetKeyDown(GameSettings.ROTATE_ITEM_RIGHT_KEY))
+        if (Input.GetKeyDown(GameSettings.ROTATE_ENTITIES_RIGHT_KEY))
         {
             rot -= 90;
         }
@@ -262,6 +263,14 @@ public class PlayerInputManager : MonoBehaviour
             {
                 e.transform.Rotate(new Vector3(0, 0, rot));
             }
+        }
+    }
+
+    private void HandleEntityDeleteByKeyDown()
+    {
+        if (this.currentEntitiesSelected.Count > 0 && Input.GetKeyDown(GameSettings.DELETE_ENTITIES_KEY))
+        {
+            this.DeleteSelectedEntities();
         }
     }
 
