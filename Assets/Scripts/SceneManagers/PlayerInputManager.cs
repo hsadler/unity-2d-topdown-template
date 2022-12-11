@@ -127,7 +127,14 @@ public class PlayerInputManager : MonoBehaviour
         float currCameraSize = Camera.main.orthographicSize;
         if (Input.mouseScrollDelta.y != 0)
         {
-            this.targetCameraPositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (Input.mouseScrollDelta.y > 0)
+            {
+                this.targetCameraPositionWorld = (Camera.main.ScreenToWorldPoint(Input.mousePosition) + Camera.main.transform.position) / 2;
+            }
+            else
+            {
+                this.targetCameraPositionWorld = Camera.main.transform.position;
+            }
             this.targetCameraSize = currCameraSize - (Input.mouseScrollDelta.y * zoomMultiplier);
             // clamp camera size
             if (this.targetCameraSize < GameSettings.CAMERA_SIZE_MIN)

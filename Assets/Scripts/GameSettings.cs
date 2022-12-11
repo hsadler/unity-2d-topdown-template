@@ -15,7 +15,7 @@ public class GameSettings
     public const float CAMERA_ZOOM_AMOUNT_SMALL = 1f;
     public const float CAMERA_ZOOM_AMOUNT_NORMAL = 10f;
     public const float CAMERA_ZOOM_AMOUNT_LARGE = 100f;
-    public const float CAMERA_ZOOM_SPEED = 10f;
+    public const float CAMERA_ZOOM_SPEED = 8f;
     public const float CAMERA_MOVE_SPEED = 4f;
 
     // grid settings
