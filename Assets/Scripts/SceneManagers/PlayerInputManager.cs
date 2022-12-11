@@ -13,10 +13,11 @@ public class PlayerInputManager : MonoBehaviour
     public GameObject MenuGO;
 
     // camera
-    private float cameraSize;
+    private float targetCameraSize;
+    private Vector3 targetCameraPositionWorld;
 
     // mouse interaction
-    private Vector3 currentMousePosition;
+    private Vector3 currentMousePositionWorld;
     private Vector3 initialMultiselectMousePosition;
     public GameObject selectionBoxPrefab;
     private GameObject selectionBoxGO;
@@ -36,13 +37,16 @@ public class PlayerInputManager : MonoBehaviour
     void Start()
     {
         this.MenuGO.SetActive(false);
-        this.cameraSize = Camera.main.orthographicSize;
+        this.targetCameraSize = Camera.main.orthographicSize;
+        this.targetCameraPositionWorld = Camera.main.transform.position;
         this.selectionBoxGO = Instantiate(this.selectionBoxPrefab, Vector3.zero, Quaternion.identity);
         this.selectionBoxGO.SetActive(false);
     }
 
     void Update()
     {
+        // set state
+        this.currentMousePositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         // player input
         this.CheckMenuOpen();
         // camera
@@ -123,25 +127,29 @@ public class PlayerInputManager : MonoBehaviour
         float currCameraSize = Camera.main.orthographicSize;
         if (Input.mouseScrollDelta.y != 0)
         {
-            this.cameraSize = currCameraSize - (Input.mouseScrollDelta.y * zoomMultiplier);
-            // clamp
-            if (this.cameraSize < GameSettings.CAMERA_SIZE_MIN)
+            this.targetCameraPositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            this.targetCameraSize = currCameraSize - (Input.mouseScrollDelta.y * zoomMultiplier);
+            // clamp camera size
+            if (this.targetCameraSize < GameSettings.CAMERA_SIZE_MIN)
             {
-                this.cameraSize = GameSettings.CAMERA_SIZE_MIN;
+                this.targetCameraSize = GameSettings.CAMERA_SIZE_MIN;
             }
-            else if (this.cameraSize > GameSettings.CAMERA_SIZE_MAX)
+            else if (this.targetCameraSize > GameSettings.CAMERA_SIZE_MAX)
             {
-                this.cameraSize = GameSettings.CAMERA_SIZE_MAX;
+                this.targetCameraSize = GameSettings.CAMERA_SIZE_MAX;
             }
         }
-        Camera.main.orthographicSize = Mathf.Lerp(currCameraSize, this.cameraSize, Time.deltaTime * GameSettings.CAMERA_ZOOM_SPEED);
+        if (Mathf.Abs(currCameraSize - this.targetCameraSize) > 0.1f)
+        {
+            Camera.main.orthographicSize = Mathf.Lerp(currCameraSize, this.targetCameraSize, Time.deltaTime * GameSettings.CAMERA_ZOOM_SPEED);
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, this.targetCameraPositionWorld, Time.deltaTime * (GameSettings.CAMERA_ZOOM_SPEED));
+        }
     }
 
     private void HandleMouseEntityInteraction()
     {
         this.mouseIsUIHovered = this.MouseIsUIHovered();
-        this.currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Collider2D[] mousePointHits = Physics2D.OverlapPointAll(this.currentMousePosition);
+        Collider2D[] mousePointHits = Physics2D.OverlapPointAll(this.currentMousePositionWorld);
         this.hoveredEntity = this.GetHoveredSelectableEntity(mousePointHits);
         // button down
         if (Input.GetMouseButtonDown(0))
@@ -159,7 +167,7 @@ public class PlayerInputManager : MonoBehaviour
                     this.InitEntitySelect();
                     this.selectionBoxGO.SetActive(true);
                     this.selectionBoxGO.transform.localScale = Vector3.zero;
-                    this.initialMultiselectMousePosition = this.currentMousePosition;
+                    this.initialMultiselectMousePosition = this.currentMousePositionWorld;
                 }
             }
         }
@@ -169,7 +177,7 @@ public class PlayerInputManager : MonoBehaviour
             // update the position and shape of the selection-box
             if (this.selectionBoxGO.activeSelf)
             {
-                Vector3 mPos1 = this.currentMousePosition;
+                Vector3 mPos1 = this.currentMousePositionWorld;
                 Vector3 mPos2 = this.initialMultiselectMousePosition;
                 float width = Mathf.Abs(mPos1.x - mPos2.x);
                 float height = Mathf.Abs(mPos1.y - mPos2.y);
@@ -192,10 +200,10 @@ public class PlayerInputManager : MonoBehaviour
             {
                 this.InitEntitySelect();
                 this.selectionBoxGO.SetActive(false);
-                if (this.currentMousePosition != this.initialMultiselectMousePosition)
+                if (this.currentMousePositionWorld != this.initialMultiselectMousePosition)
                 {
                     var entitiesToSelect = new List<GameObject>();
-                    Vector3 mPos1 = this.currentMousePosition;
+                    Vector3 mPos1 = this.currentMousePositionWorld;
                     Vector3 mPos2 = this.initialMultiselectMousePosition;
                     Collider2D[] selectionBoxHits = Physics2D.OverlapAreaAll(mPos1, mPos2);
                     foreach (Collider2D col in selectionBoxHits)
@@ -217,7 +225,7 @@ public class PlayerInputManager : MonoBehaviour
             // set selected entity initial offsets from mouse position to prepare for entity drag
             foreach (GameObject e in this.currentEntitiesSelected)
             {
-                this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - this.currentMousePosition);
+                this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - this.currentMousePositionWorld);
             }
         }
         // single entity selection
@@ -235,8 +243,8 @@ public class PlayerInputManager : MonoBehaviour
         {
             Vector3 offset = this.entityIdToMouseOffset[e.GetInstanceID()];
             e.transform.position = new Vector3(
-                this.currentMousePosition.x + offset.x,
-                this.currentMousePosition.y + offset.y,
+                this.currentMousePositionWorld.x + offset.x,
+                this.currentMousePositionWorld.y + offset.y,
                 e.transform.position.z
             );
             if (GameSettings.ENTITY_POSITIONS_DISCRETE)

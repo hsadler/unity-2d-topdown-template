@@ -31,13 +31,15 @@ X UI:
 REFINEMENTS:
 
 X delete hot key
-- additive selection via additive hotkey
 - make zoom zoom on mouse hover location
 - make camera move on touch to edge of viewport
+- clamp camera move to not be able to go farther than the board
+- additive selection via additive hotkey
 - give entities a "drag" state, where they've not yet been moved and validation can be performed
 - fix entity->inventory sorting layers to be upon "dragging" state
 - add numbers to inventory for quick inventory selection and placement
 - undo/redo hot keys
+- add controls instructions somewhere
 
 
 MAYBE:
