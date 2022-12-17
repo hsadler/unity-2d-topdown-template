@@ -115,15 +115,6 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleCameraZoom()
     {
-        float zoomMultiplier = GameSettings.CAMERA_ZOOM_AMOUNT_NORMAL;
-        if (Input.GetKey(GameSettings.SMALL_ZOOM_KEY))
-        {
-            zoomMultiplier = GameSettings.CAMERA_ZOOM_AMOUNT_SMALL;
-        }
-        else if (Input.GetKey(GameSettings.LARGE_ZOOM_KEY))
-        {
-            zoomMultiplier = GameSettings.CAMERA_ZOOM_AMOUNT_LARGE;
-        }
         float currCameraSize = Camera.main.orthographicSize;
         if (Input.mouseScrollDelta.y != 0)
         {
@@ -135,7 +126,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 this.targetCameraPositionWorld = Camera.main.transform.position;
             }
-            this.targetCameraSize = currCameraSize - (Input.mouseScrollDelta.y * zoomMultiplier);
+            this.targetCameraSize = currCameraSize - (Input.mouseScrollDelta.y * GameSettings.CAMERA_ZOOM_AMOUNT);
             // clamp camera size
             if (this.targetCameraSize < GameSettings.CAMERA_SIZE_MIN)
             {
