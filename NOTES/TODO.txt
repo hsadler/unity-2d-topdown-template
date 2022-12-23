@@ -32,7 +32,7 @@ REFINEMENTS:
 
 X delete hot key
 X make zoom zoom on mouse hover location
-- make camera move on touch to edge of viewport
+X make camera move on touch to edge of viewport
 - clamp camera move to not be able to go farther than the board
 - additive selection via additive hotkey
 - give entities a "drag" state, where they've not yet been moved and validation can be performed

@@ -111,6 +111,33 @@ public class PlayerInputManager : MonoBehaviour
             float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED;
             Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
         }
+        // detect mouse at edge of viewport
+        else
+        {
+            float cameraMovePaddingY = Screen.height - (Screen.height * 0.98f);
+            float cameraMovePaddingX = Screen.width - (Screen.width * 0.98f);
+            Vector3 cameraMoveDirection = Vector3.zero;
+            if (Input.mousePosition.y > Screen.height - cameraMovePaddingY)
+            {
+                cameraMoveDirection += Vector3.up;
+            }
+            if (Input.mousePosition.y < 0 + cameraMovePaddingY)
+            {
+                cameraMoveDirection += Vector3.down;
+            }
+            if (Input.mousePosition.x > Screen.width - cameraMovePaddingX)
+            {
+                cameraMoveDirection += Vector3.right;
+            }
+            if (Input.mousePosition.x < 0 + cameraMovePaddingX)
+            {
+                cameraMoveDirection += Vector3.left;
+            }
+            if (cameraMoveDirection != Vector3.zero)
+            {
+                Camera.main.transform.Translate(cameraMoveDirection * Time.deltaTime * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED * 0.6f, Space.World);
+            }
+        }
     }
 
     private void HandleCameraZoom()
