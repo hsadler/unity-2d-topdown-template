@@ -7,6 +7,7 @@ public class GameSettings
 
 
     // general settings
+    public const int GRID_SIZE = 200;
     public const bool ENTITY_POSITIONS_DISCRETE = true;
 
     // camera settings
@@ -15,9 +16,6 @@ public class GameSettings
     public const float CAMERA_ZOOM_AMOUNT = 10f;
     public const float CAMERA_ZOOM_SPEED = 8f;
     public const float CAMERA_MOVE_SPEED = 4f;
-
-    // grid settings
-    public const int GRID_SIZE = 50;
 
     // input modes
     public const int INPUT_MODE_INIT = 1;

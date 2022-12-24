@@ -15,6 +15,7 @@ public class PlayerInputManager : MonoBehaviour
     // camera
     private float targetCameraSize;
     private Vector3 targetCameraPositionWorld;
+    private float[] cameraBounds;
 
     // mouse interaction
     private Vector3 currentMousePositionWorld;
@@ -39,6 +40,7 @@ public class PlayerInputManager : MonoBehaviour
         this.MenuGO.SetActive(false);
         this.targetCameraSize = Camera.main.orthographicSize;
         this.targetCameraPositionWorld = Camera.main.transform.position;
+        this.cameraBounds = new float[4] { 50, -50, -50, 50 };
         this.selectionBoxGO = Instantiate(this.selectionBoxPrefab, Vector3.zero, Quaternion.identity);
         this.selectionBoxGO.SetActive(false);
     }
@@ -135,9 +137,20 @@ public class PlayerInputManager : MonoBehaviour
             }
             if (cameraMoveDirection != Vector3.zero)
             {
-                Camera.main.transform.Translate(cameraMoveDirection * Time.deltaTime * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED * 0.6f, Space.World);
+                Camera.main.transform.Translate(cameraMoveDirection * Time.deltaTime * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED * 0.6f);
             }
         }
+        this.ClampCameraToPlayzone();
+    }
+
+    private void ClampCameraToPlayzone()
+    {
+        var p = Camera.main.transform.position;
+        Camera.main.transform.position = new Vector3(
+            Mathf.Clamp(p.x, this.cameraBounds[1], this.cameraBounds[0]),
+            Mathf.Clamp(p.y, this.cameraBounds[2], this.cameraBounds[3]),
+            p.z
+        );
     }
 
     private void HandleCameraZoom()
