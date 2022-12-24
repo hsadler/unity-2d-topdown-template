@@ -28,6 +28,7 @@ public class GameSettings
     public const KeyCode ROTATE_ENTITIES_LEFT_KEY = KeyCode.Q;
     public const KeyCode ROTATE_ENTITIES_RIGHT_KEY = KeyCode.E;
     public const KeyCode DELETE_ENTITIES_KEY = KeyCode.Backspace;
+    public const KeyCode ADDITIVE_SELECTION_KEY = KeyCode.LeftShift;
 
 
 }

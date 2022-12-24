@@ -147,7 +147,6 @@ public class PlayerInputManager : MonoBehaviour
         // set camera bounds
         float camOffsetX = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).x - Camera.main.transform.position.x;
         float camOffsetY = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).y - Camera.main.transform.position.y;
-        Debug.Log(camOffsetX.ToString() + ", " + camOffsetY.ToString());
         float xBound = (GameSettings.GRID_SIZE / 2) + camOffsetX;
         float yBound = (GameSettings.GRID_SIZE / 2) + camOffsetY;
         this.cameraBounds = new float[4] { -xBound, xBound, -yBound, yBound };
@@ -209,7 +208,6 @@ public class PlayerInputManager : MonoBehaviour
                 // initialize the selection-box
                 else
                 {
-                    this.InitEntitySelect();
                     this.selectionBoxGO.SetActive(true);
                     this.selectionBoxGO.transform.localScale = Vector3.zero;
                     this.initialMultiselectMousePosition = this.currentMousePositionWorld;
@@ -243,7 +241,10 @@ public class PlayerInputManager : MonoBehaviour
             // box selection
             if (this.selectionBoxGO.activeSelf)
             {
-                this.InitEntitySelect();
+                if (!Input.GetKey(GameSettings.ADDITIVE_SELECTION_KEY))
+                {
+                    this.InitEntitySelect();
+                }
                 this.selectionBoxGO.SetActive(false);
                 if (this.currentMousePositionWorld != this.initialMultiselectMousePosition)
                 {
@@ -270,7 +271,11 @@ public class PlayerInputManager : MonoBehaviour
             // set selected entity initial offsets from mouse position to prepare for entity drag
             foreach (GameObject e in this.currentEntitiesSelected)
             {
-                this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - this.currentMousePositionWorld);
+                int instanceId = e.GetInstanceID();
+                if (!this.entityIdToMouseOffset.ContainsKey(instanceId))
+                {
+                    this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - this.currentMousePositionWorld);
+                }
             }
         }
         // single entity selection
