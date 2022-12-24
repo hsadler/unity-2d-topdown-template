@@ -40,7 +40,6 @@ public class PlayerInputManager : MonoBehaviour
         this.MenuGO.SetActive(false);
         this.targetCameraSize = Camera.main.orthographicSize;
         this.targetCameraPositionWorld = Camera.main.transform.position;
-        this.cameraBounds = new float[4] { 50, -50, -50, 50 };
         this.selectionBoxGO = Instantiate(this.selectionBoxPrefab, Vector3.zero, Quaternion.identity);
         this.selectionBoxGO.SetActive(false);
     }
@@ -145,11 +144,19 @@ public class PlayerInputManager : MonoBehaviour
 
     private void ClampCameraToPlayzone()
     {
-        var p = Camera.main.transform.position;
+        // set camera bounds
+        float camOffsetX = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).x - Camera.main.transform.position.x;
+        float camOffsetY = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).y - Camera.main.transform.position.y;
+        Debug.Log(camOffsetX.ToString() + ", " + camOffsetY.ToString());
+        float xBound = (GameSettings.GRID_SIZE / 2) + camOffsetX;
+        float yBound = (GameSettings.GRID_SIZE / 2) + camOffsetY;
+        this.cameraBounds = new float[4] { -xBound, xBound, -yBound, yBound };
+        // clamp cam position
+        var camPos = Camera.main.transform.position;
         Camera.main.transform.position = new Vector3(
-            Mathf.Clamp(p.x, this.cameraBounds[1], this.cameraBounds[0]),
-            Mathf.Clamp(p.y, this.cameraBounds[2], this.cameraBounds[3]),
-            p.z
+            Mathf.Clamp(camPos.x, this.cameraBounds[0], this.cameraBounds[1]),
+            Mathf.Clamp(camPos.y, this.cameraBounds[2], this.cameraBounds[3]),
+            camPos.z
         );
     }
 
