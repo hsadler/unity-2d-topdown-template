@@ -149,12 +149,11 @@ public class PlayerInputManager : MonoBehaviour
         float camOffsetY = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).y - Camera.main.transform.position.y;
         float xBound = (GameSettings.GRID_SIZE / 2) + camOffsetX;
         float yBound = (GameSettings.GRID_SIZE / 2) + camOffsetY;
-        this.cameraBounds = new float[4] { -xBound, xBound, -yBound, yBound };
         // clamp cam position
         var camPos = Camera.main.transform.position;
         Camera.main.transform.position = new Vector3(
-            Mathf.Clamp(camPos.x, this.cameraBounds[0], this.cameraBounds[1]),
-            Mathf.Clamp(camPos.y, this.cameraBounds[2], this.cameraBounds[3]),
+            Mathf.Clamp(camPos.x, -xBound, xBound),
+            Mathf.Clamp(camPos.y, -yBound, yBound),
             camPos.z
         );
     }
