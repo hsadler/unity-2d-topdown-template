@@ -26,7 +26,7 @@ public class Draggable : MonoBehaviour
     {
         // Debug.Log("setting entity dragging state to: " + isDragging.ToString());
         this.isDragging = isDragging;
-        string sortingLayer = isDragging ? GameSettings.SORTING_LAYER_ENTITY_DRAGGING : GameSettings.SORTING_LAYER_DEFAULT;
+        string sortingLayer = isDragging ? GameSettings.SORTING_LAYER_ENTITY_DRAGGING : GameSettings.SORTING_LAYER_ENTITY_SELECTED;
         this.GetComponent<GameEntity>().SetSortingLayer(sortingLayer);
     }
 

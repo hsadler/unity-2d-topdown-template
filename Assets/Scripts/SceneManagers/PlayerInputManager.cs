@@ -262,12 +262,9 @@ public class PlayerInputManager : MonoBehaviour
             // end of drag
             else
             {
-                // NOTE: this is a little weird, since these entities are already selected in the eyes of the
-                // PlayerInputManager. This call to SetSelected is just for the sake of properly setting the 
-                // correct renderer sorting layer.
                 foreach (GameObject e in this.currentEntitiesSelected)
                 {
-                    e.GetComponent<Selectable>().SetSelected(true);
+                    e.GetComponent<Draggable>().SetDragging(false);
                 }
             }
         }

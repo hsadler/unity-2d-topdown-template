@@ -18,7 +18,7 @@ public class GameEntity : MonoBehaviour
 
     public void SetSortingLayer(string sortingLayer)
     {
-        Debug.Log("Setting sorting layer to: " + sortingLayer);
+        // Debug.Log("Setting sorting layer to: " + sortingLayer);
         this.selectionIndicator.GetComponent<LineRenderer>().sortingLayerName = sortingLayer;
         foreach (GameObject rend in this.renders)
         {
