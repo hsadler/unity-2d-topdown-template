@@ -1,4 +1,4 @@
 # 2d-topdown-template
-Unity template for a 2D top down style game.
+Unity template for a 2D top down, drag-and-drop style building game.
 
-## THIS IS A WORK IN PROGRESS
+Unity Version: `2021.3.13`
