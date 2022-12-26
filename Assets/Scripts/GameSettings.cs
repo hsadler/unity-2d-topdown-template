@@ -30,5 +30,10 @@ public class GameSettings
     public const KeyCode DELETE_ENTITIES_KEY = KeyCode.Backspace;
     public const KeyCode ADDITIVE_SELECTION_KEY = KeyCode.LeftShift;
 
+    // renderer sorting layers
+    public const string SORTING_LAYER_DEFAULT = "Default";
+    public const string SORTING_LAYER_ENTITY_SELECTED = "EntitySelected";
+    public const string SORTING_LAYER_ENTITY_DRAGGING = "EntityDragging";
+
 
 }

@@ -68,6 +68,7 @@ public class PlayerInputManager : MonoBehaviour
         foreach (GameObject e in this.currentEntitiesSelected)
         {
             e.GetComponent<Selectable>().SetSelected(false);
+            e.GetComponent<Draggable>().SetDragging(false);
         }
         this.currentEntitiesSelected = new List<GameObject>();
         this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
@@ -258,6 +259,17 @@ public class PlayerInputManager : MonoBehaviour
                     this.SelectEntities(entitiesToSelect);
                 }
             }
+            // end of drag
+            else
+            {
+                // NOTE: this is a little weird, since these entities are already selected in the eyes of the
+                // PlayerInputManager. This call to SetSelected is just for the sake of properly setting the 
+                // correct renderer sorting layer.
+                foreach (GameObject e in this.currentEntitiesSelected)
+                {
+                    e.GetComponent<Selectable>().SetSelected(true);
+                }
+            }
         }
     }
 
@@ -300,6 +312,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 e.transform.position = Functions.RoundVector(e.transform.position);
             }
+            e.GetComponent<Draggable>().SetDragging(true);
         }
     }
 

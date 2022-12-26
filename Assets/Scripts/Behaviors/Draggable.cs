@@ -6,6 +6,8 @@ public class Draggable : MonoBehaviour
 {
 
 
+    private bool isDragging = false;
+
     // UNITY HOOKS
 
     void Start()
@@ -19,6 +21,14 @@ public class Draggable : MonoBehaviour
     }
 
     // INTF METHODS
+
+    public void SetDragging(bool isDragging)
+    {
+        // Debug.Log("setting entity dragging state to: " + isDragging.ToString());
+        this.isDragging = isDragging;
+        string sortingLayer = isDragging ? GameSettings.SORTING_LAYER_ENTITY_DRAGGING : GameSettings.SORTING_LAYER_DEFAULT;
+        this.GetComponent<GameEntity>().SetSortingLayer(sortingLayer);
+    }
 
     // IMPL METHODS
 
