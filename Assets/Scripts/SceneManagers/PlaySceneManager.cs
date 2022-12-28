@@ -9,6 +9,7 @@ public class PlaySceneManager : MonoBehaviour
 
     // MonoBehaviour manager components
     public ProceduralEnvironmentManager proceduralEnvironmentManager;
+    public GameEntityManager gameEntityManager;
     public PlayerInputManager playerInputManager;
 
     public int inputMode;
