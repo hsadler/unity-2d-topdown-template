@@ -10,6 +10,7 @@ public class Draggable : MonoBehaviour
     private bool isDragValid = true;
     public GameObject invalidDragIndicator;
 
+
     // UNITY HOOKS
 
     void Start()
@@ -36,7 +37,11 @@ public class Draggable : MonoBehaviour
 
     private void CheckDragValidity()
     {
-
+        // STUB
+        if (this.isDragging)
+        {
+            // check if drag is valid
+        }
     }
 
 
