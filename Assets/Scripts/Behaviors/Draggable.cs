@@ -20,7 +20,10 @@ public class Draggable : MonoBehaviour
 
     void Update()
     {
-
+        if (this.isDragging)
+        {
+            this.CheckDragValidity();
+        }
     }
 
     // INTF METHODS
@@ -28,19 +31,38 @@ public class Draggable : MonoBehaviour
     public void SetDragging(bool isDragging)
     {
         // Debug.Log("setting entity dragging state to: " + isDragging.ToString());
+        if (this.isDragging != isDragging)
+        {
+            // has started dragging
+            if (isDragging)
+            {
+                // TODO: set game entity display to ghost mode
+            }
+            // has stopped dragging
+            else
+            {
+                PlaySceneManager.instance.gameEntityManager.UpdateGameEntityPosition(this.transform.position, this.gameObject);
+            }
+            string sortingLayer = isDragging ? GameSettings.SORTING_LAYER_ENTITY_DRAGGING : GameSettings.SORTING_LAYER_ENTITY_SELECTED;
+            this.GetComponent<GameEntity>().SetSortingLayer(sortingLayer);
+        }
         this.isDragging = isDragging;
-        string sortingLayer = isDragging ? GameSettings.SORTING_LAYER_ENTITY_DRAGGING : GameSettings.SORTING_LAYER_ENTITY_SELECTED;
-        this.GetComponent<GameEntity>().SetSortingLayer(sortingLayer);
     }
 
     // IMPL METHODS
 
     private void CheckDragValidity()
     {
-        // STUB
-        if (this.isDragging)
+        // check if drag position is valid
+        if (PlaySceneManager.instance.gameEntityManager.PositionIsOccupied(this.transform.position))
         {
-            // check if drag is valid
+            this.isDragValid = false;
+            this.invalidDragIndicator.SetActive(true);
+        }
+        else
+        {
+            this.isDragValid = true;
+            this.invalidDragIndicator.SetActive(false);
         }
     }
 
