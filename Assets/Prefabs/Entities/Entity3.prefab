@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58cda4a8ae2b5d46afb96f4766d6c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDragValid: 1
   invalidDragIndicator: {fileID: 2238261914918316488}
 --- !u!114 &-6477111102924697659
 MonoBehaviour:
@@ -335,6 +336,10 @@ PrefabInstance:
     - target: {fileID: 3929914065874583655, guid: 165c349048099d647b43a9e0a3555364, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5879275082496713692, guid: 165c349048099d647b43a9e0a3555364, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8003478679713146020, guid: 165c349048099d647b43a9e0a3555364, type: 3}
       propertyPath: m_Name

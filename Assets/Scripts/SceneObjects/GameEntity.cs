@@ -24,7 +24,7 @@ public class GameEntity : MonoBehaviour
 
     // INTF METHODS
 
-    public void SetSortingLayer(string sortingLayer)
+    public void SetRenderersSortingLayer(string sortingLayer)
     {
         // Debug.Log("Setting sorting layer to: " + sortingLayer);
         foreach (GameObject rend in this.renders)
@@ -36,6 +36,23 @@ public class GameEntity : MonoBehaviour
             if (rend.TryGetComponent(out LineRenderer lr))
             {
                 lr.sortingLayerName = sortingLayer;
+            }
+        }
+    }
+
+    public void SetSpriteRenderersOpacity(float alpha)
+    {
+        // Debug.Log("setting opacity to: " + alpha.ToString());
+        foreach (GameObject rend in this.renders)
+        {
+            if (rend.TryGetComponent(out SpriteRenderer sr))
+            {
+                sr.material.color = new Color(
+                    sr.material.color.r,
+                    sr.material.color.g,
+                    sr.material.color.b,
+                    alpha
+                );
             }
         }
     }

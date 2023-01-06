@@ -7,6 +7,7 @@ public class Draggable : MonoBehaviour
 
 
     private bool isDragging = false;
+    public bool isDragValid = true;
     public GameObject invalidDragIndicator;
 
 
@@ -35,7 +36,6 @@ public class Draggable : MonoBehaviour
             // has started dragging
             if (isDragging)
             {
-                // TODO: set game entity display to ghost mode
                 PlaySceneManager.instance.gameEntityManager.RemoveGameEntityAtPosition(this.transform.position, this.gameObject);
             }
             // has stopped dragging
@@ -43,8 +43,11 @@ public class Draggable : MonoBehaviour
             {
                 PlaySceneManager.instance.gameEntityManager.AddGameEntityAtPosition(this.transform.position, this.gameObject);
             }
+            // sorting layer for renderers
             string sortingLayer = isDragging ? GameSettings.SORTING_LAYER_ENTITY_DRAGGING : GameSettings.SORTING_LAYER_ENTITY_SELECTED;
-            this.GetComponent<GameEntity>().SetSortingLayer(sortingLayer);
+            this.GetComponent<GameEntity>().SetRenderersSortingLayer(sortingLayer);
+            // display based on drag state
+            this.SetDraggingDisplay(isDragging);
         }
         this.isDragging = isDragging;
     }
@@ -58,11 +61,19 @@ public class Draggable : MonoBehaviour
         if (occupyingGameEntity != null && occupyingGameEntity != this.gameObject)
         {
             this.invalidDragIndicator.SetActive(true);
+            this.isDragValid = false;
         }
         else
         {
             this.invalidDragIndicator.SetActive(false);
+            this.isDragValid = true;
         }
+    }
+
+    private void SetDraggingDisplay(bool isDragging)
+    {
+        float alpha = isDragging ? 0.5f : 1f;
+        this.GetComponent<GameEntity>().SetSpriteRenderersOpacity(alpha);
     }
 
 

@@ -34,7 +34,7 @@ public class Selectable : MonoBehaviour
         this.isSelected = isSelected;
         this.selectionIndicator.SetActive(isSelected);
         string sortingLayer = isSelected ? GameSettings.SORTING_LAYER_ENTITY_SELECTED : GameSettings.SORTING_LAYER_DEFAULT;
-        this.GetComponent<GameEntity>().SetSortingLayer(sortingLayer);
+        this.GetComponent<GameEntity>().SetRenderersSortingLayer(sortingLayer);
     }
 
     // IMPL METHODS

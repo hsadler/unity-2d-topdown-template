@@ -180,6 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58cda4a8ae2b5d46afb96f4766d6c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDragValid: 1
   invalidDragIndicator: {fileID: 6050672405609462478}
 --- !u!114 &1285987304608708486
 MonoBehaviour:
