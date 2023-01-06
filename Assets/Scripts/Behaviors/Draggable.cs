@@ -36,12 +36,12 @@ public class Draggable : MonoBehaviour
             if (isDragging)
             {
                 // TODO: set game entity display to ghost mode
-                // PlaySceneManager.instance.gameEntityManager.RemoveGameEntityAtPosition(this.transform.position, this.gameObject);
+                PlaySceneManager.instance.gameEntityManager.RemoveGameEntityAtPosition(this.transform.position, this.gameObject);
             }
             // has stopped dragging
             else
             {
-                PlaySceneManager.instance.gameEntityManager.UpdateGameEntityPosition(this.transform.position, this.gameObject);
+                PlaySceneManager.instance.gameEntityManager.AddGameEntityAtPosition(this.transform.position, this.gameObject);
             }
             string sortingLayer = isDragging ? GameSettings.SORTING_LAYER_ENTITY_DRAGGING : GameSettings.SORTING_LAYER_ENTITY_SELECTED;
             this.GetComponent<GameEntity>().SetSortingLayer(sortingLayer);
