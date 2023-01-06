@@ -7,7 +7,6 @@ public class Draggable : MonoBehaviour
 
 
     private bool isDragging = false;
-    private bool isDragValid = true;
     public GameObject invalidDragIndicator;
 
 
@@ -15,7 +14,7 @@ public class Draggable : MonoBehaviour
 
     void Start()
     {
-
+        this.invalidDragIndicator.SetActive(false);
     }
 
     void Update()
@@ -37,6 +36,7 @@ public class Draggable : MonoBehaviour
             if (isDragging)
             {
                 // TODO: set game entity display to ghost mode
+                // PlaySceneManager.instance.gameEntityManager.RemoveGameEntityAtPosition(this.transform.position, this.gameObject);
             }
             // has stopped dragging
             else
@@ -53,15 +53,14 @@ public class Draggable : MonoBehaviour
 
     private void CheckDragValidity()
     {
-        // check if drag position is valid
-        if (PlaySceneManager.instance.gameEntityManager.PositionIsOccupied(this.transform.position))
+        // check if drag position is valid by checking if another game entity is occupying the same position
+        GameObject occupyingGameEntity = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(this.transform.position);
+        if (occupyingGameEntity != null && occupyingGameEntity != this.gameObject)
         {
-            this.isDragValid = false;
             this.invalidDragIndicator.SetActive(true);
         }
         else
         {
-            this.isDragValid = true;
             this.invalidDragIndicator.SetActive(false);
         }
     }

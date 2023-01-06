@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1609427600843478511}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2593059070761418768
 SpriteRenderer:
@@ -118,9 +118,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2780307677018389994}
   - {fileID: 1125521629800319737}
   - {fileID: 5037800029619270830}
+  - {fileID: 2780307677018389994}
   - {fileID: 8029874765257216166}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -166,7 +166,8 @@ MonoBehaviour:
   renders:
   - {fileID: 1415950843716393537}
   - {fileID: 2049719603086119021}
-  selectionIndicator: {fileID: 9142094778056590178}
+  - {fileID: 9142094778056590178}
+  - {fileID: 3973658475283295790}
 --- !u!114 &1609427600843478505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,11 +298,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1592881032782179396, guid: 7c2c306d069bbfc45b6bda9737f98451, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5643451264563729100, guid: 7c2c306d069bbfc45b6bda9737f98451, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5643451264563729100, guid: 7c2c306d069bbfc45b6bda9737f98451, type: 3}
       propertyPath: m_LocalPosition.x
@@ -364,7 +365,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3929914065874583655, guid: 165c349048099d647b43a9e0a3555364, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3929914065874583655, guid: 165c349048099d647b43a9e0a3555364, type: 3}
       propertyPath: m_LocalPosition.x

@@ -33,8 +33,19 @@ public class GameEntityManager : MonoBehaviour
         return this.positionToGameEntity.ContainsKey(position.ToString());
     }
 
+    public GameObject GetGameEntityAtPosition(Vector3 position)
+    {
+        string sPos = position.ToString();
+        if (this.positionToGameEntity.ContainsKey(sPos))
+        {
+            return this.positionToGameEntity[sPos];
+        }
+        return null;
+    }
+
     public bool AddGameEntityAtPosition(Vector3 position, GameObject gameEntity)
     {
+        Debug.Log("Adding game entity " + gameEntity.name + " at position " + position.ToString());
         if (!this.PositionIsOccupied(position))
         {
             string sPos = position.ToString();
@@ -47,6 +58,7 @@ public class GameEntityManager : MonoBehaviour
 
     public bool UpdateGameEntityPosition(Vector3 newPosition, GameObject gameEntity)
     {
+        Debug.Log("Updating game entity " + gameEntity.name + " to position " + newPosition.ToString());
         string currPos = this.GetSerializedGameEntityPosition(gameEntity);
         if (currPos == null)
         {
@@ -63,6 +75,7 @@ public class GameEntityManager : MonoBehaviour
 
     public bool RemoveGameEntityAtPosition(Vector3 position, GameObject gameEntity)
     {
+        Debug.Log("Removing game entity " + gameEntity.name + " at position " + position.ToString());
         string currPos = this.GetSerializedGameEntityPosition(gameEntity);
         if (position.ToString() == currPos && this.PositionIsOccupied(position))
         {

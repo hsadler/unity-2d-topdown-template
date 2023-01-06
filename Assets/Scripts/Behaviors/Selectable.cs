@@ -11,6 +11,11 @@ public class Selectable : MonoBehaviour
 
     // UNITY HOOKS
 
+    void Awake()
+    {
+        this.selectionIndicator.SetActive(false);
+    }
+
     void Start()
     {
 
