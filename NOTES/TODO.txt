@@ -29,7 +29,6 @@ X UI:
 
 
 REFINEMENTS:
-
 X delete hot key
 X make zoom zoom on mouse hover location
 X make camera move on touch to edge of viewport
@@ -37,13 +36,18 @@ X clamp camera move to not be able to go farther than the board
 X additive selection via additive hotkey
 X fix entity->inventory sorting layers to be upon "dragging" state
 - give entities a "drag" state, where they've not yet been moved and validation can be performed
-- add numbers to inventory for quick inventory selection and placement
-- undo/redo hot keys
+- pending delete selection indicator color
+- drag and drop to inventory bar should cause a delete
 - add controls instructions
 
 
-MAYBE:
+THINGS TO CONSIDER:
+- hot key for entity placement will introduce drag without click press
 
+
+MAYBE:
+- add numbers to inventory for quick inventory selection and placement
+- undo/redo hot keys
 - variable game speed (tick system)
 - play/pause/restart
 - time speedup/slowdown
