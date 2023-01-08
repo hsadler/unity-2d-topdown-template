@@ -198,7 +198,7 @@ public class PlayerInputManager : MonoBehaviour
         // button down
         if (Input.GetMouseButtonDown(0))
         {
-            if (!this.MouseIsUIHovered())
+            if (!this.mouseIsUIHovered)
             {
                 // entity click
                 if (this.hoveredEntity != null)
