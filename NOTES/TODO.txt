@@ -35,9 +35,9 @@ X make camera move on touch to edge of viewport
 X clamp camera move to not be able to go farther than the board
 X additive selection via additive hotkey
 X fix entity->inventory sorting layers to be upon "dragging" state
-- give entities a "drag" state, where they've not yet been moved and validation can be performed
-- pending delete selection indicator color
+X give entities a "drag" state, where they've not yet been moved and validation can be performed
 - drag and drop to inventory bar should cause a delete
+- pending delete selection indicator color
 - add controls instructions
 
 

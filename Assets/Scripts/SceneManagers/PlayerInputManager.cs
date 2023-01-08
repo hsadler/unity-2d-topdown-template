@@ -208,9 +208,7 @@ public class PlayerInputManager : MonoBehaviour
                 // initialize the selection-box
                 else
                 {
-                    this.selectionBoxGO.SetActive(true);
-                    this.selectionBoxGO.transform.localScale = Vector3.zero;
-                    this.initialMultiselectMousePosition = this.currentMousePositionWorld;
+                    this.HandleSelectionBoxInitialization();
                 }
             }
         }
@@ -220,14 +218,7 @@ public class PlayerInputManager : MonoBehaviour
             // update the position and shape of the selection-box
             if (this.selectionBoxGO.activeSelf)
             {
-                Vector3 mPos1 = this.currentMousePositionWorld;
-                Vector3 mPos2 = this.initialMultiselectMousePosition;
-                float width = Mathf.Abs(mPos1.x - mPos2.x);
-                float height = Mathf.Abs(mPos1.y - mPos2.y);
-                Vector3 midpoint = (mPos1 - mPos2) / 2;
-                this.selectionBoxGO.transform.localScale = new Vector3(width, height, 0);
-                Vector3 boxPos = mPos1 - midpoint;
-                this.selectionBoxGO.transform.position = new Vector3(boxPos.x, boxPos.y, 0);
+                this.HandleSelectionBoxSizing();
             }
             // drag selected entities
             else
@@ -285,6 +276,25 @@ public class PlayerInputManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void HandleSelectionBoxInitialization()
+    {
+        this.selectionBoxGO.SetActive(true);
+        this.selectionBoxGO.transform.localScale = Vector3.zero;
+        this.initialMultiselectMousePosition = this.currentMousePositionWorld;
+    }
+
+    private void HandleSelectionBoxSizing()
+    {
+        Vector3 mPos1 = this.currentMousePositionWorld;
+        Vector3 mPos2 = this.initialMultiselectMousePosition;
+        float width = Mathf.Abs(mPos1.x - mPos2.x);
+        float height = Mathf.Abs(mPos1.y - mPos2.y);
+        Vector3 midpoint = (mPos1 - mPos2) / 2;
+        this.selectionBoxGO.transform.localScale = new Vector3(width, height, 0);
+        Vector3 boxPos = mPos1 - midpoint;
+        this.selectionBoxGO.transform.position = new Vector3(boxPos.x, boxPos.y, 0);
     }
 
     private void HandleBoxSelection()
