@@ -10,6 +10,11 @@ public class Draggable : MonoBehaviour
     public bool isDragValid = true;
     public GameObject invalidDragIndicator;
 
+    private const float IS_DRAGGING_ALPHA = 0.5f;
+    private const float IS_NOT_DRAGGING_ALPHA = 1f;
+
+    public Vector3 preDragPosition;
+
 
     // UNITY HOOKS
 
@@ -38,10 +43,11 @@ public class Draggable : MonoBehaviour
             {
                 PlaySceneManager.instance.gameEntityManager.RemoveGameEntityAtPosition(this.transform.position, this.gameObject);
             }
-            // has stopped dragging
+            // has been dropped
             else
             {
                 PlaySceneManager.instance.gameEntityManager.AddGameEntityAtPosition(this.transform.position, this.gameObject);
+                this.CheckDragValidity();
             }
             // sorting layer for renderers
             string sortingLayer = isDragging ? GameSettings.SORTING_LAYER_ENTITY_DRAGGING : GameSettings.SORTING_LAYER_ENTITY_SELECTED;
@@ -58,11 +64,13 @@ public class Draggable : MonoBehaviour
     {
         // check if drag position is valid by checking if another game entity is occupying the same position
         GameObject occupyingGameEntity = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(this.transform.position);
+        // position is already occupied
         if (occupyingGameEntity != null && occupyingGameEntity != this.gameObject)
         {
             this.invalidDragIndicator.SetActive(true);
             this.isDragValid = false;
         }
+        // position is unoccupied
         else
         {
             this.invalidDragIndicator.SetActive(false);
@@ -72,7 +80,7 @@ public class Draggable : MonoBehaviour
 
     private void SetDraggingDisplay(bool isDragging)
     {
-        float alpha = isDragging ? 0.5f : 1f;
+        float alpha = isDragging ? IS_DRAGGING_ALPHA : IS_NOT_DRAGGING_ALPHA;
         this.GetComponent<GameEntity>().SetSpriteRenderersOpacity(alpha);
     }
 

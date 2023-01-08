@@ -18,7 +18,7 @@ public class GameEntity : MonoBehaviour
 
     void OnDestroy()
     {
-        Debug.Log("game entity destroyed: " + this.gameObject.name);
+        // Debug.Log("game entity destroyed: " + this.gameObject.name);
         PlaySceneManager.instance.gameEntityManager.RemoveGameEntityAtPosition(this.transform.position, this.gameObject);
     }
 
