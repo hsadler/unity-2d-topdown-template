@@ -65,6 +65,7 @@ public class PlayerInputManager : MonoBehaviour
 
     public void InitEntitySelect()
     {
+        // init selection and dragging on all currently selected entities
         foreach (GameObject e in this.currentEntitiesSelected)
         {
             e.GetComponent<Selectable>().SetSelected(false);
@@ -72,6 +73,8 @@ public class PlayerInputManager : MonoBehaviour
         }
         this.currentEntitiesSelected = new List<GameObject>();
         this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
+        // init selection box as well
+        this.selectionBoxGO.SetActive(false);
     }
 
     public void SelectSingleEntity(GameObject entity)
@@ -80,6 +83,11 @@ public class PlayerInputManager : MonoBehaviour
         this.TrySelectEntities(new List<GameObject>() { entity });
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         this.entityIdToMouseOffset.Add(entity.GetInstanceID(), entity.transform.position - mousePosition);
+    }
+
+    public void DisplayImpendingDeleteForSelectedEntities(bool status)
+    {
+        Debug.Log("DisplayImpendingDeleteForSelectedEntities bool: " + status.ToString());
     }
 
     public void DeleteSelectedEntities()
@@ -198,7 +206,11 @@ public class PlayerInputManager : MonoBehaviour
         // button down
         if (Input.GetMouseButtonDown(0))
         {
-            if (!this.mouseIsUIHovered)
+            if (this.mouseIsUIHovered)
+            {
+                // noop
+            }
+            else
             {
                 // entity click
                 if (this.hoveredEntity != null)
@@ -208,7 +220,7 @@ public class PlayerInputManager : MonoBehaviour
                 // initialize the selection-box
                 else
                 {
-                    this.HandleSelectionBoxInitialization();
+                    this.HandleStartSelectionBox();
                 }
             }
         }
@@ -229,15 +241,22 @@ public class PlayerInputManager : MonoBehaviour
         // button up
         else if (Input.GetMouseButtonUp(0))
         {
-            // box selection
-            if (this.selectionBoxGO.activeSelf)
+            if (this.mouseIsUIHovered)
             {
-                this.HandleBoxSelection();
+                // noop
             }
-            // end of drag
             else
             {
-                this.HandleEntityDrop();
+                // box selection
+                if (this.selectionBoxGO.activeSelf)
+                {
+                    this.HandleBoxSelection();
+                }
+                // end of drag
+                else
+                {
+                    this.HandleEntityDrop();
+                }
             }
         }
     }
@@ -278,7 +297,7 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    private void HandleSelectionBoxInitialization()
+    private void HandleStartSelectionBox()
     {
         this.selectionBoxGO.SetActive(true);
         this.selectionBoxGO.transform.localScale = Vector3.zero;
