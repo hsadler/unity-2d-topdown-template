@@ -79,7 +79,6 @@ public class PlayerInputManager : MonoBehaviour
 
     public void SelectSingleEntity(GameObject entity)
     {
-        // Debug.Log("Selecting single entity: " + entity.name);
         this.TrySelectEntities(new List<GameObject>() { entity });
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         this.entityIdToMouseOffset.Add(entity.GetInstanceID(), entity.transform.position - mousePosition);
@@ -87,7 +86,10 @@ public class PlayerInputManager : MonoBehaviour
 
     public void DisplayImpendingDeleteForSelectedEntities(bool status)
     {
-        Debug.Log("DisplayImpendingDeleteForSelectedEntities bool: " + status.ToString());
+        foreach (GameObject e in this.currentEntitiesSelected)
+        {
+            e.GetComponent<Selectable>().SetPendingDelete(status);
+        }
     }
 
     public void DeleteSelectedEntities()
@@ -97,6 +99,19 @@ public class PlayerInputManager : MonoBehaviour
             Destroy(e);
         }
         this.InitEntitySelect();
+    }
+
+    public bool CurrentSelectedEntitiesAreNewlyCreated()
+    {
+        bool areNewlyCreated = true;
+        foreach (GameObject e in this.currentEntitiesSelected)
+        {
+            if (!e.GetComponent<GameEntity>().isNewlyCreated)
+            {
+                areNewlyCreated = false;
+            }
+        }
+        return areNewlyCreated;
     }
 
     // IMPL METHODS
@@ -365,6 +380,8 @@ public class PlayerInputManager : MonoBehaviour
     private void HandleEntityDrop()
     {
         // TODO: make impl more efficient
+
+        // collect draggables subset
         List<GameObject> draggables = new List<GameObject>();
         foreach (GameObject e in this.currentEntitiesSelected)
         {
@@ -382,18 +399,33 @@ public class PlayerInputManager : MonoBehaviour
                 invalidDragDetected = true;
             }
         }
-        // if any invalid drags detected, roll-back positions to pre-drag positions
+        // if any invalid drags detected
+        // delete newly created entities and init select
+        // otherwise, roll-back positions to pre-drag positions
         if (invalidDragDetected)
         {
-            foreach (GameObject e in draggables)
+            if (this.CurrentSelectedEntitiesAreNewlyCreated())
             {
-                e.transform.position = e.GetComponent<Draggable>().preDragPosition;
+
+                foreach (GameObject e in draggables)
+                {
+                    Destroy(e);
+                }
+                this.InitEntitySelect();
+            }
+            else
+            {
+                foreach (GameObject e in draggables)
+                {
+                    e.transform.position = e.GetComponent<Draggable>().preDragPosition;
+                }
             }
         }
-        // commit drop and positions
+        // commit drops and mark any newly created entities as no longer newly created
         foreach (GameObject e in draggables)
         {
             e.GetComponent<Draggable>().SetDragging(false);
+            e.GetComponent<GameEntity>().isNewlyCreated = false;
         }
     }
 

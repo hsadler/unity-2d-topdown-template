@@ -163,6 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6177c2a52727344182799bc5a4f1bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isNewlyCreated: 0
   renders:
   - {fileID: 401173455705104860}
   - {fileID: 2226400408401477309}
@@ -182,6 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDragValid: 1
   invalidDragIndicator: {fileID: 6050672405609462478}
+  preDragPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1285987304608708486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,6 +209,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionIndicator: {fileID: 7425689898073933065}
+  selectedColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  pendingDeleteColor:
+    serializedVersion: 2
+    rgba: 0
 --- !u!114 &-2762263267789251663
 MonoBehaviour:
   m_ObjectHideFlags: 0

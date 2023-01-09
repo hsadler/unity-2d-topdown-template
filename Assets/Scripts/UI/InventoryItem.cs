@@ -46,6 +46,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
             pos.z = 0;
             GameObject prefab = this.itemPrefabs[this.activeInventoryItem - 1];
             GameObject spawned = Instantiate(prefab, pos, Quaternion.identity);
+            spawned.GetComponent<GameEntity>().isNewlyCreated = true;
             spawned.GetComponent<Selectable>().SetSelected(true);
             PlaySceneManager.instance.playerInputManager.SelectSingleEntity(spawned);
         }

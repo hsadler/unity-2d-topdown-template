@@ -7,8 +7,7 @@ public class DestroyItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
 
 
-    public bool shouldDisplayImpendingEntityDeleteOnClick = false;
-
+    private PlayerInputManager playerInputManager;
     private bool canDestroy = false;
 
 
@@ -16,7 +15,7 @@ public class DestroyItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     void Start()
     {
-
+        this.playerInputManager = PlaySceneManager.instance.playerInputManager;
     }
 
     void Update()
@@ -25,13 +24,15 @@ public class DestroyItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             if (Input.GetMouseButtonUp(0))
             {
-                PlaySceneManager.instance.playerInputManager.DeleteSelectedEntities();
+                this.playerInputManager.DeleteSelectedEntities();
             }
-            else if (this.shouldDisplayImpendingEntityDeleteOnClick && Input.GetMouseButtonDown(0))
+            else if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Destroy Item.cs clicked...");
-                var pim = PlaySceneManager.instance.playerInputManager;
-                pim.DisplayImpendingDeleteForSelectedEntities(status: true);
+                if (!this.playerInputManager.CurrentSelectedEntitiesAreNewlyCreated())
+                {
+                    this.playerInputManager.InitEntitySelect();
+                }
+                this.playerInputManager.DisplayImpendingDeleteForSelectedEntities(status: true);
             }
         }
     }
@@ -41,14 +42,14 @@ public class DestroyItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         this.canDestroy = true;
         if (Input.GetMouseButton(0))
         {
-            PlaySceneManager.instance.playerInputManager.DisplayImpendingDeleteForSelectedEntities(status: true);
+            this.playerInputManager.DisplayImpendingDeleteForSelectedEntities(status: true);
         }
     }
 
     public void OnPointerExit(PointerEventData pointerEventData)
     {
         this.canDestroy = false;
-        PlaySceneManager.instance.playerInputManager.DisplayImpendingDeleteForSelectedEntities(status: false);
+        this.playerInputManager.DisplayImpendingDeleteForSelectedEntities(status: false);
     }
 
     // INTF METHODS

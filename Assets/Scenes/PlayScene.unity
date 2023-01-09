@@ -383,7 +383,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &107924575
 RectTransform:
   m_ObjectHideFlags: 0
@@ -481,7 +481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8afa3fc261b6fb43aaa2a67a275befc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldDisplayImpendingEntityDeleteOnClick: 0
+  shouldDisplayImpendingEntityDeleteOnClick: 1
 --- !u!1 &114837147
 GameObject:
   m_ObjectHideFlags: 0
@@ -2929,7 +2929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 681451897450710501, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 681451897450710501, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2937,7 +2937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 681451897450710501, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 681451897450710501, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2977,11 +2977,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 681451897450710501, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 681451897450710501, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 681451897450710501, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

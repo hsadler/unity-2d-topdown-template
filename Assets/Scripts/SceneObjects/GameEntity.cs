@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameEntity : MonoBehaviour
 {
 
+    public bool isNewlyCreated = false;
+
     public List<GameObject> renders;
 
     // UNITY HOOKS
@@ -26,7 +28,6 @@ public class GameEntity : MonoBehaviour
 
     public void SetRenderersSortingLayer(string sortingLayer)
     {
-        // Debug.Log("Setting sorting layer to: " + sortingLayer);
         foreach (GameObject rend in this.renders)
         {
             if (rend.TryGetComponent(out SpriteRenderer sr))
@@ -42,7 +43,6 @@ public class GameEntity : MonoBehaviour
 
     public void SetSpriteRenderersOpacity(float alpha)
     {
-        // Debug.Log("setting opacity to: " + alpha.ToString());
         foreach (GameObject rend in this.renders)
         {
             if (rend.TryGetComponent(out SpriteRenderer sr))
