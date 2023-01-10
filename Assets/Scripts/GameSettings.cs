@@ -10,6 +10,7 @@ public class GameSettings
     public const int GRID_SIZE = 200;
     public const bool ENTITY_POSITIONS_DISCRETE = true;
 
+
     // camera settings
     public const float CAMERA_SIZE_MIN = 4f;
     public const float CAMERA_SIZE_MAX = 40f;
@@ -17,9 +18,11 @@ public class GameSettings
     public const float CAMERA_ZOOM_SPEED = 8f;
     public const float CAMERA_MOVE_SPEED = 4f;
 
+
     // input modes
     public const int INPUT_MODE_INIT = 1;
     public const int INPUT_MODE_MENU = 2;
+
 
     // player input mappings
     public const KeyCode MENU_KEY = KeyCode.Escape;
@@ -29,6 +32,7 @@ public class GameSettings
     public const KeyCode ROTATE_ENTITIES_RIGHT_KEY = KeyCode.E;
     public const KeyCode DELETE_ENTITIES_KEY = KeyCode.Backspace;
     public const KeyCode ADDITIVE_SELECTION_KEY = KeyCode.LeftShift;
+
 
     // renderer sorting layers
     public const string SORTING_LAYER_DEFAULT = "Default";

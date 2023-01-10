@@ -9,6 +9,9 @@ public class PlayerInputManager : MonoBehaviour
 {
 
 
+    // Manages Player->Game interaction processing.
+
+
     // menu
     public GameObject MenuGO;
 

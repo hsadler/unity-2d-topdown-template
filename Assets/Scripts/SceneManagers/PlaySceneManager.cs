@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class PlaySceneManager : MonoBehaviour
 {
 
+    // The main gameplay singleton manager. Holds references to sub-managers.
+
 
     // MonoBehaviour manager components
     public ProceduralEnvironmentManager proceduralEnvironmentManager;
