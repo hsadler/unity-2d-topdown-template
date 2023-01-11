@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 [ExecuteAlways]
 public class InventoryItem : MonoBehaviour, IPointerDownHandler
@@ -12,6 +13,8 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     public List<GameObject> inventoryItems;
     public List<GameObject> itemPrefabs;
 
+    public GameObject hotkeyNumber;
+
 
     // UNITY HOOKS
 
@@ -20,6 +23,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         if (this.activeInventoryItem > 0)
         {
             this.inventoryItems[this.activeInventoryItem - 1].SetActive(true);
+            this.hotkeyNumber.GetComponent<TextMeshProUGUI>().text = this.activeInventoryItem.ToString();
         }
     }
 
