@@ -39,6 +39,7 @@ X give entities a "drag" state, where they've not yet been moved and validation 
 X drag and drop to inventory bar should cause a delete
 X pending delete selection indicator color
 - add numbers to inventory for quick inventory selection and placement
+- move selected entity data management to GameEntityManager
 - undo/redo system, buttons, and hotkeys
 
 

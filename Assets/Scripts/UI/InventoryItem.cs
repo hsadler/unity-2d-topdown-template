@@ -13,7 +13,21 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     public List<GameObject> inventoryItems;
     public List<GameObject> itemPrefabs;
 
-    public GameObject hotkeyNumber;
+    public GameObject hotkeyNumberDisplay;
+
+    private IDictionary<int, KeyCode> intToKeyCode = new Dictionary<int, KeyCode>() {
+        {1, KeyCode.Alpha1},
+        {2, KeyCode.Alpha2},
+        {3, KeyCode.Alpha3},
+        {4, KeyCode.Alpha4},
+        {5, KeyCode.Alpha5},
+        {6, KeyCode.Alpha6},
+        {7, KeyCode.Alpha7},
+        {8, KeyCode.Alpha8},
+        {9, KeyCode.Alpha9},
+        {0, KeyCode.Alpha0},
+    };
+    private KeyCode itemKeyCode;
 
 
     // UNITY HOOKS
@@ -23,13 +37,18 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         if (this.activeInventoryItem > 0)
         {
             this.inventoryItems[this.activeInventoryItem - 1].SetActive(true);
-            this.hotkeyNumber.GetComponent<TextMeshProUGUI>().text = this.activeInventoryItem.ToString();
+            this.hotkeyNumberDisplay.GetComponent<TextMeshProUGUI>().text = this.activeInventoryItem.ToString();
+            this.itemKeyCode = this.intToKeyCode[this.activeInventoryItem];
+        }
+        else
+        {
+            this.hotkeyNumberDisplay.SetActive(false);
         }
     }
 
     void Update()
     {
-
+        this.CheckInputForInventoryHotkey();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -53,6 +72,15 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
             spawned.GetComponent<GameEntity>().isNewlyCreated = true;
             spawned.GetComponent<Selectable>().SetSelected(true);
             PlaySceneManager.instance.playerInputManager.SelectSingleEntity(spawned);
+        }
+    }
+
+    private void CheckInputForInventoryHotkey()
+    {
+        if (Input.GetKeyDown(this.itemKeyCode))
+        {
+            Debug.Log("item inventory pressed: " + this.itemKeyCode.ToString());
+            // TODO: set player input mode to inventory-placement
         }
     }
 
