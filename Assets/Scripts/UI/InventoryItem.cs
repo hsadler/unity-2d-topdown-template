@@ -29,11 +29,15 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     };
     private KeyCode itemKeyCode;
 
+    // manager refs
+    private PlayerInputManager pim;
+
 
     // UNITY HOOKS
 
     void Start()
     {
+        this.pim = PlaySceneManager.instance.playerInputManager;
         if (this.activeInventoryItem > 0)
         {
             this.inventoryItems[this.activeInventoryItem - 1].SetActive(true);
@@ -53,25 +57,22 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        this.CreateEntityFromInventory();
+        this.HandleInventoryItemClick();
     }
 
     // INTF METHODS
 
     // IMPL METHODS
 
-    private void CreateEntityFromInventory()
+    private void HandleInventoryItemClick()
     {
-        PlaySceneManager.instance.playerInputManager.InitEntitySelect();
+        this.pim.InitEntitySelect();
         if (this.activeInventoryItem > 0)
         {
             Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             pos.z = 0;
-            GameObject prefab = this.itemPrefabs[this.activeInventoryItem - 1];
-            GameObject spawned = Instantiate(prefab, pos, Quaternion.identity);
-            spawned.GetComponent<GameEntity>().isNewlyCreated = true;
-            spawned.GetComponent<Selectable>().SetSelected(true);
-            PlaySceneManager.instance.playerInputManager.SelectSingleEntity(spawned);
+            GameObject spawned = this.CreateInventoryEntity(pos);
+            this.pim.SelectSingleEntity(spawned);
         }
     }
 
@@ -79,9 +80,27 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     {
         if (Input.GetKeyDown(this.itemKeyCode))
         {
-            Debug.Log("item inventory pressed: " + this.itemKeyCode.ToString());
-            // TODO: set player input mode to inventory-placement
+            if (this.pim.isHotkeyPlacementMode)
+            {
+                this.pim.ClearHotKeyPlacementEntity();
+            }
+            else
+            {
+                Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                pos.z = 0;
+                GameObject spawned = this.CreateInventoryEntity(pos);
+                this.pim.SetHotKeyPlacementEntity(spawned);
+            }
         }
+    }
+
+    private GameObject CreateInventoryEntity(Vector3 pos, bool isNewlyCreated = true, bool isSelected = true)
+    {
+        GameObject prefab = this.itemPrefabs[this.activeInventoryItem - 1];
+        GameObject spawned = Instantiate(prefab, pos, Quaternion.identity);
+        spawned.GetComponent<GameEntity>().isNewlyCreated = isNewlyCreated;
+        spawned.GetComponent<Selectable>().SetSelected(isSelected);
+        return spawned;
     }
 
 

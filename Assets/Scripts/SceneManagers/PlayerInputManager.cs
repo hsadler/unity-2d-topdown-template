@@ -32,6 +32,10 @@ public class PlayerInputManager : MonoBehaviour
     private List<GameObject> currentEntitiesSelected = new List<GameObject>();
     private IDictionary<int, Vector3> entityIdToMouseOffset;
 
+    // entity hotkey placement mode
+    public bool isHotkeyPlacementMode = false;
+    private GameObject hotkeyPlacementEntity;
+
     // inventory canvas
     public GameObject inventoryCanvas;
 
@@ -115,6 +119,18 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
         return areNewlyCreated;
+    }
+
+    public void SetHotKeyPlacementEntity(GameObject entity)
+    {
+        this.hotkeyPlacementEntity = entity;
+        this.isHotkeyPlacementMode = true;
+    }
+
+    public void ClearHotKeyPlacementEntity()
+    {
+        this.hotkeyPlacementEntity = null;
+        this.isHotkeyPlacementMode = false;
     }
 
     // IMPL METHODS
@@ -275,6 +291,14 @@ public class PlayerInputManager : MonoBehaviour
                 {
                     this.HandleEntityDrop();
                 }
+            }
+        }
+        // mouse move
+        else
+        {
+            if (this.isHotkeyPlacementMode)
+            {
+                Debug.Log("handling isHotkeyPlacementMode");
             }
         }
     }
