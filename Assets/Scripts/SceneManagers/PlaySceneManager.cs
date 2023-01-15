@@ -14,9 +14,6 @@ public class PlaySceneManager : MonoBehaviour
     public GameEntityManager gameEntityManager;
     public PlayerInputManager playerInputManager;
 
-    public int inputMode;
-
-
     // the static reference to the singleton instance
     public static PlaySceneManager instance;
 
@@ -38,7 +35,6 @@ public class PlaySceneManager : MonoBehaviour
     void Start()
     {
         this.proceduralEnvironmentManager.GenerateGrid();
-        this.inputMode = GameSettings.INPUT_MODE_INIT;
     }
 
     void Update() { }

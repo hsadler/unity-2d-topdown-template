@@ -80,7 +80,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     {
         if (Input.GetKeyDown(this.itemKeyCode))
         {
-            if (this.pim.isHotkeyPlacementMode)
+            if (this.pim.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT)
             {
                 this.pim.ClearHotKeyPlacementEntity();
             }

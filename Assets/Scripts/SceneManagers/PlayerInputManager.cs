@@ -12,6 +12,9 @@ public class PlayerInputManager : MonoBehaviour
     // Manages Player->Game interaction processing.
 
 
+    // input mode
+    public int inputMode;
+
     // menu
     public GameObject MenuGO;
 
@@ -33,7 +36,6 @@ public class PlayerInputManager : MonoBehaviour
     private IDictionary<int, Vector3> entityIdToMouseOffset;
 
     // entity hotkey placement mode
-    public bool isHotkeyPlacementMode = false;
     private GameObject hotkeyPlacementEntity;
 
     // inventory canvas
@@ -44,6 +46,7 @@ public class PlayerInputManager : MonoBehaviour
 
     void Start()
     {
+        this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
         this.MenuGO.SetActive(false);
         this.targetCameraSize = Camera.main.orthographicSize;
         this.targetCameraPositionWorld = Camera.main.transform.position;
@@ -58,7 +61,7 @@ public class PlayerInputManager : MonoBehaviour
         // player input
         this.CheckMenuOpen();
         // camera
-        if (PlaySceneManager.instance.inputMode != GameSettings.INPUT_MODE_MENU)
+        if (this.inputMode != GameSettings.INPUT_MODE_MENU)
         {
             this.HandleCameraMovement();
             this.HandleCameraZoom();
@@ -124,13 +127,13 @@ public class PlayerInputManager : MonoBehaviour
     public void SetHotKeyPlacementEntity(GameObject entity)
     {
         this.hotkeyPlacementEntity = entity;
-        this.isHotkeyPlacementMode = true;
+        this.inputMode = GameSettings.INPUT_MODE_HOTKEY_PLACEMENT;
     }
 
     public void ClearHotKeyPlacementEntity()
     {
         this.hotkeyPlacementEntity = null;
-        this.isHotkeyPlacementMode = false;
+        this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
     }
 
     // IMPL METHODS
@@ -140,7 +143,7 @@ public class PlayerInputManager : MonoBehaviour
         if (Input.GetKeyDown(GameSettings.MENU_KEY))
         {
             this.MenuGO.SetActive(!this.MenuGO.activeSelf);
-            PlaySceneManager.instance.inputMode = this.MenuGO.activeSelf ? GameSettings.INPUT_MODE_MENU : GameSettings.INPUT_MODE_INIT;
+            this.inputMode = this.MenuGO.activeSelf ? GameSettings.INPUT_MODE_MENU : GameSettings.INPUT_MODE_DEFAULT;
         }
     }
 
@@ -296,7 +299,7 @@ public class PlayerInputManager : MonoBehaviour
         // mouse move
         else
         {
-            if (this.isHotkeyPlacementMode)
+            if (this.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT)
             {
                 Debug.Log("handling isHotkeyPlacementMode");
             }

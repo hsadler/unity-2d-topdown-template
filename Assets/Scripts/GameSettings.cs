@@ -20,8 +20,9 @@ public class GameSettings
 
 
     // input modes
-    public const int INPUT_MODE_INIT = 1;
-    public const int INPUT_MODE_MENU = 2;
+    public const int INPUT_MODE_DEFAULT = 1;
+    public const int INPUT_MODE_HOTKEY_PLACEMENT = 2;
+    public const int INPUT_MODE_MENU = 3;
 
 
     // player input mappings

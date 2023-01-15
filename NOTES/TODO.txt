@@ -47,6 +47,10 @@ REFACTORS:
 - make inventory items the ability to be assigned to any keyboard hotkey
 
 
+BUGS:
+- box selection drag deletes entities if end of drag button-up is over inventory UI
+
+
 THINGS TO CONSIDER:
 - hot key for entity placement will introduce drag without click press
 
