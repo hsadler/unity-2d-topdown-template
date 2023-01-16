@@ -52,7 +52,10 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
 
     void Update()
     {
-        this.CheckInputForInventoryHotkey();
+        if (Input.GetKeyDown(this.itemKeyCode))
+        {
+            this.HandleInventoryHotkey();
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -76,21 +79,18 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         }
     }
 
-    private void CheckInputForInventoryHotkey()
+    private void HandleInventoryHotkey()
     {
-        if (Input.GetKeyDown(this.itemKeyCode))
+        if (this.pim.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT)
         {
-            if (this.pim.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT)
-            {
-                this.pim.ClearHotKeyPlacementEntity();
-            }
-            else
-            {
-                Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                pos.z = 0;
-                GameObject spawned = this.CreateInventoryEntity(pos);
-                this.pim.SetHotKeyPlacementEntity(spawned);
-            }
+            this.pim.ClearHotKeyPlacementEntity();
+        }
+        else
+        {
+            Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            pos.z = 0;
+            GameObject spawned = this.CreateInventoryEntity(pos);
+            this.pim.SetHotKeyPlacementEntity(spawned);
         }
     }
 

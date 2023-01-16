@@ -126,6 +126,7 @@ public class PlayerInputManager : MonoBehaviour
 
     public void SetHotKeyPlacementEntity(GameObject entity)
     {
+        this.InitEntitySelect();
         this.hotkeyPlacementEntity = entity;
         this.inputMode = GameSettings.INPUT_MODE_HOTKEY_PLACEMENT;
     }
@@ -247,6 +248,10 @@ public class PlayerInputManager : MonoBehaviour
             {
                 // noop
             }
+            else if (this.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT)
+            {
+                this.HandleHotkeyEntityPlacement();
+            }
             else
             {
                 // entity click
@@ -301,9 +306,19 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (this.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT)
             {
-                Debug.Log("handling isHotkeyPlacementMode");
+                this.HandleHotkeyEntityDrag();
             }
         }
+    }
+
+    private void HandleHotkeyEntityDrag()
+    {
+        Debug.Log("HandleHotkeyEntityDrag()...");
+    }
+
+    private void HandleHotkeyEntityPlacement()
+    {
+        Debug.Log("HandleHotkeyEntityPlacement()...");
     }
 
     private void HandleEntityClicked()
