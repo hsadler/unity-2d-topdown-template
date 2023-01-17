@@ -35,9 +35,6 @@ public class PlayerInputManager : MonoBehaviour
     private List<GameObject> currentEntitiesSelected = new List<GameObject>();
     private IDictionary<int, Vector3> entityIdToMouseOffset;
 
-    // entity hotkey placement mode
-    private GameObject hotkeyPlacementEntity;
-
     // inventory canvas
     public GameObject inventoryCanvas;
 
@@ -63,11 +60,13 @@ public class PlayerInputManager : MonoBehaviour
         // camera
         if (this.inputMode != GameSettings.INPUT_MODE_MENU)
         {
+            // camera interaction
             this.HandleCameraMovement();
             this.HandleCameraZoom();
+            // entity interaction
             this.HandleEntityDeleteByKeyDown();
-            this.HandleMouseEntityInteraction();
             this.HandleEntityRotation();
+            this.HandleMouseEntityInteraction();
         }
     }
 
@@ -127,13 +126,14 @@ public class PlayerInputManager : MonoBehaviour
     public void SetHotKeyPlacementEntity(GameObject entity)
     {
         this.InitEntitySelect();
-        this.hotkeyPlacementEntity = entity;
+        this.currentEntitiesSelected = new List<GameObject>() { entity };
         this.inputMode = GameSettings.INPUT_MODE_HOTKEY_PLACEMENT;
     }
 
     public void ClearHotKeyPlacementEntity()
     {
-        this.hotkeyPlacementEntity = null;
+        this.DeleteSelectedEntities();
+        this.InitEntitySelect();
         this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
     }
 
@@ -306,19 +306,9 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (this.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT)
             {
-                this.HandleHotkeyEntityDrag();
+                this.HandleEntityDrag();
             }
         }
-    }
-
-    private void HandleHotkeyEntityDrag()
-    {
-        Debug.Log("HandleHotkeyEntityDrag()...");
-    }
-
-    private void HandleHotkeyEntityPlacement()
-    {
-        Debug.Log("HandleHotkeyEntityPlacement()...");
     }
 
     private void HandleEntityClicked()
@@ -500,6 +490,13 @@ public class PlayerInputManager : MonoBehaviour
         {
             this.DeleteSelectedEntities();
         }
+    }
+
+    private void HandleHotkeyEntityPlacement()
+    {
+        // TODO
+        Debug.Log("HandleHotkeyEntityPlacement()...");
+        this.HandleEntityDrop();
     }
 
     private bool MouseIsUIHovered()

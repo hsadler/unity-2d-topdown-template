@@ -14,6 +14,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     public List<GameObject> itemPrefabs;
 
     public GameObject hotkeyNumberDisplay;
+    private bool isHotkeyActive = false;
 
     private IDictionary<int, KeyCode> intToKeyCode = new Dictionary<int, KeyCode>() {
         {1, KeyCode.Alpha1},
@@ -81,17 +82,19 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
 
     private void HandleInventoryHotkey()
     {
-        if (this.pim.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT)
+        if (this.pim.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT && this.isHotkeyActive)
         {
             this.pim.ClearHotKeyPlacementEntity();
+            this.isHotkeyActive = false;
+            return;
         }
-        else
-        {
-            Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            pos.z = 0;
-            GameObject spawned = this.CreateInventoryEntity(pos);
-            this.pim.SetHotKeyPlacementEntity(spawned);
-        }
+        this.pim.InitEntitySelect();
+        Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        pos.z = 0;
+        GameObject spawned = this.CreateInventoryEntity(pos);
+        this.pim.SelectSingleEntity(spawned);
+        this.pim.inputMode = GameSettings.INPUT_MODE_HOTKEY_PLACEMENT;
+        this.isHotkeyActive = true;
     }
 
     private GameObject CreateInventoryEntity(Vector3 pos, bool isNewlyCreated = true, bool isSelected = true)
