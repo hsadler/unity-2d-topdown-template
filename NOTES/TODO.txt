@@ -43,6 +43,7 @@ X pending delete selection indicator color
 
 
 REFACTORS:
+- create an entityInventoryManager to ref prefabs
 - move selected entity data management to GameEntityManager
 - make inventory items the ability to be assigned to any keyboard hotkey
 

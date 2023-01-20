@@ -248,11 +248,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 // noop
             }
-            else if (this.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT)
-            {
-                this.HandleHotkeyEntityPlacement();
-            }
-            else
+            else if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
             {
                 // entity click
                 if (this.hoveredEntity != null)
@@ -265,19 +261,26 @@ public class PlayerInputManager : MonoBehaviour
                     this.HandleStartSelectionBox();
                 }
             }
+            else if (this.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT)
+            {
+                this.HandleHotkeyEntityPlacement();
+            }
         }
         // button held
         else if (Input.GetMouseButton(0))
         {
-            // update the position and shape of the selection-box
-            if (this.selectionBoxGO.activeSelf)
+            if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
             {
-                this.HandleSelectionBoxSizing();
-            }
-            // drag selected entities
-            else
-            {
-                this.HandleEntityDrag();
+                // update the position and shape of the selection-box
+                if (this.selectionBoxGO.activeSelf)
+                {
+                    this.HandleSelectionBoxSizing();
+                }
+                // drag selected entities
+                else
+                {
+                    this.HandleEntityDrag();
+                }
             }
         }
         // button up
@@ -287,7 +290,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 // noop
             }
-            else
+            else if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
             {
                 // box selection
                 if (this.selectionBoxGO.activeSelf)
@@ -494,9 +497,16 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleHotkeyEntityPlacement()
     {
-        // TODO
-        Debug.Log("HandleHotkeyEntityPlacement()...");
+        // TODO: solve bugs
         this.HandleEntityDrop();
+        List<GameObject> newSeletedEntitiesCopy = new List<GameObject>();
+        foreach (var e in this.currentEntitiesSelected)
+        {
+            GameObject copyEntity = Instantiate(e, e.transform.position, e.transform.rotation);
+            newSeletedEntitiesCopy.Add(copyEntity);
+        }
+        this.TrySelectEntities(newSeletedEntitiesCopy);
+        // this.InitEntitySelect();
     }
 
     private bool MouseIsUIHovered()
