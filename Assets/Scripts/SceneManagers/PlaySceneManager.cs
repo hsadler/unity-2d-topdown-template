@@ -13,6 +13,7 @@ public class PlaySceneManager : MonoBehaviour
     public ProceduralEnvironmentManager proceduralEnvironmentManager;
     public GameEntityManager gameEntityManager;
     public PlayerInputManager playerInputManager;
+    public PlayerInventoryManager playerInventoryManager;
 
     // the static reference to the singleton instance
     public static PlaySceneManager instance;

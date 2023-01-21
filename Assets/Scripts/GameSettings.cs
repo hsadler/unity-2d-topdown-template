@@ -35,6 +35,12 @@ public class GameSettings
     public const KeyCode ADDITIVE_SELECTION_KEY = KeyCode.LeftShift;
 
 
+    // inventory item names
+    public const string INVENTORY_ITEM_ENTITY_1 = "Entity1";
+    public const string INVENTORY_ITEM_ENTITY_2 = "Entity2";
+    public const string INVENTORY_ITEM_ENTITY_3 = "Entity3";
+
+
     // renderer sorting layers
     public const string SORTING_LAYER_DEFAULT = "Default";
     public const string SORTING_LAYER_ENTITY_SELECTED = "EntitySelected";
