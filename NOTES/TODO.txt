@@ -42,14 +42,17 @@ X pending delete selection indicator color
 - undo/redo system, buttons, and hotkeys
 
 
+BUGS:
+- generally buggy inventory-hotkey mode
+- box selection mb-up deletes entities if entity is already selected and end of drag button-up is over inventory UI
+- entering menu mode does not deselect entities
+- additive selection does not work properly when adding with entity click
+
+
 REFACTORS:
-- create an entityInventoryManager to ref prefabs
+X create an entityInventoryManager to ref prefabs
 - move selected entity data management to GameEntityManager
 - make inventory items the ability to be assigned to any keyboard hotkey
-
-
-BUGS:
-- box selection drag deletes entities if end of drag button-up is over inventory UI
 
 
 THINGS TO CONSIDER:

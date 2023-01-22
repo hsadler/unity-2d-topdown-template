@@ -127,7 +127,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         this.InitEntitySelect();
         this.currentEntitiesSelected = new List<GameObject>() { entity };
-        this.inputMode = GameSettings.INPUT_MODE_HOTKEY_PLACEMENT;
+        this.inputMode = GameSettings.INPUT_MODE_INVENTORY_HOTKEY;
     }
 
     public void ClearHotKeyPlacementEntity()
@@ -261,7 +261,7 @@ public class PlayerInputManager : MonoBehaviour
                     this.HandleStartSelectionBox();
                 }
             }
-            else if (this.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT)
+            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
             {
                 this.HandleHotkeyEntityPlacement();
             }
@@ -307,7 +307,7 @@ public class PlayerInputManager : MonoBehaviour
         // mouse move
         else
         {
-            if (this.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT)
+            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
             {
                 this.HandleEntityDrag();
             }

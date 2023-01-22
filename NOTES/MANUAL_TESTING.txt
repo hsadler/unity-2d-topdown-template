@@ -1,0 +1,62 @@
+
+
+TEST BEHAVIOR MANUALLY:
+
+// camera
+- move camera by rmb-click
+- move camera by mouse-pointer at edge of viewport
+- zoom camera with mouse-wheel
+
+// entity select
+- single entity select with lmb-click 
+- single entity select with select-box
+- multi entity select with select-box
+- additive select with shift+lmb-click
+- additive select with shift+select-box
+- selection of entities results in display of selection indicator
+
+// entity dnd
+- single entity dnd
+- multi entity dnd
+- entity drag action results in display of drag indicator
+- entity dnd over existing entities results in roll-back
+- entity drag over existing entities results in display of illegal move indicator
+
+// entity rotate
+- single entity rotate with selection and Q or E keys
+- multi entity rotate with selection and Q or E keys
+
+// entity delete
+- single entity delete by dnd over delete UI
+- multi entity delete by dnd over delete UI
+- single entity delete by dnd over inventory UI
+- multi entity delete by dnd over inventory UI
+- selected entities can be deleted with Backspace hotkey
+- entity item hover over UI delete zones results in display of delete indicator
+
+// inventory
+- single entity creation with dnd from inventory-item UI
+- inventory-item click results in create and delete of entity
+- inventory-item dnd over existing entity results in delete of created entity
+- inventory-item drag over existing entity results in display of illegal placement indicator
+
+// inventory hotkey
+- hotkey press results in inventory-hotkey placement mode
+- inventory-hotkey mode is toggleable with second press of the same hotkey
+- inventory-hotkey mode switch to different inventory item if second press is a different hotkey
+- lmb-click results in entity placement
+- multiple placements are possible as long as inventory-hotkey mode is active
+- camera movement and zoom are possible while in inventory-hotkey mode
+- selection is not possible in inventory-hotkey mode
+- placement while over existing entity results in a noop
+- mouse over existing entity, while in inventory-hotkey mode, results in display of illegal placement indicator
+
+// menu modal
+- esc toggles menu
+- menu button press "restart" reloads initalized game
+- menu button press "quit" quits game
+
+// mode switches
+- entering inventory-hotkey mode deselects all entities
+- entering menu-mode deselects all entities and cancels other modes
+- exiting menu-mode enters default-mode

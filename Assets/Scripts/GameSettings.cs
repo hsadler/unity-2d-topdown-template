@@ -21,7 +21,7 @@ public class GameSettings
 
     // input modes
     public const int INPUT_MODE_DEFAULT = 1;
-    public const int INPUT_MODE_HOTKEY_PLACEMENT = 2;
+    public const int INPUT_MODE_INVENTORY_HOTKEY = 2;
     public const int INPUT_MODE_MENU = 3;
 
 

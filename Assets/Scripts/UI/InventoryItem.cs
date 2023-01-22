@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
-[ExecuteAlways]
 public class InventoryItem : MonoBehaviour, IPointerDownHandler
 {
 
@@ -76,7 +75,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
 
     private void HandleInventoryHotkey()
     {
-        if (this.pim.inputMode == GameSettings.INPUT_MODE_HOTKEY_PLACEMENT && this.isHotkeyActive)
+        if (this.pim.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY && this.isHotkeyActive)
         {
             this.pim.ClearHotKeyPlacementEntity();
             this.isHotkeyActive = false;
@@ -89,7 +88,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         if (spawned != null)
         {
             this.pim.SelectSingleEntity(spawned);
-            this.pim.inputMode = GameSettings.INPUT_MODE_HOTKEY_PLACEMENT;
+            this.pim.inputMode = GameSettings.INPUT_MODE_INVENTORY_HOTKEY;
             this.isHotkeyActive = true;
         }
     }
