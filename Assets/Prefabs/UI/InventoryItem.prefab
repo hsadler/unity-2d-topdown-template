@@ -169,16 +169,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f597f8fc3f42f644b43a7c29e62aa85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeInventoryItem: 0
-  inventoryItems:
-  - {fileID: 7692405296505204049}
-  - {fileID: 5195551029631365884}
-  - {fileID: 711044346392358573}
-  itemPrefabs:
-  - {fileID: 1609427600843478509, guid: 289080287c3e3f946a255ba0852f6397, type: 3}
-  - {fileID: 3961495332834830440, guid: 17808147c89942a4f968627b544ab029, type: 3}
-  - {fileID: 2403585086607018275, guid: d623a297fcd37914f9a9007310a7d722, type: 3}
-  hotkeyNumberDisplay: {fileID: 2894330712128494788}
+  keyCode: 0
+  entityName: 
+  hotkeyDisplay: {fileID: 2894330712128494788}
 --- !u!1 &2894330712128494788
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,7 +184,7 @@ GameObject:
   - component: {fileID: 8976179805760123539}
   - component: {fileID: 5533276722846399814}
   m_Layer: 5
-  m_Name: HotkeyNumberDisplay
+  m_Name: HotkeyDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

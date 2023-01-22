@@ -10,7 +10,6 @@ public class PlayerInventoryManager : MonoBehaviour
 
 
     public List<GameObject> prefabs;
-    // public IDictionary<string, GameObject> nameToPrefab = new Dictionary<string, GameObject>();
 
 
     // UNITY HOOKS

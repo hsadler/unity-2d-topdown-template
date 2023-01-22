@@ -8,27 +8,21 @@ using TMPro;
 public class InventoryItem : MonoBehaviour, IPointerDownHandler
 {
 
+    public KeyCode keyCode;
+    public string entityName;
 
-    public int activeInventoryItem;
-    public List<GameObject> inventoryItems;
-    public List<GameObject> itemPrefabs;
-
-    public GameObject hotkeyNumberDisplay;
+    private GameObject prefab;
     private bool isHotkeyActive = false;
 
-    private IDictionary<int, KeyCode> intToKeyCode = new Dictionary<int, KeyCode>() {
-        {1, KeyCode.Alpha1},
-        {2, KeyCode.Alpha2},
-        {3, KeyCode.Alpha3},
-        {4, KeyCode.Alpha4},
-        {5, KeyCode.Alpha5},
-        {6, KeyCode.Alpha6},
-        {7, KeyCode.Alpha7},
-        {8, KeyCode.Alpha8},
-        {9, KeyCode.Alpha9},
-        {0, KeyCode.Alpha0},
+    private IDictionary<string, string> keycodeToHumanReadable = new Dictionary<string, string>()
+    {
+        {KeyCode.Alpha1.ToString(), "1"},
+        {KeyCode.Alpha2.ToString(), "2"},
+        {KeyCode.Alpha3.ToString(), "3"},
     };
-    private KeyCode itemKeyCode;
+
+    // child references
+    public GameObject hotkeyDisplay;
 
     // manager refs
     private PlayerInputManager pim;
@@ -39,21 +33,21 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     void Start()
     {
         this.pim = PlaySceneManager.instance.playerInputManager;
-        if (this.activeInventoryItem > 0)
+        if (this.keyCode != KeyCode.None && this.entityName.Length > 0)
         {
-            this.inventoryItems[this.activeInventoryItem - 1].SetActive(true);
-            this.hotkeyNumberDisplay.GetComponent<TextMeshProUGUI>().text = this.activeInventoryItem.ToString();
-            this.itemKeyCode = this.intToKeyCode[this.activeInventoryItem];
+            this.prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(this.entityName);
+            this.hotkeyDisplay.GetComponent<TextMeshProUGUI>().text = this.keycodeToHumanReadable[this.keyCode.ToString()];
         }
         else
         {
-            this.hotkeyNumberDisplay.SetActive(false);
+            this.hotkeyDisplay.GetComponent<TextMeshProUGUI>().text = "";
         }
+
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(this.itemKeyCode))
+        if (this.keyCode != KeyCode.None && Input.GetKeyDown(this.keyCode))
         {
             this.HandleInventoryHotkey();
         }
@@ -71,11 +65,11 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     private void HandleInventoryItemClick()
     {
         this.pim.InitEntitySelect();
-        if (this.activeInventoryItem > 0)
+        Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        pos.z = 0;
+        GameObject spawned = this.CreateInventoryEntity(pos);
+        if (spawned != null)
         {
-            Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            pos.z = 0;
-            GameObject spawned = this.CreateInventoryEntity(pos);
             this.pim.SelectSingleEntity(spawned);
         }
     }
@@ -92,18 +86,24 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         pos.z = 0;
         GameObject spawned = this.CreateInventoryEntity(pos);
-        this.pim.SelectSingleEntity(spawned);
-        this.pim.inputMode = GameSettings.INPUT_MODE_HOTKEY_PLACEMENT;
-        this.isHotkeyActive = true;
+        if (spawned != null)
+        {
+            this.pim.SelectSingleEntity(spawned);
+            this.pim.inputMode = GameSettings.INPUT_MODE_HOTKEY_PLACEMENT;
+            this.isHotkeyActive = true;
+        }
     }
 
     private GameObject CreateInventoryEntity(Vector3 pos, bool isNewlyCreated = true, bool isSelected = true)
     {
-        GameObject prefab = this.itemPrefabs[this.activeInventoryItem - 1];
-        GameObject spawned = Instantiate(prefab, pos, Quaternion.identity);
-        spawned.GetComponent<GameEntity>().isNewlyCreated = isNewlyCreated;
-        spawned.GetComponent<Selectable>().SetSelected(isSelected);
-        return spawned;
+        if (this.prefab)
+        {
+            GameObject spawned = Instantiate(this.prefab, pos, Quaternion.identity);
+            spawned.GetComponent<GameEntity>().isNewlyCreated = isNewlyCreated;
+            spawned.GetComponent<Selectable>().SetSelected(isSelected);
+            return spawned;
+        }
+        return null;
     }
 
 

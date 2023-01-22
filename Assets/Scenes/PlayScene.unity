@@ -935,6 +935,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 1473334571}
     m_Modifications:
     - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCode
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: entityName
+      value: Entity2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: activeInventoryItem
       value: 2
       objectReference: {fileID: 0}
@@ -1674,6 +1682,14 @@ PrefabInstance:
     - target: {fileID: 711044346392358573, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCode
+      value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: entityName
+      value: Entity3
       objectReference: {fileID: 0}
     - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: activeInventoryItem
@@ -2841,6 +2857,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1473334571}
     m_Modifications:
+    - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCode
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: entityName
+      value: Entity1
+      objectReference: {fileID: 0}
     - target: {fileID: 1508954775317329562, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: activeInventoryItem
       value: 1
