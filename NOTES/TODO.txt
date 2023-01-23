@@ -43,10 +43,11 @@ X pending delete selection indicator color
 
 
 BUGS:
-- generally buggy inventory-hotkey mode
-- box selection mb-up deletes entities if entity is already selected and end of drag button-up is over inventory UI
-- entering menu mode does not deselect entities
+X box selection mb-up deletes entities if entity is already selected and end of drag button-up is over inventory UI
+X entering menu mode does not deselect entities
 - additive selection does not work properly when adding with entity click
+- entering menu mode while in inventory-hotkey mode should not cause entity placement
+- generally buggy inventory-hotkey mode
 
 
 REFACTORS:

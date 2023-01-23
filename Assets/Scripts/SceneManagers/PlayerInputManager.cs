@@ -27,7 +27,7 @@ public class PlayerInputManager : MonoBehaviour
     private Vector3 currentMousePositionWorld;
     private Vector3 initialMultiselectMousePosition;
     public GameObject selectionBoxPrefab;
-    private GameObject selectionBoxGO;
+    public GameObject selectionBoxGO;
     private bool mouseIsUIHovered;
 
     // entity selection
@@ -110,7 +110,7 @@ public class PlayerInputManager : MonoBehaviour
         this.InitEntitySelect();
     }
 
-    public bool CurrentSelectedEntitiesAreNewlyCreated()
+    public bool AreCurrentSelectedEntitiesNewlyCreated()
     {
         bool areNewlyCreated = true;
         foreach (GameObject e in this.currentEntitiesSelected)
@@ -137,14 +137,22 @@ public class PlayerInputManager : MonoBehaviour
         this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
     }
 
+    public void DoEntitySelectionWithSelectionBox()
+    {
+        this.HandleBoxSelection();
+    }
+
     // IMPL METHODS
 
     private void CheckMenuOpen()
     {
         if (Input.GetKeyDown(GameSettings.MENU_KEY))
         {
-            this.MenuGO.SetActive(!this.MenuGO.activeSelf);
-            this.inputMode = this.MenuGO.activeSelf ? GameSettings.INPUT_MODE_MENU : GameSettings.INPUT_MODE_DEFAULT;
+            // should enter menu mode, if on any other mode
+            bool isEnteringMenuMode = !(this.inputMode == GameSettings.INPUT_MODE_MENU);
+            this.MenuGO.SetActive(isEnteringMenuMode);
+            this.inputMode = isEnteringMenuMode ? GameSettings.INPUT_MODE_MENU : GameSettings.INPUT_MODE_DEFAULT;
+            this.InitEntitySelect();
         }
     }
 
@@ -442,7 +450,7 @@ public class PlayerInputManager : MonoBehaviour
         // otherwise, roll-back positions to pre-drag positions
         if (invalidDragDetected)
         {
-            if (this.CurrentSelectedEntitiesAreNewlyCreated())
+            if (this.AreCurrentSelectedEntitiesNewlyCreated())
             {
 
                 foreach (GameObject e in draggables)

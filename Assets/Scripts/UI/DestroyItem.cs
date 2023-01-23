@@ -6,9 +6,13 @@ using UnityEngine.EventSystems;
 public class DestroyItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 
+    // TODO: The checks on `playerInputManager.selectionBoxGO` are janky. Refactor.
 
-    private PlayerInputManager playerInputManager;
+
     private bool canDestroy = false;
+
+    // manager refs
+    private PlayerInputManager playerInputManager;
 
 
     // UNITY HOOKS
@@ -24,11 +28,18 @@ public class DestroyItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             if (Input.GetMouseButtonUp(0))
             {
-                this.playerInputManager.DeleteSelectedEntities();
+                if (this.playerInputManager.selectionBoxGO.activeSelf)
+                {
+                    this.playerInputManager.DoEntitySelectionWithSelectionBox();
+                }
+                else
+                {
+                    this.playerInputManager.DeleteSelectedEntities();
+                }
             }
             else if (Input.GetMouseButtonDown(0))
             {
-                if (!this.playerInputManager.CurrentSelectedEntitiesAreNewlyCreated())
+                if (!this.playerInputManager.AreCurrentSelectedEntitiesNewlyCreated())
                 {
                     this.playerInputManager.InitEntitySelect();
                 }
@@ -40,7 +51,7 @@ public class DestroyItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
         this.canDestroy = true;
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !this.playerInputManager.selectionBoxGO.activeSelf)
         {
             this.playerInputManager.DisplayImpendingDeleteForSelectedEntities(status: true);
         }
