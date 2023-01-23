@@ -24,14 +24,14 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     public GameObject hotkeyDisplay;
 
     // manager refs
-    private PlayerInputManager pim;
+    private PlayerInputManager playerInputManager;
 
 
     // UNITY HOOKS
 
     void Start()
     {
-        this.pim = PlaySceneManager.instance.playerInputManager;
+        this.playerInputManager = PlaySceneManager.instance.playerInputManager;
         if (this.keyCode != KeyCode.None && this.entityName.Length > 0)
         {
             this.prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(this.entityName);
@@ -46,10 +46,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
 
     void Update()
     {
-        if (this.keyCode != KeyCode.None && Input.GetKeyDown(this.keyCode))
-        {
-            this.HandleInventoryHotkey();
-        }
+        this.HandleInventoryHotkey();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -63,33 +60,36 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
 
     private void HandleInventoryItemClick()
     {
-        this.pim.InitEntitySelect();
+        this.playerInputManager.InitEntitySelect();
         Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         pos.z = 0;
         GameObject spawned = this.CreateInventoryEntity(pos);
         if (spawned != null)
         {
-            this.pim.SelectSingleEntity(spawned);
+            this.playerInputManager.SelectSingleEntity(spawned);
         }
     }
 
     private void HandleInventoryHotkey()
     {
-        if (this.pim.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY && this.isHotkeyActive)
+        if (this.keyCode != KeyCode.None && Input.GetKeyDown(this.keyCode))
         {
-            this.pim.ClearHotKeyPlacementEntity();
-            this.isHotkeyActive = false;
-            return;
-        }
-        this.pim.InitEntitySelect();
-        Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        pos.z = 0;
-        GameObject spawned = this.CreateInventoryEntity(pos);
-        if (spawned != null)
-        {
-            this.pim.SelectSingleEntity(spawned);
-            this.pim.inputMode = GameSettings.INPUT_MODE_INVENTORY_HOTKEY;
-            this.isHotkeyActive = true;
+            // toggle off condition
+            if (this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY && this.isHotkeyActive)
+            {
+                this.playerInputManager.ClearInventoryHotkeyEntity();
+                this.playerInputManager.inputMode = GameSettings.INPUT_MODE_DEFAULT;
+                this.isHotkeyActive = false;
+            }
+            // toggle on condition
+            else
+            {
+                this.playerInputManager.ClearInventoryHotkeyEntity();
+                this.playerInputManager.SetInventoryHotkeyPrefab(this.prefab);
+                this.playerInputManager.CreateInventoryHotkeyEntity();
+                this.playerInputManager.inputMode = GameSettings.INPUT_MODE_INVENTORY_HOTKEY;
+                this.isHotkeyActive = true;
+            }
         }
     }
 

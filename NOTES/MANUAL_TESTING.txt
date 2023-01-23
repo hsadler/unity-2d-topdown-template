@@ -43,8 +43,10 @@ TEST BEHAVIOR MANUALLY:
 // inventory hotkey
 X hotkey press results in inventory-hotkey placement mode
 X inventory-hotkey mode is toggleable with second press of the same hotkey
-- inventory-hotkey mode switch to different inventory item if second press is a different hotkey
+X inventory-hotkey mode switch to different inventory item if second press is a different hotkey
+X inventory-hotkey mode results in entity following the mouse cursor
 - lmb-click results in entity placement
+- placed enities are not selected and have a default appearance
 - multiple placements are possible as long as inventory-hotkey mode is active
 X camera movement and zoom are possible while in inventory-hotkey mode
 X selection is not possible in inventory-hotkey mode

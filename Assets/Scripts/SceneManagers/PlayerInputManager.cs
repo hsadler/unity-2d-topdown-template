@@ -35,6 +35,9 @@ public class PlayerInputManager : MonoBehaviour
     private List<GameObject> currentEntitiesSelected = new List<GameObject>();
     private IDictionary<int, Vector3> entityIdToMouseOffset;
 
+    // inventory hotkey
+    private GameObject inventoryHotkeyPrefab;
+
     // inventory canvas
     public GameObject inventoryCanvas;
 
@@ -123,18 +126,29 @@ public class PlayerInputManager : MonoBehaviour
         return areNewlyCreated;
     }
 
-    public void SetHotKeyPlacementEntity(GameObject entity)
+    public void SetInventoryHotkeyPrefab(GameObject entityPrefab)
     {
-        this.InitEntitySelect();
-        this.currentEntitiesSelected = new List<GameObject>() { entity };
-        this.inputMode = GameSettings.INPUT_MODE_INVENTORY_HOTKEY;
+        this.inventoryHotkeyPrefab = entityPrefab;
     }
 
-    public void ClearHotKeyPlacementEntity()
+    public void CreateInventoryHotkeyEntity()
     {
+        this.InitEntitySelect();
+        Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        pos.z = 0;
+        GameObject spawned = Instantiate(this.inventoryHotkeyPrefab, pos, Quaternion.identity);
+        if (spawned != null)
+        {
+            spawned.GetComponent<GameEntity>().isNewlyCreated = true;
+            this.SelectSingleEntity(spawned);
+        }
+    }
+
+    public void ClearInventoryHotkeyEntity()
+    {
+        this.inventoryHotkeyPrefab = null;
         this.DeleteSelectedEntities();
         this.InitEntitySelect();
-        this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
     }
 
     public void DoEntitySelectionWithSelectionBox()
