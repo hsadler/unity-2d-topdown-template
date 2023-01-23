@@ -261,7 +261,7 @@ public class PlayerInputManager : MonoBehaviour
                 // entity click
                 if (this.hoveredEntity != null)
                 {
-                    this.HandleEntityClicked();
+                    this.HandleEntityClicked(this.hoveredEntity);
                 }
                 // initialize the selection-box
                 else
@@ -322,11 +322,11 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    private void HandleEntityClicked()
+    private void HandleEntityClicked(GameObject clickedEntity)
     {
         this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
         // multi entity start drag
-        if (this.hoveredEntity != null && this.currentEntitiesSelected.Count > 0 && this.currentEntitiesSelected.Contains(this.hoveredEntity))
+        if (this.currentEntitiesSelected.Count > 0 && this.currentEntitiesSelected.Contains(clickedEntity))
         {
             // set selected entity initial offsets from mouse position to prepare for entity drag
             foreach (GameObject e in this.currentEntitiesSelected)
@@ -339,21 +339,25 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
         // single entity selection
-        else if (this.hoveredEntity != null)
+        else
         {
-            this.InitEntitySelect();
-            this.SelectSingleEntity(this.hoveredEntity);
+            if (Input.GetKey(GameSettings.ADDITIVE_SELECTION_KEY))
+            {
+                this.TrySelectEntities(new List<GameObject>() { clickedEntity });
+            }
+            else
+            {
+                this.InitEntitySelect();
+                this.SelectSingleEntity(clickedEntity);
+            }
         }
         // set pre-drag positions for currently selected entities
-        if (this.hoveredEntity != null)
+        foreach (GameObject e in this.currentEntitiesSelected)
         {
-            foreach (GameObject e in this.currentEntitiesSelected)
+            Draggable draggable = e.GetComponent<Draggable>();
+            if (draggable != null)
             {
-                Draggable draggable = e.GetComponent<Draggable>();
-                if (draggable != null)
-                {
-                    draggable.preDragPosition = draggable.transform.position;
-                }
+                draggable.preDragPosition = draggable.transform.position;
             }
         }
     }
