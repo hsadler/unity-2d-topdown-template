@@ -43,7 +43,7 @@ X pending delete selection indicator color
 
 
 BUGS:
-- generally buggy inventory-hotkey mode
+- inventory-hotkey mode can sometimes result in bugged illegal move detection
 - entering menu mode while in inventory-hotkey mode should not cause entity placement
 
 

@@ -41,17 +41,17 @@ TEST BEHAVIOR MANUALLY:
 - inventory-item drag over existing entity results in display of illegal placement indicator
 
 // inventory hotkey
-X hotkey press results in inventory-hotkey placement mode
-X inventory-hotkey mode is toggleable with second press of the same hotkey
-X inventory-hotkey mode switch to different inventory item if second press is a different hotkey
-X inventory-hotkey mode results in entity following the mouse cursor
+- hotkey press results in inventory-hotkey placement mode
+- inventory-hotkey mode is toggleable with second press of the same hotkey
+- inventory-hotkey mode switch to different inventory item if second press is a different hotkey
+- inventory-hotkey mode results in entity following the mouse cursor
 - lmb-click results in entity placement
 - placed enities are not selected and have a default appearance
 - multiple placements are possible as long as inventory-hotkey mode is active
-X camera movement and zoom are possible while in inventory-hotkey mode
-X selection is not possible in inventory-hotkey mode
-- placement while over existing entity results in a noop
-X mouse over existing entity, while in inventory-hotkey mode, results in display of illegal placement indicator
+- camera movement and zoom are possible while in inventory-hotkey mode
+- selection is not possible in inventory-hotkey mode
+- placement while over e-isting entity results in a noop
+- mouse over existing entity, while in inventory-hotkey mode, results in display of illegal placement indicator
 
 // menu modal
 - esc toggles menu

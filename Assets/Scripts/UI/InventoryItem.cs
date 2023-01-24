@@ -84,7 +84,10 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
             // toggle on condition
             else
             {
-                this.playerInputManager.ClearInventoryHotkeyEntity();
+                if (this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
+                {
+                    this.playerInputManager.ClearInventoryHotkeyEntity();
+                }
                 this.playerInputManager.SetInventoryHotkeyPrefab(this.prefab);
                 this.playerInputManager.CreateInventoryHotkeyEntity();
                 this.playerInputManager.inputMode = GameSettings.INPUT_MODE_INVENTORY_HOTKEY;

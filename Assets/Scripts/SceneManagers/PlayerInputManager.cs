@@ -523,16 +523,31 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleHotkeyEntityPlacement()
     {
-        // TODO: solve bugs
-        this.HandleEntityDrop();
-        List<GameObject> newSeletedEntitiesCopy = new List<GameObject>();
-        foreach (var e in this.currentEntitiesSelected)
+        // check if there are any invalid drop positions
+        bool invalidDragDetected = false;
+        foreach (GameObject e in this.currentEntitiesSelected)
         {
-            GameObject copyEntity = Instantiate(e, e.transform.position, e.transform.rotation);
-            newSeletedEntitiesCopy.Add(copyEntity);
+            if (!e.GetComponent<Draggable>().isDragValid)
+            {
+                invalidDragDetected = true;
+            }
         }
-        this.TrySelectEntities(newSeletedEntitiesCopy);
-        // this.InitEntitySelect();
+        if (invalidDragDetected)
+        {
+            // noop
+            return;
+        }
+        else
+        {
+            // commit placement, init, and create another entity
+            foreach (GameObject e in this.currentEntitiesSelected)
+            {
+                e.GetComponent<Draggable>().SetDragging(false);
+                e.GetComponent<GameEntity>().isNewlyCreated = false;
+            }
+            this.InitEntitySelect();
+            this.CreateInventoryHotkeyEntity();
+        }
     }
 
     private bool MouseIsUIHovered()
