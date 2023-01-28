@@ -32,6 +32,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     void Start()
     {
         this.playerInputManager = PlaySceneManager.instance.playerInputManager;
+        this.playerInputManager.inventoryItemScripts.Add(this);
         if (this.keyCode != KeyCode.None && this.entityName.Length > 0)
         {
             this.prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(this.entityName);
@@ -41,7 +42,6 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         {
             this.hotkeyDisplay.GetComponent<TextMeshProUGUI>().text = "";
         }
-
     }
 
     void Update()
@@ -72,24 +72,34 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
 
     private void HandleInventoryHotkey()
     {
+        // key match
         if (this.keyCode != KeyCode.None && Input.GetKeyDown(this.keyCode))
         {
-            // toggle off condition
+            // set all other inventory scripts hotkey-active as off
+            foreach (var inventoryItemScript in this.playerInputManager.inventoryItemScripts)
+            {
+                if (inventoryItemScript != this)
+                {
+                    inventoryItemScript.isHotkeyActive = false;
+                }
+            }
+            // same key press toggle off
             if (this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY && this.isHotkeyActive)
             {
                 this.playerInputManager.ClearInventoryHotkeyEntity();
                 this.playerInputManager.inputMode = GameSettings.INPUT_MODE_DEFAULT;
                 this.isHotkeyActive = false;
             }
-            // toggle on condition
             else
             {
+                // switch from one inventory hotkey to another
                 if (this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
                 {
                     this.playerInputManager.ClearInventoryHotkeyEntity();
                 }
+                // toggle on
                 this.playerInputManager.SetInventoryHotkeyPrefab(this.prefab);
-                this.playerInputManager.CreateInventoryHotkeyEntity();
+                this.playerInputManager.CreateInventoryHotkeyEntity(this.playerInputManager.inventoryHotkeyMemRotation);
                 this.playerInputManager.inputMode = GameSettings.INPUT_MODE_INVENTORY_HOTKEY;
                 this.isHotkeyActive = true;
             }

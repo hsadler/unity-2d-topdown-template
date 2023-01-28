@@ -38,7 +38,9 @@ X fix entity->inventory sorting layers to be upon "dragging" state
 X give entities a "drag" state, where they've not yet been moved and validation can be performed
 X drag and drop to inventory bar should cause a delete
 X pending delete selection indicator color
-- inventory hotkeys for quick inventory selection and placement
+X inventory hotkeys for quick inventory selection and placement
+X inventory-hotkey mode should memorize last placement rotation
+- inventory-hotkey mode should mass place on cursor while lmb is held
 - undo/redo system, buttons, and hotkeys
 
 

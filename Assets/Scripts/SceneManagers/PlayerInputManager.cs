@@ -36,7 +36,9 @@ public class PlayerInputManager : MonoBehaviour
     private IDictionary<int, Vector3> entityIdToMouseOffset;
 
     // inventory hotkey
+    public List<InventoryItem> inventoryItemScripts = new List<InventoryItem>();
     private GameObject inventoryHotkeyPrefab;
+    public Quaternion inventoryHotkeyMemRotation = Quaternion.identity;
 
     // inventory canvas
     public GameObject inventoryCanvas;
@@ -131,12 +133,12 @@ public class PlayerInputManager : MonoBehaviour
         this.inventoryHotkeyPrefab = entityPrefab;
     }
 
-    public void CreateInventoryHotkeyEntity()
+    public void CreateInventoryHotkeyEntity(Quaternion rotation)
     {
         this.InitEntitySelect();
         Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         pos.z = 0;
-        GameObject spawned = Instantiate(this.inventoryHotkeyPrefab, pos, Quaternion.identity);
+        GameObject spawned = Instantiate(this.inventoryHotkeyPrefab, pos, rotation);
         if (spawned != null)
         {
             spawned.GetComponent<GameEntity>().isNewlyCreated = true;
@@ -147,6 +149,7 @@ public class PlayerInputManager : MonoBehaviour
     public void ClearInventoryHotkeyEntity()
     {
         this.inventoryHotkeyPrefab = null;
+        this.inventoryHotkeyMemRotation = Quaternion.identity;
         this.DeleteSelectedEntities();
         this.InitEntitySelect();
     }
@@ -542,11 +545,12 @@ public class PlayerInputManager : MonoBehaviour
             // commit placement, init, and create another entity
             foreach (GameObject e in this.currentEntitiesSelected)
             {
+                this.inventoryHotkeyMemRotation = e.transform.rotation;
                 e.GetComponent<Draggable>().SetDragging(false);
                 e.GetComponent<GameEntity>().isNewlyCreated = false;
             }
             this.InitEntitySelect();
-            this.CreateInventoryHotkeyEntity();
+            this.CreateInventoryHotkeyEntity(this.inventoryHotkeyMemRotation);
         }
     }
 
