@@ -63,10 +63,19 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         this.playerInputManager.InitEntitySelect();
         Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         pos.z = 0;
-        GameObject spawned = this.CreateInventoryEntity(pos);
-        if (spawned != null)
+        if (this.prefab)
         {
-            this.playerInputManager.SelectSingleEntity(spawned);
+            GameObject spawned = Instantiate(this.prefab, pos, Quaternion.identity);
+            spawned.GetComponent<GameEntity>().isNewlyCreated = true;
+            spawned.GetComponent<Selectable>().SetSelected(true);
+            if (spawned != null)
+            {
+                this.playerInputManager.SelectSingleEntity(spawned);
+            }
+            else
+            {
+                Debug.LogWarning("Could not create inventory entity at position: " + pos.ToString());
+            }
         }
     }
 
@@ -104,18 +113,6 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
                 this.isHotkeyActive = true;
             }
         }
-    }
-
-    private GameObject CreateInventoryEntity(Vector3 pos, bool isNewlyCreated = true, bool isSelected = true)
-    {
-        if (this.prefab)
-        {
-            GameObject spawned = Instantiate(this.prefab, pos, Quaternion.identity);
-            spawned.GetComponent<GameEntity>().isNewlyCreated = isNewlyCreated;
-            spawned.GetComponent<Selectable>().SetSelected(isSelected);
-            return spawned;
-        }
-        return null;
     }
 
 

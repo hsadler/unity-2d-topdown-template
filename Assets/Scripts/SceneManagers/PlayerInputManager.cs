@@ -144,6 +144,10 @@ public class PlayerInputManager : MonoBehaviour
             spawned.GetComponent<GameEntity>().isNewlyCreated = true;
             this.SelectSingleEntity(spawned);
         }
+        else
+        {
+            Debug.LogWarning("Could not create inventory hotkey entity at position: " + pos.ToString());
+        }
     }
 
     public void ClearInventoryHotkeyEntity()
@@ -309,7 +313,7 @@ public class PlayerInputManager : MonoBehaviour
                 }
             }
             // continue dropping inventory-hotkey entities
-            else if (!this.mouseIsUIHovered && this.hoveredEntity == null && this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
+            else if (!this.mouseIsUIHovered && this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
             {
                 this.HandleHotkeyEntityPlacement();
             }
@@ -560,7 +564,6 @@ public class PlayerInputManager : MonoBehaviour
                 e.GetComponent<Draggable>().SetDragging(false);
                 e.GetComponent<GameEntity>().isNewlyCreated = false;
             }
-            this.InitEntitySelect();
             this.CreateInventoryHotkeyEntity(this.inventoryHotkeyMemRotation);
         }
     }
