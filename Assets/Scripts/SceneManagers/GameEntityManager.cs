@@ -14,6 +14,7 @@ public class GameEntityManager : MonoBehaviour
     private IDictionary<string, string> gameEntityIdToSerializedPosition = new Dictionary<string, string>();
 
 
+
     // UNITY HOOKS
 
     void Awake()
@@ -45,7 +46,7 @@ public class GameEntityManager : MonoBehaviour
 
     public bool AddGameEntityAtPosition(Vector3 position, GameObject gameEntity)
     {
-        // Debug.Log("Adding game entity " + gameEntity.name + " at position " + position.ToString());
+        Debug.Log("Adding game entity " + gameEntity.name + " at position " + position.ToString());
         if (!this.PositionIsOccupied(position))
         {
             string sPos = position.ToString();
@@ -58,7 +59,7 @@ public class GameEntityManager : MonoBehaviour
 
     public bool RemoveGameEntityAtPosition(Vector3 position, GameObject gameEntity)
     {
-        // Debug.Log("Removing game entity " + gameEntity.name + " at position " + position.ToString());
+        Debug.Log("Removing game entity " + gameEntity.name + " at position " + position.ToString());
         string currPos = this.GetSerializedGameEntityPosition(gameEntity);
         if (position.ToString() == currPos && this.PositionIsOccupied(position))
         {

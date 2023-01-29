@@ -472,7 +472,7 @@ public class PlayerInputManager : MonoBehaviour
         bool invalidDragDetected = false;
         foreach (GameObject e in draggables)
         {
-            if (!e.GetComponent<Draggable>().isDragValid)
+            if (!e.GetComponent<Draggable>().PositionIsValid())
             {
                 invalidDragDetected = true;
             }
@@ -541,7 +541,7 @@ public class PlayerInputManager : MonoBehaviour
         bool invalidDropDetected = false;
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            if (!e.GetComponent<Draggable>().isDragValid)
+            if (!e.GetComponent<Draggable>().PositionIsValid())
             {
                 invalidDropDetected = true;
             }

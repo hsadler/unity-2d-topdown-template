@@ -7,7 +7,6 @@ public class Draggable : MonoBehaviour
 
 
     private bool isDragging = false;
-    public bool isDragValid = true;
     public GameObject invalidDragIndicator;
 
     private const float IS_DRAGGING_ALPHA = 0.5f;
@@ -58,23 +57,26 @@ public class Draggable : MonoBehaviour
         this.isDragging = isDragging;
     }
 
+    public bool PositionIsValid()
+    {
+        // check if drag position is valid by checking if another game entity is occupying the same position
+        GameObject occupyingGameEntity = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(this.transform.position);
+        return occupyingGameEntity == null || occupyingGameEntity == this.gameObject;
+    }
+
     // IMPL METHODS
 
     private void CheckDragValidity()
     {
-        // check if drag position is valid by checking if another game entity is occupying the same position
-        GameObject occupyingGameEntity = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(this.transform.position);
         // position is already occupied
-        if (occupyingGameEntity != null && occupyingGameEntity != this.gameObject)
+        if (this.PositionIsValid())
         {
-            this.invalidDragIndicator.SetActive(true);
-            this.isDragValid = false;
+            this.invalidDragIndicator.SetActive(false);
         }
         // position is unoccupied
         else
         {
-            this.invalidDragIndicator.SetActive(false);
-            this.isDragValid = true;
+            this.invalidDragIndicator.SetActive(true);
         }
     }
 
