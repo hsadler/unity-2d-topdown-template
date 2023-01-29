@@ -10,8 +10,8 @@ public class GameEntityManager : MonoBehaviour
     // Game Entities cannot occupy the same discrete position.
 
 
-    public IDictionary<string, GameObject> positionToGameEntity;
-    public IDictionary<string, string> gameEntityIdToSerializedPosition = new Dictionary<string, string>();
+    private IDictionary<string, GameObject> positionToGameEntity;
+    private IDictionary<string, string> gameEntityIdToSerializedPosition = new Dictionary<string, string>();
 
 
     // UNITY HOOKS
@@ -55,23 +55,6 @@ public class GameEntityManager : MonoBehaviour
         }
         return false;
     }
-
-    // public bool UpdateGameEntityPosition(Vector3 newPosition, GameObject gameEntity)
-    // {
-    //     Debug.Log("Updating game entity " + gameEntity.name + " to position " + newPosition.ToString());
-    //     string currPos = this.GetSerializedGameEntityPosition(gameEntity);
-    //     if (currPos == null)
-    //     {
-    //         return false;
-    //     }
-    //     bool addStatus = this.AddGameEntityAtPosition(newPosition, gameEntity);
-    //     if (addStatus)
-    //     {
-    //         this.positionToGameEntity.Remove(currPos);
-    //         return true;
-    //     }
-    //     return false;
-    // }
 
     public bool RemoveGameEntityAtPosition(Vector3 position, GameObject gameEntity)
     {

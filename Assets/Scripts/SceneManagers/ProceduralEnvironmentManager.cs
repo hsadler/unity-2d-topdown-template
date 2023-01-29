@@ -6,6 +6,10 @@ public class ProceduralEnvironmentManager : MonoBehaviour
 {
 
 
+    // Manages procedural generation of game environment. Currently only runs
+    // during play scene bootstrapping.
+
+
     public GameObject gridLinePrefab;
 
 

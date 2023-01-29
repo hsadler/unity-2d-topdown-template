@@ -40,7 +40,7 @@ X drag and drop to inventory bar should cause a delete
 X pending delete selection indicator color
 X inventory hotkeys for quick inventory selection and placement
 X inventory-hotkey mode should memorize last placement rotation
-- inventory-hotkey mode should mass place on cursor while lmb is held
+X inventory-hotkey mode should mass place on cursor while lmb is held
 - undo/redo system, buttons, and hotkeys
 
 
@@ -50,7 +50,9 @@ BUGS:
 
 
 REFACTORS:
+- PlayerInputManager has too much responsibility. Break it up.
 - move selected entity data management to GameEntityManager
+- better separation of entity space occupation from selection and drag-drop
 
 
 THINGS TO CONSIDER:

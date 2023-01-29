@@ -1,0 +1,64 @@
+
+
+GAME SYSTEMS
+
+
+///// play scene manager /////
+
+PlaySceneManager
+// The main gameplay singleton manager. Holds references to sub-managers.
+
+
+///// sub managers /////
+
+ProceduralEnvironmentManager
+// Manages procedural generation of game environment. Currently only runs
+// during play scene bootstrapping.
+- instantiates play scene grid
+
+GameEntityManager
+// Manages Game Entity positions within the play area. Assumes that multiple 
+// Game Entities cannot occupy the same discrete position.
+- tracks entity placement occupation
+- provides interface for position query, add to position, and remove at position
+
+PlayerInputManager
+// Manages Player->Game interaction processing.
+- manages: 
+    - input mode
+    - menu modal display
+    - camera movement
+    - camera zoom
+    - multi-select box
+    - mouse position consideration
+    - mouse down, hold, up consideration
+    - keyboard input consideration
+    - entity interactions
+    - selected entities
+    - inventory-hotkey interaction and data management
+
+PlayerInventoryManager
+// Manages player inventory items.
+- inventory prefabs are registered within the play scene
+- inventory prefabs can be fetched at runtime by prefab name
+
+
+///// constants /////
+
+GameSettings
+// Holds all constant values for reference.
+
+
+///// game entities /////
+- interactable by player
+- adhere to discrete positioning
+- possible behaviors:
+    - draggable
+    - removable
+    - selectable
+    - turnable
+
+
+///// UI /////
+- inventory items
+- entity-destroy areas
