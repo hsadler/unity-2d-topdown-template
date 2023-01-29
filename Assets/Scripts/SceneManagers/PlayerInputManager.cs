@@ -286,6 +286,7 @@ public class PlayerInputManager : MonoBehaviour
                     this.HandleStartSelectionBox();
                 }
             }
+            // place inventory-hotkey entity
             else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
             {
                 this.HandleHotkeyEntityPlacement();
@@ -307,6 +308,11 @@ public class PlayerInputManager : MonoBehaviour
                     this.HandleEntityDrag();
                 }
             }
+            // continue dropping inventory-hotkey entities
+            else if (!this.mouseIsUIHovered && this.hoveredEntity == null && this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
+            {
+                this.HandleHotkeyEntityPlacement();
+            }
         }
         // button up
         else if (Input.GetMouseButtonUp(0))
@@ -327,6 +333,11 @@ public class PlayerInputManager : MonoBehaviour
                 {
                     this.HandleEntityDrop();
                 }
+            }
+            // drop final entity from inventory-hotkey drag
+            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
+            {
+                this.HandleHotkeyEntityPlacement();
             }
         }
         // mouse move
@@ -527,15 +538,15 @@ public class PlayerInputManager : MonoBehaviour
     private void HandleHotkeyEntityPlacement()
     {
         // check if there are any invalid drop positions
-        bool invalidDragDetected = false;
+        bool invalidDropDetected = false;
         foreach (GameObject e in this.currentEntitiesSelected)
         {
             if (!e.GetComponent<Draggable>().isDragValid)
             {
-                invalidDragDetected = true;
+                invalidDropDetected = true;
             }
         }
-        if (invalidDragDetected)
+        if (invalidDropDetected)
         {
             // noop
             return;
@@ -583,7 +594,6 @@ public class PlayerInputManager : MonoBehaviour
             var selectable = entity.GetComponent<Selectable>();
             if (selectable != null)
             {
-                // Debug.Log("Setting entity as selected: " + entity.name);
                 this.currentEntitiesSelected.Add(entity);
                 selectable.SetSelected(true);
                 Draggable draggable = selectable.gameObject.GetComponent<Draggable>();
