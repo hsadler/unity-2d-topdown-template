@@ -315,6 +315,7 @@ public class PlayerInputManager : MonoBehaviour
             // continue dropping inventory-hotkey entities
             else if (!this.mouseIsUIHovered && this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
             {
+                this.HandleEntityDrag();
                 this.HandleHotkeyEntityPlacement();
             }
         }
@@ -542,20 +543,15 @@ public class PlayerInputManager : MonoBehaviour
     private void HandleHotkeyEntityPlacement()
     {
         // check if there are any invalid drop positions
-        bool invalidDropDetected = false;
+        bool dropIsValid = true;
         foreach (GameObject e in this.currentEntitiesSelected)
         {
             if (!e.GetComponent<Draggable>().PositionIsValid())
             {
-                invalidDropDetected = true;
+                dropIsValid = false;
             }
         }
-        if (invalidDropDetected)
-        {
-            // noop
-            return;
-        }
-        else
+        if (dropIsValid)
         {
             // commit placement, init, and create another entity
             foreach (GameObject e in this.currentEntitiesSelected)
@@ -565,6 +561,10 @@ public class PlayerInputManager : MonoBehaviour
                 e.GetComponent<GameEntity>().isNewlyCreated = false;
             }
             this.CreateInventoryHotkeyEntity(this.inventoryHotkeyMemRotation);
+        }
+        else
+        {
+            // Debug.Log("inventory hotkey entity drop not valid");
         }
     }
 
