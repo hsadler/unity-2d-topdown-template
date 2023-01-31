@@ -367,7 +367,7 @@ public class PlayerInputManager : MonoBehaviour
                 int instanceId = e.GetInstanceID();
                 if (!this.entityIdToMouseOffset.ContainsKey(instanceId))
                 {
-                    this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - this.currentMousePositionWorld);
+                    this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - Functions.RoundVector(this.currentMousePositionWorld));
                 }
             }
         }
@@ -440,6 +440,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityDrag()
     {
+        Vector3 quantizedMousePos = Functions.RoundVector(this.currentMousePositionWorld);
         foreach (GameObject e in this.currentEntitiesSelected)
         {
             Draggable draggable = e.GetComponent<Draggable>();
@@ -447,8 +448,8 @@ public class PlayerInputManager : MonoBehaviour
             {
                 Vector3 offset = this.entityIdToMouseOffset[e.GetInstanceID()];
                 e.transform.position = new Vector3(
-                    this.currentMousePositionWorld.x + offset.x,
-                    this.currentMousePositionWorld.y + offset.y,
+                    quantizedMousePos.x + offset.x,
+                    quantizedMousePos.y + offset.y,
                     e.transform.position.z
                 );
                 if (GameSettings.ENTITY_POSITIONS_DISCRETE)

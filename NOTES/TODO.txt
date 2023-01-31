@@ -41,6 +41,10 @@ X pending delete selection indicator color
 X inventory hotkeys for quick inventory selection and placement
 X inventory-hotkey mode should memorize last placement rotation
 X inventory-hotkey mode should mass place on cursor while lmb is held
+X make entity->cursor follow respect the discrete form of the mouse position
+- make escape key function differently per context:
+    - deselect if entities are selected
+    - exit inventory-hotkey mode
 - undo/redo system, buttons, and hotkeys
 
 
@@ -49,14 +53,10 @@ BUGS:
 - entering menu mode while in inventory-hotkey mode should not cause entity placement
 
 
-REFACTORS:
+SYSTEM/CODE REFACTORS:
 - PlayerInputManager has too much responsibility. Break it up.
 - move selected entity data management to GameEntityManager
 - better separation of entity space occupation from selection and drag-drop
-
-
-THINGS TO CONSIDER:
-- hot key for entity placement will introduce drag without click press
 
 
 LATER:
