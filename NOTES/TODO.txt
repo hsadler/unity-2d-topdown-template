@@ -50,6 +50,7 @@ X make entity->cursor follow respect the discrete form of the mouse position
 
 BUGS:
 X inventory-hotkey mode can sometimes result in bugged illegal move detection
+- multiple placement bug when in inventory hotkey mode
 - entering menu mode while in inventory-hotkey mode should not cause entity placement
 
 
