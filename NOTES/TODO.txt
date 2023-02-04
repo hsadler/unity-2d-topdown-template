@@ -49,13 +49,13 @@ X make entity->cursor follow respect the discrete form of the mouse position
 
 
 BUGS:
-- inventory-hotkey mode can sometimes result in bugged illegal move detection
+X inventory-hotkey mode can sometimes result in bugged illegal move detection
 - entering menu mode while in inventory-hotkey mode should not cause entity placement
 
 
 SYSTEM/CODE REFACTORS:
 - PlayerInputManager has too much responsibility. Break it up.
-- move selected entity data management to GameEntityManager
+- (maybe) move selected entity data management to GameEntityManager
 - better separation of entity space occupation from selection and drag-drop
 
 

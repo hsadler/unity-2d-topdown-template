@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: -2762263267789251663}
   m_Layer: 0
   m_Name: Entity2
-  m_TagString: Untagged
+  m_TagString: GameEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,7 +181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58cda4a8ae2b5d46afb96f4766d6c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDragValid: 1
   invalidDragIndicator: {fileID: 6050672405609462478}
   preDragPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1285987304608708486
@@ -209,12 +208,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionIndicator: {fileID: 7425689898073933065}
-  selectedColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  pendingDeleteColor:
-    serializedVersion: 2
-    rgba: 0
 --- !u!114 &-2762263267789251663
 MonoBehaviour:
   m_ObjectHideFlags: 0

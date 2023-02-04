@@ -110,6 +110,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject e in this.currentEntitiesSelected)
         {
+            PlaySceneManager.instance.gameEntityManager.RemoveGameEntityAtPosition(e.transform.position, e);
             Destroy(e);
         }
         this.InitEntitySelect();
@@ -493,6 +494,7 @@ public class PlayerInputManager : MonoBehaviour
 
                 foreach (GameObject e in draggables)
                 {
+                    PlaySceneManager.instance.gameEntityManager.RemoveGameEntityAtPosition(e.transform.position, e);
                     Destroy(e);
                 }
                 this.InitEntitySelect();

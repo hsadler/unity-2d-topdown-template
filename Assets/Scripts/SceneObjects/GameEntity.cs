@@ -11,17 +11,13 @@ public class GameEntity : MonoBehaviour
 
     // UNITY HOOKS
 
-    void Start()
-    {
-        PlaySceneManager.instance.gameEntityManager.AddGameEntityAtPosition(this.transform.position, this.gameObject);
-    }
+    void Start() { }
 
     void Update() { }
 
     void OnDestroy()
     {
         // Debug.Log("game entity destroyed: " + this.gameObject.name);
-        PlaySceneManager.instance.gameEntityManager.RemoveGameEntityAtPosition(this.transform.position, this.gameObject);
     }
 
     // INTF METHODS

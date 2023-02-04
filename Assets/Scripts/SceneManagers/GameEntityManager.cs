@@ -23,7 +23,10 @@ public class GameEntityManager : MonoBehaviour
         this.gameEntityIdToSerializedPosition = new Dictionary<string, string>();
     }
 
-    void Start() { }
+    void Start()
+    {
+        this.RegisterInitialGameEntities();
+    }
 
     void Update() { }
 
@@ -46,36 +49,47 @@ public class GameEntityManager : MonoBehaviour
 
     public bool AddGameEntityAtPosition(Vector3 position, GameObject gameEntity)
     {
-        // Debug.Log("Adding game entity " + gameEntity.name + " at position " + position.ToString());
         if (!this.PositionIsOccupied(position))
         {
+            // Debug.Log("Adding game entity " + gameEntity.name + " at position " + position.ToString());
             string sPos = position.ToString();
             this.positionToGameEntity[sPos] = gameEntity;
             this.gameEntityIdToSerializedPosition[gameEntity.GetInstanceID().ToString()] = sPos;
             return true;
         }
+        // Debug.Log("Could NOT add game entity " + gameEntity.name + " at position " + position.ToString());
         return false;
     }
 
     public bool RemoveGameEntityAtPosition(Vector3 position, GameObject gameEntity)
     {
-        // Debug.Log("Removing game entity " + gameEntity.name + " at position " + position.ToString());
         string currPos = this.GetSerializedGameEntityPosition(gameEntity);
-        if (position.ToString() == currPos && this.PositionIsOccupied(position))
+        string sPos = position.ToString();
+        if (sPos == currPos && this.PositionIsOccupied(position))
         {
-            string sPos = position.ToString();
             GameObject gEntityAtPosition = this.positionToGameEntity[sPos];
             if (gEntityAtPosition == gameEntity)
             {
+                // Debug.Log("Removing game entity " + gameEntity.name + " at position " + position.ToString());
                 this.positionToGameEntity.Remove(sPos);
                 this.gameEntityIdToSerializedPosition.Remove(gameEntity.GetInstanceID().ToString());
                 return true;
             }
         }
+        // Debug.Log("Could NOT remove game entity " + gameEntity.name + " at position " + position.ToString());
         return false;
     }
 
     // IMPL METHODS
+
+    private void RegisterInitialGameEntities()
+    {
+        var gameEntities = GameObject.FindGameObjectsWithTag("GameEntity");
+        foreach (GameObject e in gameEntities)
+        {
+            this.AddGameEntityAtPosition(e.transform.position, e);
+        }
+    }
 
     private string GetSerializedGameEntityPosition(GameObject gameEntity)
     {
