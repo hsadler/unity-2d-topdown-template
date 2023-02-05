@@ -66,11 +66,11 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     private void HandleInventoryItemClick()
     {
         this.playerInputManager.InitEntitySelect();
-        Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        pos.z = 0;
+        Vector3 quantizedPosition = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        quantizedPosition.z = 0;
         if (this.prefab)
         {
-            GameObject spawned = Instantiate(this.prefab, pos, Quaternion.identity);
+            GameObject spawned = Instantiate(this.prefab, quantizedPosition, Quaternion.identity);
             spawned.GetComponent<GameEntity>().isNewlyCreated = true;
             spawned.GetComponent<Selectable>().SetSelected(true);
             if (spawned != null)
@@ -79,7 +79,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
             }
             else
             {
-                Debug.LogWarning("Could not create inventory entity at position: " + pos.ToString());
+                Debug.LogWarning("Could not create inventory entity at position: " + quantizedPosition.ToString());
             }
         }
     }

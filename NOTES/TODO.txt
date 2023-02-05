@@ -51,14 +51,14 @@ X make escape key function differently per context:
 
 BUGS:
 X inventory-hotkey mode can sometimes result in bugged illegal move detection
+X entering menu mode while in inventory-hotkey mode should not cause entity placement
 - multiple placement bug when in inventory hotkey mode
-- entering menu mode while in inventory-hotkey mode should not cause entity placement
 
 
 SYSTEM/CODE REFACTORS:
-- PlayerInputManager has too much responsibility. Break it up.
+X better separation of entity space occupation from selection and drag-drop
+- (maybe) PlayerInputManager has too much responsibility. Break it up.
 - (maybe) move selected entity data management to GameEntityManager
-- better separation of entity space occupation from selection and drag-drop
 
 
 LATER:

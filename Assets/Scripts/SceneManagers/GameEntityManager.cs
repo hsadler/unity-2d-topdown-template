@@ -13,7 +13,7 @@ public class GameEntityManager : MonoBehaviour
     private IDictionary<string, GameObject> positionToGameEntity;
     private IDictionary<string, string> gameEntityIdToSerializedPosition = new Dictionary<string, string>();
 
-    private bool useLogging = true;
+    private bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -50,6 +50,17 @@ public class GameEntityManager : MonoBehaviour
 
     public bool AddGameEntityAtPosition(Vector3 position, GameObject gameEntity)
     {
+        // do check for game entity already being in the place space
+        if (this.gameEntityIdToSerializedPosition.ContainsKey(gameEntity.GetInstanceID().ToString()))
+        {
+            Debug.LogWarning(
+                "Game entity: " + gameEntity.name +
+                " already exists in the gameplay space at position: " +
+                this.gameEntityIdToSerializedPosition[gameEntity.GetInstanceID().ToString()].ToString()
+            );
+            return false;
+        }
+        // check if requested position is occupied
         if (!this.PositionIsOccupied(position))
         {
             if (this.useLogging)
@@ -63,7 +74,7 @@ public class GameEntityManager : MonoBehaviour
         }
         if (this.useLogging)
         {
-            Debug.Log("Could NOT add game entity " + gameEntity.name + " at position " + position.ToString());
+            Debug.Log("Could NOT add game entity " + gameEntity.name + " at occupied position " + position.ToString());
         }
         return false;
     }

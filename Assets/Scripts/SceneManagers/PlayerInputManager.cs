@@ -137,9 +137,9 @@ public class PlayerInputManager : MonoBehaviour
     public void CreateInventoryHotkeyEntity(Quaternion rotation)
     {
         this.InitEntitySelect();
-        Vector3 pos = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        pos.z = 0;
-        GameObject spawned = Instantiate(this.inventoryHotkeyPrefab, pos, rotation);
+        Vector3 quantizedPosition = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        quantizedPosition.z = 0;
+        GameObject spawned = Instantiate(this.inventoryHotkeyPrefab, quantizedPosition, rotation);
         if (spawned != null)
         {
             spawned.GetComponent<GameEntity>().isNewlyCreated = true;
@@ -147,7 +147,7 @@ public class PlayerInputManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Could not create inventory hotkey entity at position: " + pos.ToString());
+            Debug.LogWarning("Could not create inventory hotkey entity at position: " + quantizedPosition.ToString());
         }
     }
 
@@ -460,11 +460,12 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityDrag()
     {
+        // get draggables from selected entities and move with respect to mouse position
         Vector3 quantizedMousePos = Functions.RoundVector(this.currentMousePositionWorld);
         foreach (GameObject e in this.currentEntitiesSelected)
         {
             Draggable draggable = e.GetComponent<Draggable>();
-            if (draggable != null)
+            if (draggable != null && this.entityIdToMouseOffset.ContainsKey(e.GetInstanceID()))
             {
                 Vector3 offset = this.entityIdToMouseOffset[e.GetInstanceID()];
                 e.transform.position = new Vector3(
