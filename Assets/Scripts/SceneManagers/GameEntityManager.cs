@@ -13,6 +13,7 @@ public class GameEntityManager : MonoBehaviour
     private IDictionary<string, GameObject> positionToGameEntity;
     private IDictionary<string, string> gameEntityIdToSerializedPosition = new Dictionary<string, string>();
 
+    private bool useLogging = true;
 
 
     // UNITY HOOKS
@@ -51,13 +52,19 @@ public class GameEntityManager : MonoBehaviour
     {
         if (!this.PositionIsOccupied(position))
         {
-            // Debug.Log("Adding game entity " + gameEntity.name + " at position " + position.ToString());
+            if (this.useLogging)
+            {
+                Debug.Log("Adding game entity " + gameEntity.name + " at position " + position.ToString());
+            }
             string sPos = position.ToString();
             this.positionToGameEntity[sPos] = gameEntity;
             this.gameEntityIdToSerializedPosition[gameEntity.GetInstanceID().ToString()] = sPos;
             return true;
         }
-        // Debug.Log("Could NOT add game entity " + gameEntity.name + " at position " + position.ToString());
+        if (this.useLogging)
+        {
+            Debug.Log("Could NOT add game entity " + gameEntity.name + " at position " + position.ToString());
+        }
         return false;
     }
 
@@ -70,13 +77,19 @@ public class GameEntityManager : MonoBehaviour
             GameObject gEntityAtPosition = this.positionToGameEntity[sPos];
             if (gEntityAtPosition == gameEntity)
             {
-                // Debug.Log("Removing game entity " + gameEntity.name + " at position " + position.ToString());
+                if (this.useLogging)
+                {
+                    Debug.Log("Removing game entity " + gameEntity.name + " at position " + position.ToString());
+                }
                 this.positionToGameEntity.Remove(sPos);
                 this.gameEntityIdToSerializedPosition.Remove(gameEntity.GetInstanceID().ToString());
                 return true;
             }
         }
-        // Debug.Log("Could NOT remove game entity " + gameEntity.name + " at position " + position.ToString());
+        if (this.useLogging)
+        {
+            Debug.Log("Could NOT remove game entity " + gameEntity.name + " at position " + position.ToString());
+        }
         return false;
     }
 

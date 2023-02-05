@@ -42,9 +42,10 @@ X inventory hotkeys for quick inventory selection and placement
 X inventory-hotkey mode should memorize last placement rotation
 X inventory-hotkey mode should mass place on cursor while lmb is held
 X make entity->cursor follow respect the discrete form of the mouse position
-- make escape key function differently per context:
-    - deselect if entities are selected
-    - exit inventory-hotkey mode
+X make escape key function differently per context:
+    X deselect if entities are selected
+    X exit inventory-hotkey mode
+- add telemetry ui for testing
 - undo/redo system, buttons, and hotkeys
 
 

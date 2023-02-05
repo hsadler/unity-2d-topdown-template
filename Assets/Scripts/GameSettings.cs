@@ -26,7 +26,7 @@ public class GameSettings
 
 
     // player input mappings
-    public const KeyCode MENU_KEY = KeyCode.Escape;
+    public const KeyCode ESC_KEY = KeyCode.Escape;
     public const KeyCode SMALL_ZOOM_KEY = KeyCode.LeftControl;
     public const KeyCode LARGE_ZOOM_KEY = KeyCode.LeftShift;
     public const KeyCode ROTATE_ENTITIES_LEFT_KEY = KeyCode.Q;

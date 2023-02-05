@@ -61,7 +61,7 @@ public class PlayerInputManager : MonoBehaviour
         // set state
         this.currentMousePositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         // player input
-        this.CheckMenuOpen();
+        this.CheckEscPress();
         // camera
         if (this.inputMode != GameSettings.INPUT_MODE_MENU)
         {
@@ -166,15 +166,34 @@ public class PlayerInputManager : MonoBehaviour
 
     // IMPL METHODS
 
-    private void CheckMenuOpen()
+    private void CheckEscPress()
     {
-        if (Input.GetKeyDown(GameSettings.MENU_KEY))
+        if (Input.GetKeyDown(GameSettings.ESC_KEY))
         {
+            // exit inventory hotkey mode
+            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
+            {
+                this.ClearInventoryHotkeyEntity();
+                this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
+                // manually deactivate all inventory item flags
+                foreach (GameObject inventoryItem in GameObject.FindGameObjectsWithTag("InventoryItem"))
+                {
+                    inventoryItem.GetComponent<InventoryItem>().DeactivateHotkey();
+                }
+            }
+            // deselect entities
+            else if (this.currentEntitiesSelected.Count > 0)
+            {
+                this.InitEntitySelect();
+            }
             // should enter menu mode, if on any other mode
-            bool isEnteringMenuMode = !(this.inputMode == GameSettings.INPUT_MODE_MENU);
-            this.MenuGO.SetActive(isEnteringMenuMode);
-            this.inputMode = isEnteringMenuMode ? GameSettings.INPUT_MODE_MENU : GameSettings.INPUT_MODE_DEFAULT;
-            this.InitEntitySelect();
+            else
+            {
+                bool isEnteringMenuMode = !(this.inputMode == GameSettings.INPUT_MODE_MENU);
+                this.MenuGO.SetActive(isEnteringMenuMode);
+                this.inputMode = isEnteringMenuMode ? GameSettings.INPUT_MODE_MENU : GameSettings.INPUT_MODE_DEFAULT;
+                this.InitEntitySelect();
+            }
         }
     }
 

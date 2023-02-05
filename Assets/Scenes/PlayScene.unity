@@ -580,6 +580,9 @@ MonoBehaviour:
   inputMode: 0
   MenuGO: {fileID: 1355896446}
   selectionBoxPrefab: {fileID: 6734921932508682108, guid: 00096cb28fe9f86478357a27e071e049, type: 3}
+  selectionBoxGO: {fileID: 0}
+  inventoryItemScripts: []
+  inventoryHotkeyMemRotation: {x: 0, y: 0, z: 0, w: 1}
   inventoryCanvas: {fileID: 1007808885}
 --- !u!1 &216651104
 GameObject:
@@ -2982,6 +2985,10 @@ PrefabInstance:
     - target: {fileID: 681451897450710500, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
       propertyPath: m_Name
       value: DestroyItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 681451897450710500, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 681451897450710501, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
       propertyPath: m_Pivot.x

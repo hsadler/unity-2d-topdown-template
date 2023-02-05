@@ -56,6 +56,11 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
 
     // INTF METHODS
 
+    public void DeactivateHotkey()
+    {
+        this.isHotkeyActive = false;
+    }
+
     // IMPL METHODS
 
     private void HandleInventoryItemClick()
