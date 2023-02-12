@@ -534,6 +534,7 @@ MonoBehaviour:
   gameEntityManager: {fileID: 1284380342}
   playerInputManager: {fileID: 165152557}
   playerInventoryManager: {fileID: 1566915147}
+  telemetryManager: {fileID: 1066267582}
 --- !u!1 &165152555
 GameObject:
   m_ObjectHideFlags: 0
@@ -1644,6 +1645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6113e0f5907f4b740b62b506d052b2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameEntityCount: 0
 --- !u!1 &1101283363
 GameObject:
   m_ObjectHideFlags: 0

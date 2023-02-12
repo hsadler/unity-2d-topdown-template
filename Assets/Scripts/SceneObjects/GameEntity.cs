@@ -11,12 +11,16 @@ public class GameEntity : MonoBehaviour
 
     // UNITY HOOKS
 
-    void Start() { }
+    void Start()
+    {
+        PlaySceneManager.instance.telemetryManager.gameEntityCount += 1;
+    }
 
     void Update() { }
 
     void OnDestroy()
     {
+        PlaySceneManager.instance.telemetryManager.gameEntityCount -= 1;
         // Debug.Log("game entity destroyed: " + this.gameObject.name);
     }
 

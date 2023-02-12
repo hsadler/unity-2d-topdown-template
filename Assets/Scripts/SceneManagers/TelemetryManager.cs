@@ -9,6 +9,8 @@ public class TelemetryManager : MonoBehaviour
     // Manages telemetry display for development purposes.
 
 
+    public int gameEntityCount = 0;
+
     private Rect guiSceneTelemetryRect = new Rect(10, 10, 800, 2000);
 
 
@@ -26,8 +28,9 @@ public class TelemetryManager : MonoBehaviour
         GUI.contentColor = Color.green;
         int fps = (int)(1.0f / Time.smoothDeltaTime);
         string displayText =
-            "FPS: " + fps.ToString();
-        // "\nmessage #2: hi there";
+            "FPS: " + fps.ToString() +
+            "\n" +
+            "Game Entity Count: " + this.gameEntityCount.ToString();
         GUI.Label(
             this.guiSceneTelemetryRect,
             displayText

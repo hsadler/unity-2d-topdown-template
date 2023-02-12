@@ -50,8 +50,6 @@ X make escape key function differently per context:
 
 
 BUGS:
-X inventory-hotkey mode can sometimes result in bugged illegal move detection
-X entering menu mode while in inventory-hotkey mode should not cause entity placement
 - multiple placement bug when in inventory hotkey mode
 
 
