@@ -14,9 +14,7 @@ public class PlaySceneManager : MonoBehaviour
     public GameEntityManager gameEntityManager;
     public PlayerInputManager playerInputManager;
     public PlayerInventoryManager playerInventoryManager;
-
-    // telemetry UI
-    private Rect guiSceneTelemetryRect = new Rect(10, 10, 800, 2000);
+    public TelemetryManager telemetryManager;
 
     // the static reference to the singleton instance
     public static PlaySceneManager instance;
@@ -42,20 +40,6 @@ public class PlaySceneManager : MonoBehaviour
     }
 
     void Update() { }
-
-    void OnGUI()
-    {
-        // show scene telemetry
-        GUI.contentColor = Color.green;
-        int fps = (int)(1.0f / Time.smoothDeltaTime);
-        string displayText =
-            "FPS: " + fps.ToString();
-        // "\nmessage #2: hi there";
-        GUI.Label(
-            this.guiSceneTelemetryRect,
-            displayText
-        );
-    }
 
     // INTF METHODS
 
