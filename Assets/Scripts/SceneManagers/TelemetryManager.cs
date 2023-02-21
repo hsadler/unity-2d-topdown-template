@@ -24,17 +24,20 @@ public class TelemetryManager : MonoBehaviour
 
     void OnGUI()
     {
-        // show scene telemetry
-        GUI.contentColor = Color.green;
-        int fps = (int)(1.0f / Time.smoothDeltaTime);
-        string displayText =
-            "FPS: " + fps.ToString() +
-            "\n" +
-            "Game Entity Count: " + this.gameEntityCount.ToString();
-        GUI.Label(
-            this.guiSceneTelemetryRect,
-            displayText
-        );
+        if (GameSettings.DISPLAY_TELEMETRY)
+        {
+            // show scene telemetry
+            GUI.contentColor = Color.green;
+            int fps = (int)(1.0f / Time.smoothDeltaTime);
+            string displayText =
+                "FPS: " + fps.ToString() +
+                "\n" +
+                "Game Entity Count: " + this.gameEntityCount.ToString();
+            GUI.Label(
+                this.guiSceneTelemetryRect,
+                displayText
+            );
+        }
     }
 
     // INTF METHODS

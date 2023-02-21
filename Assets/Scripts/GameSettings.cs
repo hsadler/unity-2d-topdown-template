@@ -41,4 +41,8 @@ public class GameSettings
     public const string SORTING_LAYER_ENTITY_DRAGGING = "EntityDragging";
 
 
+    // dev settings
+    public const bool DISPLAY_TELEMETRY = true;
+
+
 }

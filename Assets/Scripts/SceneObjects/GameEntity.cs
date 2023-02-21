@@ -21,7 +21,6 @@ public class GameEntity : MonoBehaviour
     void OnDestroy()
     {
         PlaySceneManager.instance.telemetryManager.gameEntityCount -= 1;
-        // Debug.Log("game entity destroyed: " + this.gameObject.name);
     }
 
     // INTF METHODS
