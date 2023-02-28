@@ -134,29 +134,26 @@ public class PlayerInputManager : MonoBehaviour
         this.inventoryHotkeyPrefab = entityPrefab;
     }
 
-    public void CreateInventoryHotkeyEntity(Quaternion rotation)
+    public GameObject CreateInventoryHotkeyEntity(Quaternion rotation)
     {
-        this.InitEntitySelect();
         Vector3 quantizedPosition = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         quantizedPosition.z = 0;
         GameObject spawned = Instantiate(this.inventoryHotkeyPrefab, quantizedPosition, rotation);
         if (spawned != null)
         {
             spawned.GetComponent<GameEntity>().isNewlyCreated = true;
-            this.SelectSingleEntity(spawned);
         }
         else
         {
             Debug.LogWarning("Could not create inventory hotkey entity at position: " + quantizedPosition.ToString());
         }
+        return spawned;
     }
 
     public void ClearInventoryHotkeyEntity()
     {
         this.inventoryHotkeyPrefab = null;
         this.inventoryHotkeyMemRotation = Quaternion.identity;
-        this.DeleteSelectedEntities();
-        this.InitEntitySelect();
     }
 
     public void DoEntitySelectionWithSelectionBox()
@@ -174,6 +171,8 @@ public class PlayerInputManager : MonoBehaviour
             if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
             {
                 this.ClearInventoryHotkeyEntity();
+                this.DeleteSelectedEntities();
+                this.InitEntitySelect();
                 this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
                 // manually deactivate all inventory item flags
                 foreach (GameObject inventoryItem in GameObject.FindGameObjectsWithTag("InventoryItem"))
@@ -583,7 +582,9 @@ public class PlayerInputManager : MonoBehaviour
                 e.GetComponent<Draggable>().SetDragging(false);
                 e.GetComponent<GameEntity>().isNewlyCreated = false;
             }
-            this.CreateInventoryHotkeyEntity(this.inventoryHotkeyMemRotation);
+            this.InitEntitySelect();
+            GameObject spawned = this.CreateInventoryHotkeyEntity(this.inventoryHotkeyMemRotation);
+            this.SelectSingleEntity(spawned);
         }
         else
         {

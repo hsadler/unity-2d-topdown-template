@@ -89,9 +89,12 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         // key match
         if (this.keyCode != KeyCode.None && Input.GetKeyDown(this.keyCode))
         {
-
-            // NEW
-            bool isToggleOff = this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY && this.isHotkeyActive;
+            bool isToggleCurrentSelectedOff = this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY && this.isHotkeyActive;
+            if (this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
+            {
+                this.playerInputManager.DeleteSelectedEntities();
+            }
+            this.playerInputManager.InitEntitySelect();
             this.playerInputManager.ClearInventoryHotkeyEntity();
             this.playerInputManager.inputMode = GameSettings.INPUT_MODE_DEFAULT;
             // set all inventory scripts hotkey-active as off
@@ -100,7 +103,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
                 inventoryItemScript.isHotkeyActive = false;
             }
             // action is toggle-off, so noop
-            if (isToggleOff)
+            if (isToggleCurrentSelectedOff)
             {
                 return;
             }
@@ -108,43 +111,11 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
             else
             {
                 this.playerInputManager.SetInventoryHotkeyPrefab(this.prefab);
-                this.playerInputManager.CreateInventoryHotkeyEntity(this.playerInputManager.inventoryHotkeyMemRotation);
+                GameObject spawned = this.playerInputManager.CreateInventoryHotkeyEntity(this.playerInputManager.inventoryHotkeyMemRotation);
+                this.playerInputManager.SelectSingleEntity(spawned);
                 this.playerInputManager.inputMode = GameSettings.INPUT_MODE_INVENTORY_HOTKEY;
                 this.isHotkeyActive = true;
             }
-
-
-            // OLD
-            // // set all other inventory scripts hotkey-active as off
-            // foreach (var inventoryItemScript in this.playerInputManager.inventoryItemScripts)
-            // {
-            //     if (inventoryItemScript != this)
-            //     {
-            //         inventoryItemScript.isHotkeyActive = false;
-            //     }
-            // }
-            // // same key press toggle off
-            // if (this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY && this.isHotkeyActive)
-            // {
-            //     this.playerInputManager.ClearInventoryHotkeyEntity();
-            //     this.playerInputManager.inputMode = GameSettings.INPUT_MODE_DEFAULT;
-            //     this.isHotkeyActive = false;
-            // }
-            // else
-            // {
-            //     // switch from one inventory hotkey to another
-            //     if (this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
-            //     {
-            //         this.playerInputManager.ClearInventoryHotkeyEntity();
-            //     }
-            //     // toggle on
-            //     this.playerInputManager.SetInventoryHotkeyPrefab(this.prefab);
-            //     this.playerInputManager.CreateInventoryHotkeyEntity(this.playerInputManager.inventoryHotkeyMemRotation);
-            //     this.playerInputManager.inputMode = GameSettings.INPUT_MODE_INVENTORY_HOTKEY;
-            //     this.isHotkeyActive = true;
-            // }
-
-
         }
     }
 
