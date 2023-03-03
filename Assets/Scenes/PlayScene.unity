@@ -1994,6 +1994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa57871108bea44eb02ca4a86ca3a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  occupiedIndicatorPrefab: {fileID: 2615306153260922885, guid: 9477a4299f63387418108bdfe6c8ac12, type: 3}
 --- !u!1 &1306958886
 GameObject:
   m_ObjectHideFlags: 0

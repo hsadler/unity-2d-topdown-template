@@ -564,6 +564,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleHotkeyEntityPlacement()
     {
+        // BUG: something is wrong with the validation here
         // check if there are any invalid drop positions
         bool dropIsValid = true;
         foreach (GameObject e in this.currentEntitiesSelected)

@@ -43,6 +43,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Debug
+    uniqueID: 4236820147
+    locked: 0
   - name: EntitySelected
     uniqueID: 3604453449
     locked: 0

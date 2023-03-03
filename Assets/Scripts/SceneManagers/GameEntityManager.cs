@@ -11,9 +11,13 @@ public class GameEntityManager : MonoBehaviour
 
 
     private IDictionary<string, GameObject> positionToGameEntity;
-    private IDictionary<string, string> gameEntityIdToSerializedPosition = new Dictionary<string, string>();
+    private IDictionary<string, string> gameEntityIdToSerializedPosition;
 
+    // debug
     private bool useLogging = false;
+    private bool useDebugIndicators = true;
+    public GameObject occupiedIndicatorPrefab;
+    private IDictionary<string, GameObject> positionToOccupiedIndicator;
 
 
     // UNITY HOOKS
@@ -22,6 +26,7 @@ public class GameEntityManager : MonoBehaviour
     {
         this.positionToGameEntity = new Dictionary<string, GameObject>();
         this.gameEntityIdToSerializedPosition = new Dictionary<string, string>();
+        this.positionToOccupiedIndicator = new Dictionary<string, GameObject>();
     }
 
     void Start()
@@ -70,6 +75,11 @@ public class GameEntityManager : MonoBehaviour
             string sPos = position.ToString();
             this.positionToGameEntity[sPos] = gameEntity;
             this.gameEntityIdToSerializedPosition[gameEntity.GetInstanceID().ToString()] = sPos;
+            if (this.useDebugIndicators)
+            {
+                GameObject occupiedIndicatior = Instantiate(this.occupiedIndicatorPrefab, position, Quaternion.identity);
+                this.positionToOccupiedIndicator[sPos] = occupiedIndicatior;
+            }
             return true;
         }
         if (this.useLogging)
@@ -94,6 +104,12 @@ public class GameEntityManager : MonoBehaviour
                 }
                 this.positionToGameEntity.Remove(sPos);
                 this.gameEntityIdToSerializedPosition.Remove(gameEntity.GetInstanceID().ToString());
+                if (this.useDebugIndicators)
+                {
+                    GameObject occupiedIndicator = this.positionToOccupiedIndicator[sPos];
+                    this.positionToOccupiedIndicator.Remove(sPos);
+                    Destroy(occupiedIndicator);
+                }
                 return true;
             }
         }

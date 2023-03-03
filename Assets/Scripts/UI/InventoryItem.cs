@@ -90,6 +90,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         if (this.keyCode != KeyCode.None && Input.GetKeyDown(this.keyCode))
         {
             bool isToggleCurrentSelectedOff = this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY && this.isHotkeyActive;
+            // already a selected hotkey condition
             if (this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
             {
                 this.playerInputManager.DeleteSelectedEntities();
