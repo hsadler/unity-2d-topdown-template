@@ -50,8 +50,8 @@ TEST BEHAVIOR MANUALLY:
 - multiple placements are possible as long as inventory-hotkey mode is active
 - camera movement and zoom are possible while in inventory-hotkey mode
 - selection is not possible in inventory-hotkey mode
-- placement while over e-isting entity results in a noop
 - mouse over existing entity, while in inventory-hotkey mode, results in display of illegal placement indicator
+- placement while over existing entity results in a noop
 
 // menu modal
 - esc toggles menu

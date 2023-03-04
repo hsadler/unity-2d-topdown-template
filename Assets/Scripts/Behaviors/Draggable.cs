@@ -61,10 +61,6 @@ public class Draggable : MonoBehaviour
         // check if drag position is valid by checking if another game entity is occupying the same position
         GameObject occupyingGameEntity = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(this.transform.position);
         bool positionIsValid = occupyingGameEntity == null || occupyingGameEntity == this.gameObject;
-
-        // string gameObjectId = occupyingGameEntity != null ? occupyingGameEntity.GetInstanceID().ToString() : "none";
-        // Debug.Log("checking if position is valid: " + positionIsValid.ToString() + " with occupying entity id: " + gameObjectId);
-
         return positionIsValid;
     }
 
