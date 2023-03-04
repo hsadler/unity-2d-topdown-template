@@ -211,8 +211,8 @@ public class PlayerInputManager : MonoBehaviour
         // detect mouse at edge of viewport
         else
         {
-            float cameraMovePaddingY = Screen.height - (Screen.height * 0.98f);
-            float cameraMovePaddingX = Screen.width - (Screen.width * 0.98f);
+            float cameraMovePaddingY = Screen.height - (Screen.height * 0.995f);
+            float cameraMovePaddingX = Screen.width - (Screen.width * 0.995f);
             Vector3 cameraMoveDirection = Vector3.zero;
             if (Input.mousePosition.y > Screen.height - cameraMovePaddingY)
             {

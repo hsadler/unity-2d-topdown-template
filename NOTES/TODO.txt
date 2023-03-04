@@ -45,12 +45,13 @@ X make entity->cursor follow respect the discrete form of the mouse position
 X make escape key function differently per context:
     X deselect if entities are selected
     X exit inventory-hotkey mode
-- add telemetry ui for testing
+X add telemetry ui for testing
+X make screen edge camera move more forgiving
 - undo/redo system, buttons, and hotkeys
 
 
 BUGS:
-- multiple placement bug when in inventory hotkey mode
+X multiple placement bug when in inventory hotkey mode
 
 
 SYSTEM/CODE REFACTORS:
