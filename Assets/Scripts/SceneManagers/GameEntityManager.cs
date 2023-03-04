@@ -77,7 +77,7 @@ public class GameEntityManager : MonoBehaviour
             this.gameEntityIdToSerializedPosition[gameEntity.GetInstanceID().ToString()] = sPos;
             if (this.useDebugIndicators)
             {
-                GameObject occupiedIndicatior = Instantiate(this.occupiedIndicatorPrefab, position, Quaternion.identity);
+                GameObject occupiedIndicatior = Instantiate(this.occupiedIndicatorPrefab, position + new Vector3(0, 0.5f, 0), Quaternion.identity);
                 this.positionToOccupiedIndicator[sPos] = occupiedIndicatior;
             }
             return true;

@@ -6,7 +6,7 @@ public class Draggable : MonoBehaviour
 {
 
 
-    private bool isDragging = false;
+    public bool isDragging = false;
     public GameObject invalidDragIndicator;
 
     private const float IS_DRAGGING_ALPHA = 0.5f;
@@ -40,12 +40,11 @@ public class Draggable : MonoBehaviour
             // has started dragging
             if (isDragging)
             {
-                PlaySceneManager.instance.gameEntityManager.RemoveGameEntityAtPosition(this.transform.position, this.gameObject);
+                // noop
             }
             // has been dropped
             else
             {
-                PlaySceneManager.instance.gameEntityManager.AddGameEntityAtPosition(this.transform.position, this.gameObject);
                 this.CheckDragValidity();
             }
             // sorting layer for renderers
@@ -63,8 +62,8 @@ public class Draggable : MonoBehaviour
         GameObject occupyingGameEntity = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(this.transform.position);
         bool positionIsValid = occupyingGameEntity == null || occupyingGameEntity == this.gameObject;
 
-        string gameObjectId = occupyingGameEntity != null ? occupyingGameEntity.GetInstanceID().ToString() : "none";
-        Debug.Log("checking if position is valid: " + positionIsValid.ToString() + " with occupying entity id: " + gameObjectId);
+        // string gameObjectId = occupyingGameEntity != null ? occupyingGameEntity.GetInstanceID().ToString() : "none";
+        // Debug.Log("checking if position is valid: " + positionIsValid.ToString() + " with occupying entity id: " + gameObjectId);
 
         return positionIsValid;
     }

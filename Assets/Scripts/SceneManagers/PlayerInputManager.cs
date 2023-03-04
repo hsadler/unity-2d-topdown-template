@@ -79,6 +79,7 @@ public class PlayerInputManager : MonoBehaviour
 
     public void InitEntitySelect()
     {
+        // Debug.Log("initializing entity select for: " + this.currentEntitiesSelected.Count.ToString() + " entities");
         // init selection and dragging on all currently selected entities
         foreach (GameObject e in this.currentEntitiesSelected)
         {
@@ -476,7 +477,20 @@ public class PlayerInputManager : MonoBehaviour
                 {
                     e.transform.position = Functions.RoundVector(e.transform.position);
                 }
-                draggable.SetDragging(true);
+                // is already dragging
+                if (draggable.isDragging)
+                {
+                    // noop
+                }
+                // drag initiated
+                else
+                {
+                    draggable.SetDragging(true);
+                    if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
+                    {
+                        PlaySceneManager.instance.gameEntityManager.RemoveGameEntityAtPosition(e.transform.position, e);
+                    }
+                }
             }
         }
     }
@@ -531,6 +545,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             e.GetComponent<Draggable>().SetDragging(false);
             e.GetComponent<GameEntity>().isNewlyCreated = false;
+            PlaySceneManager.instance.gameEntityManager.AddGameEntityAtPosition(e.transform.position, e);
         }
     }
 
@@ -582,6 +597,7 @@ public class PlayerInputManager : MonoBehaviour
                 this.inventoryHotkeyMemRotation = e.transform.rotation;
                 e.GetComponent<Draggable>().SetDragging(false);
                 e.GetComponent<GameEntity>().isNewlyCreated = false;
+                PlaySceneManager.instance.gameEntityManager.AddGameEntityAtPosition(e.transform.position, e);
             }
             this.InitEntitySelect();
             GameObject spawned = this.CreateInventoryHotkeyEntity(this.inventoryHotkeyMemRotation);

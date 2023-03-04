@@ -94,11 +94,15 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
             if (this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
             {
                 this.playerInputManager.DeleteSelectedEntities();
+                this.playerInputManager.ClearInventoryHotkeyEntity();
             }
-            this.playerInputManager.InitEntitySelect();
-            this.playerInputManager.ClearInventoryHotkeyEntity();
+            // fresh selected hotkey condition
+            else
+            {
+                this.playerInputManager.InitEntitySelect();
+            }
+            // init state
             this.playerInputManager.inputMode = GameSettings.INPUT_MODE_DEFAULT;
-            // set all inventory scripts hotkey-active as off
             foreach (var inventoryItemScript in this.playerInputManager.inventoryItemScripts)
             {
                 inventoryItemScript.isHotkeyActive = false;
