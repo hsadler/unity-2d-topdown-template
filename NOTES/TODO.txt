@@ -48,6 +48,7 @@ X make escape key function differently per context:
 X add telemetry ui for testing
 X make screen edge camera move more forgiving
 - undo/redo system, buttons, and hotkeys
+- make multi-select rotations rotate entities together instead of individually
 
 
 BUGS:

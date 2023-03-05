@@ -10,8 +10,13 @@ public class GameEntityManager : MonoBehaviour
     // Game Entities cannot occupy the same discrete position.
 
 
+    // position state management
     private IDictionary<string, GameObject> positionToGameEntity;
     private IDictionary<string, string> gameEntityIdToSerializedPosition;
+
+    // entity state history management
+    private HistoryStack<List<GameEntityState>> entityStateHistory;
+    private List<GameEntityState> currentStateHistoryStep;
 
     // debug
     private bool useLogging = false;
@@ -27,6 +32,7 @@ public class GameEntityManager : MonoBehaviour
         this.positionToGameEntity = new Dictionary<string, GameObject>();
         this.gameEntityIdToSerializedPosition = new Dictionary<string, string>();
         this.positionToOccupiedIndicator = new Dictionary<string, GameObject>();
+        this.entityStateHistory = new HistoryStack<List<GameEntityState>>(capacity: GameSettings.ENTITY_STATE_MAX_HISTORY);
     }
 
     void Start()
@@ -116,6 +122,27 @@ public class GameEntityManager : MonoBehaviour
         if (this.useLogging)
         {
             Debug.Log("Could NOT remove game entity " + gameEntity.name + " at position " + position.ToString());
+        }
+        return false;
+    }
+
+    public void StartNewEntityStateHistoryStep()
+    {
+        this.entityStateHistory.Push(this.currentStateHistoryStep);
+        this.currentStateHistoryStep = new List<GameEntityState>();
+    }
+
+    public bool ApplyEntitiesStateHistoryStep(string direction)
+    {
+        // STUB
+        if (direction == "back")
+        {
+            return true;
+        }
+        else if (direction == "forward")
+        {
+
+            return true;
         }
         return false;
     }
