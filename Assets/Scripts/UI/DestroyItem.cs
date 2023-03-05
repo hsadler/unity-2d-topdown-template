@@ -35,6 +35,7 @@ public class DestroyItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 else
                 {
                     this.playerInputManager.DeleteSelectedEntities();
+                    PlaySceneManager.instance.gameEntityManager.StartNewEntityStateHistoryStep();
                 }
             }
             else if (Input.GetMouseButtonDown(0))

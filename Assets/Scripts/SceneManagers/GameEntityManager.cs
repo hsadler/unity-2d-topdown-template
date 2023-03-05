@@ -7,7 +7,8 @@ public class GameEntityManager : MonoBehaviour
 
 
     // Manages Game Entity positions within the play area. Assumes that multiple 
-    // Game Entities cannot occupy the same discrete position.
+    // Game Entities cannot occupy the same discrete position. Also manages 
+    // entity state history for undo/redo functionality.
 
 
     // position state management
@@ -33,6 +34,7 @@ public class GameEntityManager : MonoBehaviour
         this.gameEntityIdToSerializedPosition = new Dictionary<string, string>();
         this.positionToOccupiedIndicator = new Dictionary<string, GameObject>();
         this.entityStateHistory = new HistoryStack<List<GameEntityState>>(capacity: GameSettings.ENTITY_STATE_MAX_HISTORY);
+        this.currentStateHistoryStep = new List<GameEntityState>();
     }
 
     void Start()
@@ -59,9 +61,11 @@ public class GameEntityManager : MonoBehaviour
         return null;
     }
 
-    public bool AddGameEntityAtPosition(Vector3 position, GameObject gameEntity)
+    public bool AddGameEntity(GameObject gameEntity, bool trackHistory = false, bool forceLoggingOff = false)
     {
-        // do check for game entity already being in the place space
+        Vector3 position = gameEntity.transform.position;
+        Quaternion rotation = gameEntity.transform.rotation;
+        // check for game entity already being in the place space
         if (this.gameEntityIdToSerializedPosition.ContainsKey(gameEntity.GetInstanceID().ToString()))
         {
             Debug.LogWarning(
@@ -74,7 +78,7 @@ public class GameEntityManager : MonoBehaviour
         // check if requested position is occupied
         if (!this.PositionIsOccupied(position))
         {
-            if (this.useLogging)
+            if (!forceLoggingOff && this.useLogging)
             {
                 Debug.Log("Adding game entity " + gameEntity.name + " at position " + position.ToString());
             }
@@ -86,17 +90,65 @@ public class GameEntityManager : MonoBehaviour
                 GameObject occupiedIndicatior = Instantiate(this.occupiedIndicatorPrefab, position + new Vector3(0, 0.5f, 0), Quaternion.identity);
                 this.positionToOccupiedIndicator[sPos] = occupiedIndicatior;
             }
+            if (trackHistory)
+            {
+                this.currentStateHistoryStep.Add(new GameEntityState(
+                    GameSettings.GAME_ENTITY_STATE_TYPE_CREATE,
+                    gameEntity.GetInstanceID(),
+                    position,
+                    rotation
+                ));
+            }
             return true;
         }
-        if (this.useLogging)
+        if (!forceLoggingOff && this.useLogging)
         {
             Debug.Log("Could NOT add game entity " + gameEntity.name + " at occupied position " + position.ToString());
         }
         return false;
     }
 
-    public bool RemoveGameEntityAtPosition(Vector3 position, GameObject gameEntity)
+    // TODO: may not need this method
+    public bool UpdateGameEntity(GameObject gameEntity, bool trackHistory = false)
     {
+        Vector3 position = gameEntity.transform.position;
+        Quaternion rotation = gameEntity.transform.rotation;
+        // do remove
+        bool removeStatus = this.RemoveGameEntity(gameEntity, trackHistory: false, forceLoggingOff: true);
+        if (removeStatus)
+        {
+            // do add
+            bool addStatus = this.AddGameEntity(gameEntity, trackHistory: false, forceLoggingOff: true);
+            if (addStatus)
+            {
+                if (this.useLogging)
+                {
+                    Debug.Log("Updating game entity " + gameEntity.name + " at position " + position.ToString());
+                }
+                if (trackHistory)
+                {
+                    this.currentStateHistoryStep.Add(new GameEntityState(
+                        GameSettings.GAME_ENTITY_STATE_TYPE_UPDATE,
+                        gameEntity.GetInstanceID(),
+                        position,
+                        rotation
+                    ));
+                }
+                return true;
+            }
+        }
+        if (this.useLogging)
+        {
+            Debug.Log("Could NOT update game entity " + gameEntity.name + " at position " + position.ToString());
+        }
+        return false;
+    }
+
+    public bool RemoveGameEntity(GameObject gameEntity, bool trackHistory = false, bool forceLoggingOff = false)
+    {
+        Vector3 position = gameEntity.transform.position;
+        Quaternion rotation = gameEntity.transform.rotation;
+        // check that game entity transform position and tracked position match
         string currPos = this.GetSerializedGameEntityPosition(gameEntity);
         string sPos = position.ToString();
         if (sPos == currPos && this.PositionIsOccupied(position))
@@ -104,7 +156,7 @@ public class GameEntityManager : MonoBehaviour
             GameObject gEntityAtPosition = this.positionToGameEntity[sPos];
             if (gEntityAtPosition == gameEntity)
             {
-                if (this.useLogging)
+                if (!forceLoggingOff && this.useLogging)
                 {
                     Debug.Log("Removing game entity " + gameEntity.name + " at position " + position.ToString());
                 }
@@ -116,10 +168,19 @@ public class GameEntityManager : MonoBehaviour
                     this.positionToOccupiedIndicator.Remove(sPos);
                     Destroy(occupiedIndicator);
                 }
+                if (trackHistory)
+                {
+                    this.currentStateHistoryStep.Add(new GameEntityState(
+                        GameSettings.GAME_ENTITY_STATE_TYPE_DELETE,
+                        gameEntity.GetInstanceID(),
+                        gameEntity.transform.position,
+                        gameEntity.transform.rotation
+                    ));
+                }
                 return true;
             }
         }
-        if (this.useLogging)
+        if (!forceLoggingOff && this.useLogging)
         {
             Debug.Log("Could NOT remove game entity " + gameEntity.name + " at position " + position.ToString());
         }
@@ -154,7 +215,7 @@ public class GameEntityManager : MonoBehaviour
         var gameEntities = GameObject.FindGameObjectsWithTag("GameEntity");
         foreach (GameObject e in gameEntities)
         {
-            this.AddGameEntityAtPosition(e.transform.position, e);
+            this.AddGameEntity(e);
         }
     }
 

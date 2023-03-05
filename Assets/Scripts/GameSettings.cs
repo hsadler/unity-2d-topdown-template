@@ -34,12 +34,20 @@ public class GameSettings
     public const KeyCode ROTATE_ENTITIES_RIGHT_KEY = KeyCode.E;
     public const KeyCode DELETE_ENTITIES_KEY = KeyCode.Backspace;
     public const KeyCode ADDITIVE_SELECTION_KEY = KeyCode.LeftShift;
+    public const KeyCode UNDO_KEY = KeyCode.Less;
+    public const KeyCode REDO_KEY = KeyCode.Greater;
 
 
     // renderer sorting layers
     public const string SORTING_LAYER_DEFAULT = "Default";
     public const string SORTING_LAYER_ENTITY_SELECTED = "EntitySelected";
     public const string SORTING_LAYER_ENTITY_DRAGGING = "EntityDragging";
+
+
+    // game entity state types
+    public const int GAME_ENTITY_STATE_TYPE_CREATE = 1;
+    public const int GAME_ENTITY_STATE_TYPE_UPDATE = 2;
+    public const int GAME_ENTITY_STATE_TYPE_DELETE = 3;
 
 
     // dev settings

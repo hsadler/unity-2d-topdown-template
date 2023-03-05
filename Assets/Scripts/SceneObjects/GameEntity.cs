@@ -26,25 +26,6 @@ public class GameEntity : MonoBehaviour
 
     // INTF METHODS
 
-    public GameEntityState GetState()
-    {
-        return new GameEntityState(this.GetInstanceID(), this.transform.position, this.transform.rotation);
-    }
-
-    public bool ApplyGameEntityState(GameEntityState state)
-    {
-        if (state.instanceId == this.GetInstanceID())
-        {
-            this.transform.position = state.position;
-            this.transform.rotation = state.rotation;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     public void SetRenderersSortingLayer(string sortingLayer)
     {
         foreach (GameObject rend in this.renders)
