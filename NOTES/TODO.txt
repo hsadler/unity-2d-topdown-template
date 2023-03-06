@@ -53,6 +53,7 @@ X make screen edge camera move more forgiving
 
 BUGS:
 X multiple placement bug when in inventory hotkey mode
+- switching modes while dragging causes placement bugs
 
 
 SYSTEM/CODE REFACTORS:

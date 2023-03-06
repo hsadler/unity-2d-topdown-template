@@ -21,7 +21,7 @@ public class GameEntityManager : MonoBehaviour
 
     // debug
     private bool useLogging = false;
-    private bool useDebugIndicators = false;
+    private bool useDebugIndicators = true;
     public GameObject occupiedIndicatorPrefab;
     private IDictionary<string, GameObject> positionToOccupiedIndicator;
 
@@ -109,40 +109,40 @@ public class GameEntityManager : MonoBehaviour
     }
 
     // TODO: may not need this method
-    public bool UpdateGameEntity(GameObject gameEntity, bool trackHistory = false)
-    {
-        Vector3 position = gameEntity.transform.position;
-        Quaternion rotation = gameEntity.transform.rotation;
-        // do remove
-        bool removeStatus = this.RemoveGameEntity(gameEntity, trackHistory: false, forceLoggingOff: true);
-        if (removeStatus)
-        {
-            // do add
-            bool addStatus = this.AddGameEntity(gameEntity, trackHistory: false, forceLoggingOff: true);
-            if (addStatus)
-            {
-                if (this.useLogging)
-                {
-                    Debug.Log("Updating game entity " + gameEntity.name + " at position " + position.ToString());
-                }
-                if (trackHistory)
-                {
-                    this.currentStateHistoryStep.Add(new GameEntityState(
-                        GameSettings.GAME_ENTITY_STATE_TYPE_UPDATE,
-                        gameEntity.GetInstanceID(),
-                        position,
-                        rotation
-                    ));
-                }
-                return true;
-            }
-        }
-        if (this.useLogging)
-        {
-            Debug.Log("Could NOT update game entity " + gameEntity.name + " at position " + position.ToString());
-        }
-        return false;
-    }
+    // public bool UpdateGameEntity(GameObject gameEntity, bool trackHistory = false)
+    // {
+    //     Vector3 position = gameEntity.transform.position;
+    //     Quaternion rotation = gameEntity.transform.rotation;
+    //     // do remove
+    //     bool removeStatus = this.RemoveGameEntity(gameEntity, trackHistory: false, forceLoggingOff: true);
+    //     if (removeStatus)
+    //     {
+    //         // do add
+    //         bool addStatus = this.AddGameEntity(gameEntity, trackHistory: false, forceLoggingOff: true);
+    //         if (addStatus)
+    //         {
+    //             if (this.useLogging)
+    //             {
+    //                 Debug.Log("Updating game entity " + gameEntity.name + " at position " + position.ToString());
+    //             }
+    //             if (trackHistory)
+    //             {
+    //                 this.currentStateHistoryStep.Add(new GameEntityState(
+    //                     GameSettings.GAME_ENTITY_STATE_TYPE_UPDATE,
+    //                     gameEntity.GetInstanceID(),
+    //                     position,
+    //                     rotation
+    //                 ));
+    //             }
+    //             return true;
+    //         }
+    //     }
+    //     if (this.useLogging)
+    //     {
+    //         Debug.Log("Could NOT update game entity " + gameEntity.name + " at position " + position.ToString());
+    //     }
+    //     return false;
+    // }
 
     public bool RemoveGameEntity(GameObject gameEntity, bool trackHistory = false, bool forceLoggingOff = false)
     {
@@ -195,7 +195,8 @@ public class GameEntityManager : MonoBehaviour
 
     public bool ApplyEntitiesStateHistoryStep(string direction)
     {
-        // STUB
+        // STUB: IMPLEMENT ME
+        Debug.Log("doing undo/redo by applying state in direction: " + direction);
         if (direction == "back")
         {
             return true;

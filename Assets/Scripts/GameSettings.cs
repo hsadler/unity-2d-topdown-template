@@ -34,8 +34,8 @@ public class GameSettings
     public const KeyCode ROTATE_ENTITIES_RIGHT_KEY = KeyCode.E;
     public const KeyCode DELETE_ENTITIES_KEY = KeyCode.Backspace;
     public const KeyCode ADDITIVE_SELECTION_KEY = KeyCode.LeftShift;
-    public const KeyCode UNDO_KEY = KeyCode.Less;
-    public const KeyCode REDO_KEY = KeyCode.Greater;
+    public const KeyCode UNDO_KEY = KeyCode.Comma;
+    public const KeyCode REDO_KEY = KeyCode.Period;
 
 
     // renderer sorting layers

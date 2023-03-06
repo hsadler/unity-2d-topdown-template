@@ -581,7 +581,19 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityStateUndoRedo()
     {
-        // STUB
+        string backOrForward = null;
+        if (Input.GetKeyDown(GameSettings.UNDO_KEY))
+        {
+            backOrForward = "back";
+        }
+        else if (Input.GetKeyDown(GameSettings.REDO_KEY))
+        {
+            backOrForward = "forward";
+        }
+        if (backOrForward != null)
+        {
+            PlaySceneManager.instance.gameEntityManager.ApplyEntitiesStateHistoryStep(backOrForward);
+        }
     }
 
     private void HandleHotkeyEntityPlacement()
