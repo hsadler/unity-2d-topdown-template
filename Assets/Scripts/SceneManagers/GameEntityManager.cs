@@ -199,6 +199,22 @@ public class GameEntityManager : MonoBehaviour
         Debug.Log("doing undo/redo by applying state in direction: " + direction);
         if (direction == "back")
         {
+            this.StartNewEntityStateHistoryStep();
+            List<GameEntityState> prevStates = this.entityStateHistory.Previous();
+            Debug.Log(prevStates.ToString());
+            foreach (var s in prevStates)
+            {
+                Debug.Log(s.ToString());
+                if (s.stateType == GameSettings.GAME_ENTITY_STATE_TYPE_UPDATE)
+                {
+                    GameObject gameEntity = this.GetEntityByInstanceId(s.instanceId);
+                    if (gameEntity != null)
+                    {
+                        gameEntity.transform.position = s.position;
+                        gameEntity.transform.rotation = s.rotation;
+                    }
+                }
+            }
             return true;
         }
         else if (direction == "forward")
@@ -225,6 +241,18 @@ public class GameEntityManager : MonoBehaviour
         if (this.gameEntityIdToSerializedPosition.ContainsKey(gameEntity.GetInstanceID().ToString()))
         {
             return this.gameEntityIdToSerializedPosition[gameEntity.GetInstanceID().ToString()];
+        }
+        return null;
+    }
+
+    private GameObject GetEntityByInstanceId(int instanceId)
+    {
+        foreach (var ge in this.positionToGameEntity.Values)
+        {
+            if (ge.GetInstanceID() == instanceId)
+            {
+                return ge;
+            }
         }
         return null;
     }

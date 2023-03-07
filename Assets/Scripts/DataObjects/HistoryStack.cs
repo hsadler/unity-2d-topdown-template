@@ -1,3 +1,4 @@
+using UnityEngine;
 
 class HistoryStack<T>
 {
@@ -9,6 +10,8 @@ class HistoryStack<T>
     private T[] items;
     private int top;
     private int cursor;
+
+    private bool useLogging = true;
 
 
     public HistoryStack(int capacity)
@@ -25,6 +28,10 @@ class HistoryStack<T>
         this.cursor = this.cursor + 1 % this.items.Length;
         this.items[this.cursor] = item;
         this.top = this.cursor;
+        if (this.useLogging)
+        {
+            Debug.Log("Pushing item to HistoryStack with cursor: " + this.cursor.ToString() + " and top: " + this.top.ToString());
+        }
     }
 
     public T Previous()

@@ -9,15 +9,15 @@ public class GameEntityState
 
 
     public int stateType;
-    public int entityId;
+    public int instanceId;
     public Vector3 position;
     public Quaternion rotation;
 
 
-    public GameEntityState(int stateType, int entityId, Vector3 position, Quaternion rotation)
+    public GameEntityState(int stateType, int instanceId, Vector3 position, Quaternion rotation)
     {
         this.stateType = stateType;
-        this.entityId = entityId;
+        this.instanceId = instanceId;
         this.position = position;
         this.rotation = rotation;
     }
