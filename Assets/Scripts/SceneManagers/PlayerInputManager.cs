@@ -592,7 +592,7 @@ public class PlayerInputManager : MonoBehaviour
         }
         if (backOrForward != null)
         {
-            PlaySceneManager.instance.gameEntityManager.ApplyEntitiesStateHistoryStep(backOrForward);
+            PlaySceneManager.instance.gameEntityManager.GoStateHistoryStep(backOrForward);
         }
     }
 

@@ -16,7 +16,7 @@ public class GameEntityManager : MonoBehaviour
     private IDictionary<string, string> gameEntityIdToSerializedPosition;
 
     // entity state history management
-    private HistoryStack<List<GameEntityState>> entityStateHistory;
+    private HistoryStack<List<GameEntityState>> entityStateHistoryStack;
     private List<GameEntityState> currentStateHistoryStep;
 
     // debug
@@ -33,7 +33,7 @@ public class GameEntityManager : MonoBehaviour
         this.positionToGameEntity = new Dictionary<string, GameObject>();
         this.gameEntityIdToSerializedPosition = new Dictionary<string, string>();
         this.positionToOccupiedIndicator = new Dictionary<string, GameObject>();
-        this.entityStateHistory = new HistoryStack<List<GameEntityState>>(capacity: GameSettings.ENTITY_STATE_MAX_HISTORY);
+        this.entityStateHistoryStack = new HistoryStack<List<GameEntityState>>(capacity: GameSettings.ENTITY_STATE_MAX_HISTORY);
         this.currentStateHistoryStep = new List<GameEntityState>();
     }
 
@@ -189,18 +189,17 @@ public class GameEntityManager : MonoBehaviour
 
     public void StartNewEntityStateHistoryStep()
     {
-        this.entityStateHistory.Push(this.currentStateHistoryStep);
+        this.entityStateHistoryStack.Push(this.currentStateHistoryStep);
         this.currentStateHistoryStep = new List<GameEntityState>();
     }
 
-    public bool ApplyEntitiesStateHistoryStep(string direction)
+    public bool GoStateHistoryStep(string direction)
     {
-        // STUB: IMPLEMENT ME
         Debug.Log("doing undo/redo by applying state in direction: " + direction);
         if (direction == "back")
         {
             this.StartNewEntityStateHistoryStep();
-            List<GameEntityState> prevStates = this.entityStateHistory.Previous();
+            List<GameEntityState> prevStates = this.entityStateHistoryStack.Previous();
             Debug.Log(prevStates.ToString());
             foreach (var s in prevStates)
             {
@@ -219,7 +218,7 @@ public class GameEntityManager : MonoBehaviour
         }
         else if (direction == "forward")
         {
-
+            // TODO: IMPLEMENT FORWARD
             return true;
         }
         return false;

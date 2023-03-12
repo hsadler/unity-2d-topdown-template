@@ -30,7 +30,7 @@ class HistoryStack<T>
         this.top = this.cursor;
         if (this.useLogging)
         {
-            Debug.Log("Pushing item to HistoryStack with cursor: " + this.cursor.ToString() + " and top: " + this.top.ToString());
+            Debug.Log("Pushing item to HistoryStack with Cursor: " + this.cursor.ToString() + " and Top: " + this.top.ToString());
         }
     }
 
@@ -38,15 +38,23 @@ class HistoryStack<T>
     {
         // move cursor back one position 
         int newCursor = (this.items.Length + this.cursor - 1) % this.items.Length;
-        // if provisional cursor position is top position, return null and 
-        // cursor position remains unchanged
+        // if provisional cursor position is same as top position, return 
+        // default, cursor position remains unchanged
         if (newCursor == this.top)
         {
+            if (this.useLogging)
+            {
+                Debug.Log("Cannot get HistoryStack Previous item. Returning default.");
+            }
             return default(T);
         }
         // commit new cursor postion, return item, top of stack position remains 
         // unchanged
         this.cursor = newCursor;
+        if (this.useLogging)
+        {
+            Debug.Log("Setting HistoryStack to Previous position with Cursor: " + this.cursor.ToString() + " and Top: " + this.top.ToString());
+        }
         return this.items[this.cursor];
     }
 
@@ -55,11 +63,19 @@ class HistoryStack<T>
         // if already at the top of the stack return null
         if (this.cursor == this.top)
         {
+            if (this.useLogging)
+            {
+                Debug.Log("Cannot get HistoryStack Next since Cursor is already at Top with shared value: " + this.cursor.ToString() + ". Returning default.");
+            }
             return default(T);
         }
         // otherwise move cursor forward one position and return item, top of 
         // stack position remains unchanged
         this.cursor = (this.items.Length + this.cursor + 1) % this.items.Length;
+        if (this.useLogging)
+        {
+            Debug.Log("Setting HistoryStack to Next position with Cursor: " + this.cursor.ToString() + " and Top: " + this.top.ToString());
+        }
         return this.items[this.cursor];
     }
 
