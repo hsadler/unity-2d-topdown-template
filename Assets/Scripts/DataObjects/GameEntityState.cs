@@ -8,13 +8,13 @@ public class GameEntityState
     // state history.
 
 
-    public int stateType;
+    public string stateType;
     public int instanceId;
     public Vector3 position;
     public Quaternion rotation;
 
 
-    public GameEntityState(int stateType, int instanceId, Vector3 position, Quaternion rotation)
+    public GameEntityState(string stateType, int instanceId, Vector3 position, Quaternion rotation)
     {
         this.stateType = stateType;
         this.instanceId = instanceId;

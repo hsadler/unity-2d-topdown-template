@@ -45,9 +45,9 @@ public class GameSettings
 
 
     // game entity state types
-    public const int GAME_ENTITY_STATE_TYPE_CREATE = 1;
-    public const int GAME_ENTITY_STATE_TYPE_UPDATE = 2;
-    public const int GAME_ENTITY_STATE_TYPE_DELETE = 3;
+    public const string GAME_ENTITY_STATE_TYPE_CREATE = "GAME_ENTITY_STATE_TYPE_CREATE";
+    public const string GAME_ENTITY_STATE_TYPE_UPDATE = "GAME_ENTITY_STATE_TYPE_UPDATE";
+    public const string GAME_ENTITY_STATE_TYPE_DELETE = "GAME_ENTITY_STATE_TYPE_DELETE";
 
 
     // dev settings

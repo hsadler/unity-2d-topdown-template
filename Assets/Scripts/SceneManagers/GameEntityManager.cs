@@ -92,7 +92,7 @@ public class GameEntityManager : MonoBehaviour
             }
             if (trackHistory)
             {
-                this.currentStateHistoryStep.Add(new GameEntityState(
+                this.PushGameEntityStateToHistory(new GameEntityState(
                     GameSettings.GAME_ENTITY_STATE_TYPE_CREATE,
                     gameEntity.GetInstanceID(),
                     position,
@@ -170,7 +170,7 @@ public class GameEntityManager : MonoBehaviour
                 }
                 if (trackHistory)
                 {
-                    this.currentStateHistoryStep.Add(new GameEntityState(
+                    this.PushGameEntityStateToHistory(new GameEntityState(
                         GameSettings.GAME_ENTITY_STATE_TYPE_DELETE,
                         gameEntity.GetInstanceID(),
                         gameEntity.transform.position,
@@ -187,35 +187,63 @@ public class GameEntityManager : MonoBehaviour
         return false;
     }
 
-    public void StartNewEntityStateHistoryStep()
+    public void PushGameEntityStateToHistory(GameEntityState gameEntityState)
     {
+        Debug.Log("Pushing game entity state to history with state type: " + gameEntityState.stateType);
+        this.currentStateHistoryStep.Add(gameEntityState);
+    }
+
+    public void PushEntityStateHistoryStep()
+    {
+        Debug.Log("pushing entity state history step with length: " + this.currentStateHistoryStep.Count.ToString());
         this.entityStateHistoryStack.Push(this.currentStateHistoryStep);
         this.currentStateHistoryStep = new List<GameEntityState>();
     }
 
     public bool GoStateHistoryStep(string direction)
     {
-        Debug.Log("doing undo/redo by applying state in direction: " + direction);
+        // Debug.Log("doing undo/redo by applying state in direction: " + direction);
+        // go back in history
         if (direction == "back")
         {
-            this.StartNewEntityStateHistoryStep();
-            List<GameEntityState> prevStates = this.entityStateHistoryStack.Previous();
-            Debug.Log(prevStates.ToString());
-            foreach (var s in prevStates)
+            if (this.entityStateHistoryStack.IsTop())
             {
-                Debug.Log(s.ToString());
-                if (s.stateType == GameSettings.GAME_ENTITY_STATE_TYPE_UPDATE)
+                this.PushEntityStateHistoryStep();
+            }
+            List<GameEntityState> prevStates = this.entityStateHistoryStack.Previous();
+            // Debug.Log(prevStates.ToString());
+            if (prevStates != null)
+            {
+                foreach (var s in prevStates)
                 {
                     GameObject gameEntity = this.GetEntityByInstanceId(s.instanceId);
-                    if (gameEntity != null)
+                    // Debug.Log(s.ToString());
+                    if (s.stateType == GameSettings.GAME_ENTITY_STATE_TYPE_CREATE)
                     {
-                        gameEntity.transform.position = s.position;
-                        gameEntity.transform.rotation = s.rotation;
+                        if (gameEntity != null)
+                        {
+                            Debug.Log("Restoring game entity state at position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
+                            gameEntity.transform.position = s.position;
+                            gameEntity.transform.rotation = s.rotation;
+                            gameEntity.SetActive(true);
+                        }
+                        else
+                        {
+                            Debug.Log("Could not restore game entity state since null was found");
+                        }
                     }
+                    // else if (s.stateType == GameSettings.GAME_ENTITY_STATE_TYPE_DELETE)
+                    // {
+                    //     if (gameEntity != null)
+                    //     {
+                    //         gameEntity.SetActive(false);
+                    //     }
+                    // }
                 }
             }
             return true;
         }
+        // go forward in history
         else if (direction == "forward")
         {
             // TODO: IMPLEMENT FORWARD
