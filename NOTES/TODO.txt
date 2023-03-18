@@ -35,7 +35,8 @@ X make camera move on touch to edge of viewport
 X clamp camera move to not be able to go farther than the board
 X additive selection via additive hotkey
 X fix entity->inventory sorting layers to be upon "dragging" state
-X give entities a "drag" state, where they've not yet been moved and validation can be performed
+X give entities a "drag" state, where they've not yet been moved and validation 
+    can be performed
 X drag and drop to inventory bar should cause a delete
 X pending delete selection indicator color
 X inventory hotkeys for quick inventory selection and placement
@@ -47,7 +48,12 @@ X make escape key function differently per context:
     X exit inventory-hotkey mode
 X add telemetry ui for testing
 X make screen edge camera move more forgiving
-- undo/redo system, buttons, and hotkeys
+- undo/redo system, buttons, and hotkeys:
+    - have HistoryStack keep track of "bottom" so that just like "top", you 
+        cannot traverse past it
+    - use own UUIDs for history tracking so that objects can be instantiated and 
+        have them reassigned
+    - implement redo
 - make multi-select rotations rotate entities together instead of individually
 
 
