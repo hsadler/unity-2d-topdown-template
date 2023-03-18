@@ -112,7 +112,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e, trackHistory: true);
+            PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
             Destroy(e);
         }
         this.InitEntitySelect();
@@ -490,7 +490,7 @@ public class PlayerInputManager : MonoBehaviour
                     draggable.SetDragging(true);
                     if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
                     {
-                        PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e, trackHistory: true);
+                        PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
                     }
                 }
             }
@@ -546,7 +546,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             e.GetComponent<Draggable>().SetDragging(false);
             e.GetComponent<GameEntity>().isNewlyCreated = false;
-            PlaySceneManager.instance.gameEntityManager.AddGameEntity(e, trackHistory: true);
+            PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
         }
         PlaySceneManager.instance.gameEntityManager.PushEntityStateHistoryStep();
     }
@@ -599,8 +599,6 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleHotkeyEntityPlacement()
     {
-        // BUG: something is wrong with the validation here
-        // check if there are any invalid drop positions
         bool dropIsValid = true;
         foreach (GameObject e in this.currentEntitiesSelected)
         {
@@ -617,7 +615,7 @@ public class PlayerInputManager : MonoBehaviour
                 this.inventoryHotkeyMemRotation = e.transform.rotation;
                 e.GetComponent<Draggable>().SetDragging(false);
                 e.GetComponent<GameEntity>().isNewlyCreated = false;
-                PlaySceneManager.instance.gameEntityManager.AddGameEntity(e, trackHistory: true);
+                PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
             }
             this.InitEntitySelect();
             GameObject spawned = this.CreateInventoryHotkeyEntity(this.inventoryHotkeyMemRotation);

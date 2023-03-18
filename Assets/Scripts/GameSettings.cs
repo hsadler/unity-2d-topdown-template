@@ -44,12 +44,6 @@ public class GameSettings
     public const string SORTING_LAYER_ENTITY_DRAGGING = "EntityDragging";
 
 
-    // game entity state types
-    public const string GAME_ENTITY_STATE_TYPE_CREATE = "GAME_ENTITY_STATE_TYPE_CREATE";
-    public const string GAME_ENTITY_STATE_TYPE_UPDATE = "GAME_ENTITY_STATE_TYPE_UPDATE";
-    public const string GAME_ENTITY_STATE_TYPE_DELETE = "GAME_ENTITY_STATE_TYPE_DELETE";
-
-
     // dev settings
     public const bool DISPLAY_TELEMETRY = true;
 

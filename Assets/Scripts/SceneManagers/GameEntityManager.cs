@@ -17,7 +17,6 @@ public class GameEntityManager : MonoBehaviour
 
     // entity state history management
     private HistoryStack<List<GameEntityState>> entityStateHistoryStack;
-    private List<GameEntityState> currentStateHistoryStep;
 
     // debug
     private bool useLogging = false;
@@ -34,7 +33,6 @@ public class GameEntityManager : MonoBehaviour
         this.gameEntityIdToSerializedPosition = new Dictionary<string, string>();
         this.positionToOccupiedIndicator = new Dictionary<string, GameObject>();
         this.entityStateHistoryStack = new HistoryStack<List<GameEntityState>>(capacity: GameSettings.ENTITY_STATE_MAX_HISTORY);
-        this.currentStateHistoryStep = new List<GameEntityState>();
     }
 
     void Start()
@@ -61,7 +59,7 @@ public class GameEntityManager : MonoBehaviour
         return null;
     }
 
-    public bool AddGameEntity(GameObject gameEntity, bool trackHistory = false, bool forceLoggingOff = false)
+    public bool AddGameEntity(GameObject gameEntity, bool forceLoggingOff = false)
     {
         Vector3 position = gameEntity.transform.position;
         Quaternion rotation = gameEntity.transform.rotation;
@@ -90,15 +88,6 @@ public class GameEntityManager : MonoBehaviour
                 GameObject occupiedIndicatior = Instantiate(this.occupiedIndicatorPrefab, position + new Vector3(0, 0.5f, 0), Quaternion.identity);
                 this.positionToOccupiedIndicator[sPos] = occupiedIndicatior;
             }
-            if (trackHistory)
-            {
-                this.PushGameEntityStateToHistory(new GameEntityState(
-                    GameSettings.GAME_ENTITY_STATE_TYPE_CREATE,
-                    gameEntity.GetInstanceID(),
-                    position,
-                    rotation
-                ));
-            }
             return true;
         }
         if (!forceLoggingOff && this.useLogging)
@@ -108,43 +97,7 @@ public class GameEntityManager : MonoBehaviour
         return false;
     }
 
-    // TODO: may not need this method
-    // public bool UpdateGameEntity(GameObject gameEntity, bool trackHistory = false)
-    // {
-    //     Vector3 position = gameEntity.transform.position;
-    //     Quaternion rotation = gameEntity.transform.rotation;
-    //     // do remove
-    //     bool removeStatus = this.RemoveGameEntity(gameEntity, trackHistory: false, forceLoggingOff: true);
-    //     if (removeStatus)
-    //     {
-    //         // do add
-    //         bool addStatus = this.AddGameEntity(gameEntity, trackHistory: false, forceLoggingOff: true);
-    //         if (addStatus)
-    //         {
-    //             if (this.useLogging)
-    //             {
-    //                 Debug.Log("Updating game entity " + gameEntity.name + " at position " + position.ToString());
-    //             }
-    //             if (trackHistory)
-    //             {
-    //                 this.currentStateHistoryStep.Add(new GameEntityState(
-    //                     GameSettings.GAME_ENTITY_STATE_TYPE_UPDATE,
-    //                     gameEntity.GetInstanceID(),
-    //                     position,
-    //                     rotation
-    //                 ));
-    //             }
-    //             return true;
-    //         }
-    //     }
-    //     if (this.useLogging)
-    //     {
-    //         Debug.Log("Could NOT update game entity " + gameEntity.name + " at position " + position.ToString());
-    //     }
-    //     return false;
-    // }
-
-    public bool RemoveGameEntity(GameObject gameEntity, bool trackHistory = false, bool forceLoggingOff = false)
+    public bool RemoveGameEntity(GameObject gameEntity, bool forceLoggingOff = false)
     {
         Vector3 position = gameEntity.transform.position;
         Quaternion rotation = gameEntity.transform.rotation;
@@ -168,15 +121,6 @@ public class GameEntityManager : MonoBehaviour
                     this.positionToOccupiedIndicator.Remove(sPos);
                     Destroy(occupiedIndicator);
                 }
-                if (trackHistory)
-                {
-                    this.PushGameEntityStateToHistory(new GameEntityState(
-                        GameSettings.GAME_ENTITY_STATE_TYPE_DELETE,
-                        gameEntity.GetInstanceID(),
-                        gameEntity.transform.position,
-                        gameEntity.transform.rotation
-                    ));
-                }
                 return true;
             }
         }
@@ -187,17 +131,16 @@ public class GameEntityManager : MonoBehaviour
         return false;
     }
 
-    public void PushGameEntityStateToHistory(GameEntityState gameEntityState)
-    {
-        Debug.Log("Pushing game entity state to history with state type: " + gameEntityState.stateType);
-        this.currentStateHistoryStep.Add(gameEntityState);
-    }
-
     public void PushEntityStateHistoryStep()
     {
-        Debug.Log("pushing entity state history step with length: " + this.currentStateHistoryStep.Count.ToString());
-        this.entityStateHistoryStack.Push(this.currentStateHistoryStep);
-        this.currentStateHistoryStep = new List<GameEntityState>();
+        var historyStep = new List<GameEntityState>();
+        foreach (GameObject entity in this.positionToGameEntity.Values)
+        {
+            var entityState = new GameEntityState(entity.GetInstanceID(), entity.transform.position, entity.transform.rotation);
+            historyStep.Add(entityState);
+        }
+        this.entityStateHistoryStack.Push(historyStep);
+        Debug.Log("pushed entity state history step with length: " + historyStep.Count.ToString());
     }
 
     public bool GoStateHistoryStep(string direction)
@@ -206,39 +149,40 @@ public class GameEntityManager : MonoBehaviour
         // go back in history
         if (direction == "back")
         {
-            if (this.entityStateHistoryStack.IsTop())
-            {
-                this.PushEntityStateHistoryStep();
-            }
             List<GameEntityState> prevStates = this.entityStateHistoryStack.Previous();
-            // Debug.Log(prevStates.ToString());
             if (prevStates != null)
             {
+                var entities = new List<GameObject>(this.positionToGameEntity.Values);
+                // 1. initialize all to non-active for clean slate
+                foreach (GameObject e in entities)
+                {
+                    e.SetActive(false);
+                }
+                // 2. set entities to previous states and reregister
                 foreach (var s in prevStates)
                 {
                     GameObject gameEntity = this.GetEntityByInstanceId(s.instanceId);
-                    // Debug.Log(s.ToString());
-                    if (s.stateType == GameSettings.GAME_ENTITY_STATE_TYPE_CREATE)
+                    if (gameEntity != null)
                     {
-                        if (gameEntity != null)
-                        {
-                            Debug.Log("Restoring game entity state at position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
-                            gameEntity.transform.position = s.position;
-                            gameEntity.transform.rotation = s.rotation;
-                            gameEntity.SetActive(true);
-                        }
-                        else
-                        {
-                            Debug.Log("Could not restore game entity state since null was found");
-                        }
+                        // Debug.Log("Restoring game entity state at position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
+                        gameEntity.SetActive(true);
+                        this.RemoveGameEntity(gameEntity);
+                        gameEntity.transform.position = s.position;
+                        gameEntity.transform.rotation = s.rotation;
+                        this.AddGameEntity(gameEntity);
                     }
-                    // else if (s.stateType == GameSettings.GAME_ENTITY_STATE_TYPE_DELETE)
-                    // {
-                    //     if (gameEntity != null)
-                    //     {
-                    //         gameEntity.SetActive(false);
-                    //     }
-                    // }
+                    else
+                    {
+                        Debug.Log("Could not restore game entity state since null was found");
+                    }
+                }
+                // 3. any game entities with a remaining non-active state are de-registered
+                foreach (GameObject e in entities)
+                {
+                    if (e.activeSelf == false)
+                    {
+                        this.RemoveGameEntity(e);
+                    }
                 }
             }
             return true;
@@ -259,7 +203,7 @@ public class GameEntityManager : MonoBehaviour
         var gameEntities = GameObject.FindGameObjectsWithTag("GameEntity");
         foreach (GameObject e in gameEntities)
         {
-            this.AddGameEntity(e, trackHistory: true);
+            this.AddGameEntity(e);
         }
         this.PushEntityStateHistoryStep();
     }
