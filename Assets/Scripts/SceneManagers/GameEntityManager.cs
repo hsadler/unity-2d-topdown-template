@@ -259,8 +259,9 @@ public class GameEntityManager : MonoBehaviour
         var gameEntities = GameObject.FindGameObjectsWithTag("GameEntity");
         foreach (GameObject e in gameEntities)
         {
-            this.AddGameEntity(e);
+            this.AddGameEntity(e, trackHistory: true);
         }
+        this.PushEntityStateHistoryStep();
     }
 
     private string GetSerializedGameEntityPosition(GameObject gameEntity)
