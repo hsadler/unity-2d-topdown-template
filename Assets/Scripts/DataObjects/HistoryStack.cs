@@ -9,6 +9,7 @@ class HistoryStack<T>
 
     private T[] items;
     private int top;
+    private int bottom;
     private int cursor;
 
     private bool useLogging = true;
@@ -18,16 +19,28 @@ class HistoryStack<T>
     {
         this.items = new T[capacity];
         this.top = -1;
+        this.bottom = -1;
         this.cursor = -1;
     }
 
     public void Push(T item)
     {
-        // push state forward, top of stack considered to be last pushed 
+        // push state forward, top of stack always considered to be last pushed 
         // position
-        this.cursor = this.cursor + 1 % this.items.Length;
+        this.cursor = (this.cursor + 1) % this.items.Length;
         this.items[this.cursor] = item;
         this.top = this.cursor;
+        // if top has wrapped around to reach bottom, push bottom forward by one 
+        // position
+        if (this.top == this.bottom)
+        {
+            this.bottom = (this.top + 1) % this.items.Length;
+        }
+        // make bottom 0 if this is the first history push
+        if (this.bottom == -1)
+        {
+            this.bottom = 0;
+        }
         if (this.useLogging)
         {
             Debug.Log("Pushing item to HistoryStack with Cursor: " + this.cursor.ToString() + " and Top: " + this.top.ToString());
@@ -36,13 +49,11 @@ class HistoryStack<T>
 
     public T Previous()
     {
-        // move cursor back one position 
-        int newCursor = (this.items.Length + this.cursor - 1) % this.items.Length;
-        // if no history
+        // if no history yet
         // OR
-        // if provisional cursor position is same as top position, return 
-        // default, cursor position remains unchanged
-        if (this.cursor == -1 || newCursor == this.top)
+        // cursor is at the bottom if the stack, return default, cursor position 
+        // remains unchanged
+        if (this.cursor == -1 || this.isBottom())
         {
             if (this.useLogging)
             {
@@ -50,9 +61,9 @@ class HistoryStack<T>
             }
             return default(T);
         }
-        // commit new cursor postion, return item, top of stack position remains 
-        // unchanged
-        this.cursor = newCursor;
+        // move cursor postion backward, return item, top of stack position 
+        // remains unchanged
+        this.cursor = (this.items.Length + this.cursor - 1) % this.items.Length;
         if (this.useLogging)
         {
             Debug.Log("Setting HistoryStack to Previous position with Cursor: " + this.cursor.ToString() + " and Top: " + this.top.ToString());
@@ -62,8 +73,8 @@ class HistoryStack<T>
 
     public T Next()
     {
-        // if no history of already at the top of the stack return null
-        if (this.cursor == -1 || this.cursor == this.top)
+        // if no history yet or already at the top of the stack return default
+        if (this.cursor == -1 || this.IsTop())
         {
             if (this.useLogging)
             {
@@ -81,7 +92,12 @@ class HistoryStack<T>
         return this.items[this.cursor];
     }
 
-    public bool IsTop()
+    private bool isBottom()
+    {
+        return this.cursor == this.bottom;
+    }
+
+    private bool IsTop()
     {
         return this.cursor == this.top;
     }
