@@ -12,7 +12,7 @@ class HistoryStack<T>
     private int bottom;
     private int cursor;
 
-    private bool useLogging = true;
+    private bool useLogging = false;
 
 
     public HistoryStack(int capacity)

@@ -13,7 +13,7 @@ public class GameEntityManager : MonoBehaviour
 
     // position state management
     private IDictionary<string, GameObject> positionToGameEntity;
-    private IDictionary<string, string> gameEntityIdToSerializedPosition;
+    private IDictionary<string, string> gameEntityUUIDToSerializedPosition;
 
     // entity state history management
     private HistoryStack<List<GameEntityState>> entityStateHistoryStack;
@@ -30,7 +30,7 @@ public class GameEntityManager : MonoBehaviour
     void Awake()
     {
         this.positionToGameEntity = new Dictionary<string, GameObject>();
-        this.gameEntityIdToSerializedPosition = new Dictionary<string, string>();
+        this.gameEntityUUIDToSerializedPosition = new Dictionary<string, string>();
         this.positionToOccupiedIndicator = new Dictionary<string, GameObject>();
         this.entityStateHistoryStack = new HistoryStack<List<GameEntityState>>(capacity: GameSettings.ENTITY_STATE_MAX_HISTORY);
     }
@@ -61,15 +61,16 @@ public class GameEntityManager : MonoBehaviour
 
     public bool AddGameEntity(GameObject gameEntity, bool forceLoggingOff = false)
     {
+        string eUUID = gameEntity.GetComponent<GameEntity>().uuid;
         Vector3 position = gameEntity.transform.position;
         Quaternion rotation = gameEntity.transform.rotation;
         // check for game entity already being in the place space
-        if (this.gameEntityIdToSerializedPosition.ContainsKey(gameEntity.GetInstanceID().ToString()))
+        if (this.gameEntityUUIDToSerializedPosition.ContainsKey(eUUID))
         {
             Debug.LogWarning(
                 "Game entity: " + gameEntity.name +
                 " already exists in the gameplay space at position: " +
-                this.gameEntityIdToSerializedPosition[gameEntity.GetInstanceID().ToString()].ToString()
+                this.gameEntityUUIDToSerializedPosition[eUUID].ToString()
             );
             return false;
         }
@@ -82,7 +83,7 @@ public class GameEntityManager : MonoBehaviour
             }
             string sPos = position.ToString();
             this.positionToGameEntity[sPos] = gameEntity;
-            this.gameEntityIdToSerializedPosition[gameEntity.GetInstanceID().ToString()] = sPos;
+            this.gameEntityUUIDToSerializedPosition[eUUID] = sPos;
             if (this.useDebugIndicators)
             {
                 GameObject occupiedIndicatior = Instantiate(this.occupiedIndicatorPrefab, position + new Vector3(0, 0.5f, 0), Quaternion.identity);
@@ -99,6 +100,7 @@ public class GameEntityManager : MonoBehaviour
 
     public bool RemoveGameEntity(GameObject gameEntity, bool forceLoggingOff = false)
     {
+        string eUUID = gameEntity.GetComponent<GameEntity>().uuid;
         Vector3 position = gameEntity.transform.position;
         Quaternion rotation = gameEntity.transform.rotation;
         // check that game entity transform position and tracked position match
@@ -114,7 +116,7 @@ public class GameEntityManager : MonoBehaviour
                     Debug.Log("Removing game entity " + gameEntity.name + " at position " + position.ToString());
                 }
                 this.positionToGameEntity.Remove(sPos);
-                this.gameEntityIdToSerializedPosition.Remove(gameEntity.GetInstanceID().ToString());
+                this.gameEntityUUIDToSerializedPosition.Remove(eUUID);
                 if (this.useDebugIndicators)
                 {
                     GameObject occupiedIndicator = this.positionToOccupiedIndicator[sPos];
@@ -136,7 +138,13 @@ public class GameEntityManager : MonoBehaviour
         var historyStep = new List<GameEntityState>();
         foreach (GameObject entity in this.positionToGameEntity.Values)
         {
-            var entityState = new GameEntityState(entity.GetInstanceID(), entity.transform.position, entity.transform.rotation);
+            var geScript = entity.GetComponent<GameEntity>();
+            var entityState = new GameEntityState(
+                geScript.uuid,
+                geScript.prefab,
+                entity.transform.position,
+                entity.transform.rotation
+            );
             historyStep.Add(entityState);
         }
         this.entityStateHistoryStack.Push(historyStep);
@@ -156,9 +164,9 @@ public class GameEntityManager : MonoBehaviour
                 e.SetActive(false);
             }
             // 2. set entities to previous states and reregister
-            foreach (var s in states)
+            foreach (GameEntityState s in states)
             {
-                GameObject gameEntity = this.GetEntityByInstanceId(s.instanceId);
+                GameObject gameEntity = this.GetEntityByInstanceUUID(s.uuid);
                 if (gameEntity != null)
                 {
                     // Debug.Log("Restoring game entity state at position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
@@ -170,15 +178,19 @@ public class GameEntityManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Could not restore game entity state since null was found");
+                    GameObject spawned = Instantiate(s.prefab, s.position, s.rotation);
+                    spawned.GetComponent<GameEntity>().SetUUID(s.uuid);
+                    this.AddGameEntity(spawned);
                 }
             }
-            // 3. any game entities with a remaining non-active state are de-registered
+            // 3. any game entities with a remaining non-active state are 
+            // de-registered and destroyed
             foreach (GameObject e in entities)
             {
                 if (e.activeSelf == false)
                 {
                     this.RemoveGameEntity(e);
+                    GameObject.Destroy(e);
                 }
             }
         }
@@ -199,20 +211,22 @@ public class GameEntityManager : MonoBehaviour
 
     private string GetSerializedGameEntityPosition(GameObject gameEntity)
     {
-        if (this.gameEntityIdToSerializedPosition.ContainsKey(gameEntity.GetInstanceID().ToString()))
+        string eUUID = gameEntity.GetComponent<GameEntity>().uuid;
+
+        if (this.gameEntityUUIDToSerializedPosition.ContainsKey(eUUID))
         {
-            return this.gameEntityIdToSerializedPosition[gameEntity.GetInstanceID().ToString()];
+            return this.gameEntityUUIDToSerializedPosition[eUUID];
         }
         return null;
     }
 
-    private GameObject GetEntityByInstanceId(int instanceId)
+    private GameObject GetEntityByInstanceUUID(string uuid)
     {
-        foreach (var ge in this.positionToGameEntity.Values)
+        foreach (var e in this.positionToGameEntity.Values)
         {
-            if (ge.GetInstanceID() == instanceId)
+            if (e.GetComponent<GameEntity>().uuid == uuid)
             {
-                return ge;
+                return e;
             }
         }
         return null;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,11 +7,18 @@ public class GameEntity : MonoBehaviour
 {
 
 
+    public string uuid;
+    public GameObject prefab;
     public bool isNewlyCreated = false;
     public List<GameObject> renders;
 
 
     // UNITY HOOKS
+
+    void Awake()
+    {
+        this.uuid = Guid.NewGuid().ToString();
+    }
 
     void Start()
     {
@@ -25,6 +33,11 @@ public class GameEntity : MonoBehaviour
     }
 
     // INTF METHODS
+
+    public void SetUUID(string uuid)
+    {
+        this.uuid = uuid;
+    }
 
     public void SetRenderersSortingLayer(string sortingLayer)
     {

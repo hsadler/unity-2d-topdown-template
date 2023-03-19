@@ -71,10 +71,12 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         if (this.prefab)
         {
             GameObject spawned = Instantiate(this.prefab, quantizedPosition, Quaternion.identity);
-            spawned.GetComponent<GameEntity>().isNewlyCreated = true;
-            spawned.GetComponent<Selectable>().SetSelected(true);
             if (spawned != null)
             {
+                var geScript = spawned.GetComponent<GameEntity>();
+                geScript.prefab = this.prefab;
+                geScript.isNewlyCreated = true;
+                spawned.GetComponent<Selectable>().SetSelected(true);
                 this.playerInputManager.SelectSingleEntity(spawned);
             }
             else

@@ -163,6 +163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6177c2a52727344182799bc5a4f1bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uuid: 
+  prefab: {fileID: 3961495332834830440}
   isNewlyCreated: 0
   renders:
   - {fileID: 401173455705104860}
@@ -181,6 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58cda4a8ae2b5d46afb96f4766d6c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDragging: 0
   invalidDragIndicator: {fileID: 6050672405609462478}
   preDragPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1285987304608708486

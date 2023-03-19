@@ -143,7 +143,9 @@ public class PlayerInputManager : MonoBehaviour
         GameObject spawned = Instantiate(this.inventoryHotkeyPrefab, quantizedPosition, rotation);
         if (spawned != null)
         {
-            spawned.GetComponent<GameEntity>().isNewlyCreated = true;
+            var geScript = spawned.GetComponent<GameEntity>();
+            geScript.prefab = this.inventoryHotkeyPrefab;
+            geScript.isNewlyCreated = true;
         }
         else
         {
