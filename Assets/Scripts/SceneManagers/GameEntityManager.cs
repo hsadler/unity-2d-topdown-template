@@ -146,54 +146,43 @@ public class GameEntityManager : MonoBehaviour
     public bool GoStateHistoryStep(string direction)
     {
         // Debug.Log("doing undo/redo by applying state in direction: " + direction);
-        // go back in history
-        if (direction == "back")
+        List<GameEntityState> states = direction == "back" ? this.entityStateHistoryStack.Previous() : this.entityStateHistoryStack.Next();
+        if (states != null)
         {
-            List<GameEntityState> prevStates = this.entityStateHistoryStack.Previous();
-            if (prevStates != null)
+            var entities = new List<GameObject>(this.positionToGameEntity.Values);
+            // 1. initialize all to non-active for clean slate
+            foreach (GameObject e in entities)
             {
-                var entities = new List<GameObject>(this.positionToGameEntity.Values);
-                // 1. initialize all to non-active for clean slate
-                foreach (GameObject e in entities)
+                e.SetActive(false);
+            }
+            // 2. set entities to previous states and reregister
+            foreach (var s in states)
+            {
+                GameObject gameEntity = this.GetEntityByInstanceId(s.instanceId);
+                if (gameEntity != null)
                 {
-                    e.SetActive(false);
+                    // Debug.Log("Restoring game entity state at position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
+                    gameEntity.SetActive(true);
+                    this.RemoveGameEntity(gameEntity);
+                    gameEntity.transform.position = s.position;
+                    gameEntity.transform.rotation = s.rotation;
+                    this.AddGameEntity(gameEntity);
                 }
-                // 2. set entities to previous states and reregister
-                foreach (var s in prevStates)
+                else
                 {
-                    GameObject gameEntity = this.GetEntityByInstanceId(s.instanceId);
-                    if (gameEntity != null)
-                    {
-                        // Debug.Log("Restoring game entity state at position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
-                        gameEntity.SetActive(true);
-                        this.RemoveGameEntity(gameEntity);
-                        gameEntity.transform.position = s.position;
-                        gameEntity.transform.rotation = s.rotation;
-                        this.AddGameEntity(gameEntity);
-                    }
-                    else
-                    {
-                        Debug.Log("Could not restore game entity state since null was found");
-                    }
-                }
-                // 3. any game entities with a remaining non-active state are de-registered
-                foreach (GameObject e in entities)
-                {
-                    if (e.activeSelf == false)
-                    {
-                        this.RemoveGameEntity(e);
-                    }
+                    Debug.Log("Could not restore game entity state since null was found");
                 }
             }
-            return true;
+            // 3. any game entities with a remaining non-active state are de-registered
+            foreach (GameObject e in entities)
+            {
+                if (e.activeSelf == false)
+                {
+                    this.RemoveGameEntity(e);
+                }
+            }
         }
-        // go forward in history
-        else if (direction == "forward")
-        {
-            // TODO: IMPLEMENT FORWARD
-            return true;
-        }
-        return false;
+        return true;
     }
 
     // IMPL METHODS
