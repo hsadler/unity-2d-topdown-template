@@ -562,12 +562,13 @@ public class PlayerInputManager : MonoBehaviour
         {
             rot -= 90;
         }
-        if (rot != 0)
+        if (rot != 0 && this.currentEntitiesSelected.Count > 0)
         {
             foreach (GameObject e in this.currentEntitiesSelected)
             {
                 e.transform.Rotate(new Vector3(0, 0, rot));
             }
+            PlaySceneManager.instance.gameEntityManager.PushEntityStateHistoryStep();
         }
     }
 

@@ -52,9 +52,9 @@ X make screen edge camera move more forgiving
     X have HistoryStack keep track of "bottom" so that just like "top", you 
         cannot traverse past it
     X implement redo
+    X BUG: rotations do not create history step
     - use own UUIDs for history tracking so that objects can be instantiated and 
         have them reassigned
-    - BUG: rotations do not create history step
 - make multi-select rotations rotate entities together instead of individually
 
 
