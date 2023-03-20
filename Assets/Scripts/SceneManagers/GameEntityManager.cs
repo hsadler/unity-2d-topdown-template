@@ -20,7 +20,7 @@ public class GameEntityManager : MonoBehaviour
 
     // debug
     private bool useLogging = false;
-    private bool useDebugIndicators = true;
+    private bool useDebugIndicators = false;
     public GameObject occupiedIndicatorPrefab;
     private IDictionary<string, GameObject> positionToOccupiedIndicator;
 
@@ -59,7 +59,7 @@ public class GameEntityManager : MonoBehaviour
         return null;
     }
 
-    public bool AddGameEntity(GameObject gameEntity, bool forceLoggingOff = false)
+    public bool AddGameEntity(GameObject gameEntity)
     {
         string eUUID = gameEntity.GetComponent<GameEntity>().uuid;
         Vector3 position = gameEntity.transform.position;
@@ -77,7 +77,7 @@ public class GameEntityManager : MonoBehaviour
         // check if requested position is occupied
         if (!this.PositionIsOccupied(position))
         {
-            if (!forceLoggingOff && this.useLogging)
+            if (this.useLogging)
             {
                 Debug.Log("Adding game entity " + gameEntity.name + " at position " + position.ToString());
             }
@@ -91,14 +91,14 @@ public class GameEntityManager : MonoBehaviour
             }
             return true;
         }
-        if (!forceLoggingOff && this.useLogging)
+        if (this.useLogging)
         {
             Debug.Log("Could NOT add game entity " + gameEntity.name + " at occupied position " + position.ToString());
         }
         return false;
     }
 
-    public bool RemoveGameEntity(GameObject gameEntity, bool forceLoggingOff = false)
+    public bool RemoveGameEntity(GameObject gameEntity)
     {
         string eUUID = gameEntity.GetComponent<GameEntity>().uuid;
         Vector3 position = gameEntity.transform.position;
@@ -111,7 +111,7 @@ public class GameEntityManager : MonoBehaviour
             GameObject gEntityAtPosition = this.positionToGameEntity[sPos];
             if (gEntityAtPosition == gameEntity)
             {
-                if (!forceLoggingOff && this.useLogging)
+                if (this.useLogging)
                 {
                     Debug.Log("Removing game entity " + gameEntity.name + " at position " + position.ToString());
                 }
@@ -126,7 +126,7 @@ public class GameEntityManager : MonoBehaviour
                 return true;
             }
         }
-        if (!forceLoggingOff && this.useLogging)
+        if (this.useLogging)
         {
             Debug.Log("Could NOT remove game entity " + gameEntity.name + " at position " + position.ToString());
         }
@@ -148,12 +148,18 @@ public class GameEntityManager : MonoBehaviour
             historyStep.Add(entityState);
         }
         this.entityStateHistoryStack.Push(historyStep);
-        Debug.Log("pushed entity state history step with length: " + historyStep.Count.ToString());
+        if (this.useLogging)
+        {
+            Debug.Log("pushed entity state history step with length: " + historyStep.Count.ToString());
+        }
     }
 
     public bool GoStateHistoryStep(string direction)
     {
-        // Debug.Log("doing undo/redo by applying state in direction: " + direction);
+        if (this.useLogging)
+        {
+            Debug.Log("doing undo/redo by applying state in direction: " + direction);
+        }
         List<GameEntityState> states = direction == "back" ? this.entityStateHistoryStack.Previous() : this.entityStateHistoryStack.Next();
         if (states != null)
         {
@@ -169,7 +175,10 @@ public class GameEntityManager : MonoBehaviour
                 GameObject gameEntity = this.GetEntityByInstanceUUID(s.uuid);
                 if (gameEntity != null)
                 {
-                    // Debug.Log("Restoring game entity state at position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
+                    if (this.useLogging)
+                    {
+                        Debug.Log("Restoring game entity state at position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
+                    }
                     gameEntity.SetActive(true);
                     this.RemoveGameEntity(gameEntity);
                     gameEntity.transform.position = s.position;
