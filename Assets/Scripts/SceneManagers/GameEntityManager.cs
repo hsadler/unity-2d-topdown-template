@@ -140,10 +140,10 @@ public class GameEntityManager : MonoBehaviour
         {
             var geScript = entity.GetComponent<GameEntity>();
             var entityState = new GameEntityState(
-                geScript.uuid,
-                geScript.prefab,
-                entity.transform.position,
-                entity.transform.rotation
+                uuid: geScript.uuid,
+                prefabName: geScript.prefabName,
+                position: entity.transform.position,
+                rotation: entity.transform.rotation
             );
             historyStep.Add(entityState);
         }
@@ -178,7 +178,8 @@ public class GameEntityManager : MonoBehaviour
                 }
                 else
                 {
-                    GameObject spawned = Instantiate(s.prefab, s.position, s.rotation);
+                    GameObject prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(s.prefabName);
+                    GameObject spawned = Instantiate(prefab, s.position, s.rotation);
                     spawned.GetComponent<GameEntity>().SetUUID(s.uuid);
                     this.AddGameEntity(spawned);
                 }

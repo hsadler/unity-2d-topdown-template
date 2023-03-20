@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uuid: 
-  prefab: {fileID: 2403585086607018275}
+  prefabName: Entity3
   isNewlyCreated: 0
   renders:
   - {fileID: 7429123663600729190}

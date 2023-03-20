@@ -9,15 +9,15 @@ public class GameEntityState
 
 
     public string uuid;
-    public GameObject prefab;
+    public string prefabName;
     public Vector3 position;
     public Quaternion rotation;
 
 
-    public GameEntityState(string uuid, GameObject prefab, Vector3 position, Quaternion rotation)
+    public GameEntityState(string uuid, string prefabName, Vector3 position, Quaternion rotation)
     {
         this.uuid = uuid;
-        this.prefab = prefab;
+        this.prefabName = prefabName;
         this.position = position;
         this.rotation = rotation;
     }

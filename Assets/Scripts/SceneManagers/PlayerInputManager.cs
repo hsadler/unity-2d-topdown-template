@@ -144,7 +144,6 @@ public class PlayerInputManager : MonoBehaviour
         if (spawned != null)
         {
             var geScript = spawned.GetComponent<GameEntity>();
-            geScript.prefab = this.inventoryHotkeyPrefab;
             geScript.isNewlyCreated = true;
         }
         else

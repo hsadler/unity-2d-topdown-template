@@ -7,8 +7,8 @@ public class GameEntity : MonoBehaviour
 {
 
 
+    public string prefabName;
     public string uuid;
-    public GameObject prefab;
     public bool isNewlyCreated = false;
     public List<GameObject> renders;
 

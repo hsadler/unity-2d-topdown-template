@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uuid: 
-  prefab: {fileID: 1609427600843478509}
+  prefabName: Entity1
   isNewlyCreated: 0
   renders:
   - {fileID: 1415950843716393537}
