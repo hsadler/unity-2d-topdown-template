@@ -55,8 +55,6 @@ X make screen edge camera move more forgiving
     X BUG: rotations do not create history step
     X use own UUIDs for history tracking so that objects can be instantiated and 
         have them reassigned
-    - implement deactivation instead of destruction of game entities to enable 
-        history reactivation
     - account for dnd onto same positions (should not cause a history step)
 - make multi-select rotations rotate entities together instead of individually
 

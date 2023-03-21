@@ -595,6 +595,7 @@ public class PlayerInputManager : MonoBehaviour
         }
         if (backOrForward != null)
         {
+            this.InitEntitySelect();
             PlaySceneManager.instance.gameEntityManager.GoStateHistoryStep(backOrForward);
         }
     }
