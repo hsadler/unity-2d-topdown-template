@@ -1318,6 +1318,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Entity3
       objectReference: {fileID: 0}
+    - target: {fileID: 2403585086607018275, guid: d623a297fcd37914f9a9007310a7d722, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2403585086607018285, guid: d623a297fcd37914f9a9007310a7d722, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -2726,6 +2730,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Entity2
       objectReference: {fileID: 0}
+    - target: {fileID: 3961495332834830440, guid: 17808147c89942a4f968627b544ab029, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3961495332834830446, guid: 17808147c89942a4f968627b544ab029, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -2786,6 +2794,10 @@ PrefabInstance:
     - target: {fileID: 1609427600843478509, guid: 289080287c3e3f946a255ba0852f6397, type: 3}
       propertyPath: m_Name
       value: Entity1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609427600843478509, guid: 289080287c3e3f946a255ba0852f6397, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1609427600843478511, guid: 289080287c3e3f946a255ba0852f6397, type: 3}
       propertyPath: m_RootOrder

@@ -133,9 +133,10 @@ public class GameEntityManager : MonoBehaviour
         return false;
     }
 
-    public void PushEntityStateHistoryStep()
+    public void TryPushEntityStateHistoryStep()
     {
-        var historyStep = new List<GameEntityState>();
+        var currentHistoryStep = this.entityStateHistoryStack.GetCurrent();
+        var newHistoryStep = new List<GameEntityState>();
         foreach (GameObject entity in this.positionToGameEntity.Values)
         {
             var geScript = entity.GetComponent<GameEntity>();
@@ -145,12 +146,22 @@ public class GameEntityManager : MonoBehaviour
                 position: entity.transform.position,
                 rotation: entity.transform.rotation
             );
-            historyStep.Add(entityState);
+            newHistoryStep.Add(entityState);
         }
-        this.entityStateHistoryStack.Push(historyStep);
-        if (this.useLogging)
+        if (currentHistoryStep == null || this.IsDiffHistorySteps(newHistoryStep, currentHistoryStep))
         {
-            Debug.Log("pushed entity state history step with length: " + historyStep.Count.ToString());
+            this.entityStateHistoryStack.Push(newHistoryStep);
+            if (this.useLogging)
+            {
+                Debug.Log("pushed entity state history step with length: " + newHistoryStep.Count.ToString());
+            }
+        }
+        else
+        {
+            if (this.useLogging)
+            {
+                Debug.Log("NOT pushing entity state history step since no diff detected or there is no history");
+            }
         }
     }
 
@@ -216,7 +227,7 @@ public class GameEntityManager : MonoBehaviour
         {
             this.AddGameEntity(e);
         }
-        this.PushEntityStateHistoryStep();
+        this.TryPushEntityStateHistoryStep();
     }
 
     private string GetSerializedGameEntityPosition(GameObject gameEntity)
@@ -240,6 +251,12 @@ public class GameEntityManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private bool IsDiffHistorySteps(List<GameEntityState> historyStep1, List<GameEntityState> historyStep2)
+    {
+        // TODO: implement STUB
+        return true;
     }
 
 

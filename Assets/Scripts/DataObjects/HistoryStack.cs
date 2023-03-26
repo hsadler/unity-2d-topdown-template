@@ -23,6 +23,15 @@ class HistoryStack<T>
         this.cursor = -1;
     }
 
+    public T GetCurrent()
+    {
+        if (this.cursor > -1)
+        {
+            return this.items[this.cursor];
+        }
+        return default(T);
+    }
+
     public void Push(T item)
     {
         // push state forward, top of stack always considered to be last pushed 

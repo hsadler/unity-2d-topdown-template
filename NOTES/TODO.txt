@@ -62,6 +62,8 @@ X make screen edge camera move more forgiving
 BUGS:
 X multiple placement bug when in inventory hotkey mode
 - switching modes while dragging causes placement bugs
+- still some buggy behaviour where entities are not being tracked by the 
+    GameEntityManager
 
 
 SYSTEM/CODE REFACTORS:
@@ -73,6 +75,8 @@ X better separation of entity space occupation from selection and drag-drop
 LATER:
 - game play/pause/restart system and controls
 - add controls instructions
+- copy paste (single and multi)
+- save system
 
 
 MAYBE:

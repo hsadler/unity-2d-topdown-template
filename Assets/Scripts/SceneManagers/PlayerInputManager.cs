@@ -365,7 +365,7 @@ public class PlayerInputManager : MonoBehaviour
             else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
             {
                 this.HandleHotkeyEntityPlacement();
-                PlaySceneManager.instance.gameEntityManager.PushEntityStateHistoryStep();
+                PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
             }
         }
         // mouse move
@@ -549,7 +549,7 @@ public class PlayerInputManager : MonoBehaviour
             e.GetComponent<GameEntity>().isNewlyCreated = false;
             PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
         }
-        PlaySceneManager.instance.gameEntityManager.PushEntityStateHistoryStep();
+        PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
     }
 
     private void HandleEntityRotation()
@@ -569,7 +569,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 e.transform.Rotate(new Vector3(0, 0, rot));
             }
-            PlaySceneManager.instance.gameEntityManager.PushEntityStateHistoryStep();
+            PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
         }
     }
 
@@ -578,7 +578,7 @@ public class PlayerInputManager : MonoBehaviour
         if (this.currentEntitiesSelected.Count > 0 && Input.GetKeyDown(GameSettings.DELETE_ENTITIES_KEY))
         {
             this.DeleteSelectedEntities();
-            PlaySceneManager.instance.gameEntityManager.PushEntityStateHistoryStep();
+            PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
         }
     }
 
