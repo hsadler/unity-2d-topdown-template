@@ -148,7 +148,6 @@ public class GameEntityManager : MonoBehaviour
             );
             newHistoryStep.Add(entityState);
         }
-        // if (currentHistoryStep == null || 
         if (this.IsDiffHistorySteps(newHistoryStep, currentHistoryStep))
         {
             this.entityStateHistoryStack.Push(newHistoryStep);
