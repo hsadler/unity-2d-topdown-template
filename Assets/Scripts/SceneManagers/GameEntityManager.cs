@@ -20,7 +20,7 @@ public class GameEntityManager : MonoBehaviour
 
     // debug
     private bool useLogging = false;
-    private bool useDebugIndicators = false;
+    private bool useDebugIndicators = true;
     public GameObject occupiedIndicatorPrefab;
     private IDictionary<string, GameObject> positionToOccupiedIndicator;
 
@@ -148,7 +148,8 @@ public class GameEntityManager : MonoBehaviour
             );
             newHistoryStep.Add(entityState);
         }
-        if (currentHistoryStep == null || this.IsDiffHistorySteps(newHistoryStep, currentHistoryStep))
+        // if (currentHistoryStep == null || 
+        if (this.IsDiffHistorySteps(newHistoryStep, currentHistoryStep))
         {
             this.entityStateHistoryStack.Push(newHistoryStep);
             if (this.useLogging)
@@ -255,8 +256,55 @@ public class GameEntityManager : MonoBehaviour
 
     private bool IsDiffHistorySteps(List<GameEntityState> historyStep1, List<GameEntityState> historyStep2)
     {
-        // TODO: implement STUB
-        return true;
+        if (historyStep1 == null || historyStep2 == null)
+        {
+            if (this.useLogging)
+            {
+                Debug.Log("One of the diffed history steps is null");
+            }
+            return true;
+        }
+        Dictionary<string, GameEntityState> uuidToGameEntityState = new Dictionary<string, GameEntityState>();
+        foreach (var s in historyStep1)
+        {
+            uuidToGameEntityState.Add(s.uuid, s);
+        }
+        foreach (var s2 in historyStep2)
+        {
+            if (uuidToGameEntityState.ContainsKey(s2.uuid))
+            {
+                GameEntityState s1 = uuidToGameEntityState[s2.uuid];
+                if (
+                    s1.prefabName == s2.prefabName &&
+                    s1.position == s2.position &&
+                    s1.rotation == s2.rotation
+                )
+                {
+                    // pass
+                }
+                else
+                {
+                    if (this.useLogging)
+                    {
+                        Debug.Log("A history step diff was found");
+                    }
+                    return true;
+                }
+            }
+            else
+            {
+                if (this.useLogging)
+                {
+                    Debug.Log("A history step diff was found");
+                }
+                return true;
+            }
+        }
+        if (this.useLogging)
+        {
+            Debug.Log("A history step diff was NOT found");
+        }
+        return false;
     }
 
 
