@@ -48,14 +48,14 @@ X make escape key function differently per context:
     X exit inventory-hotkey mode
 X add telemetry ui for testing
 X make screen edge camera move more forgiving
-- undo/redo system, buttons, and hotkeys:
+X undo/redo system, buttons, and hotkeys:
     X have HistoryStack keep track of "bottom" so that just like "top", you 
         cannot traverse past it
     X implement redo
     X BUG: rotations do not create history step
     X use own UUIDs for history tracking so that objects can be instantiated and 
         have them reassigned
-    - account for dnd onto same positions (should not cause a history step)
+    X account for dnd onto same positions (should not cause a history step)
 - make multi-select rotations rotate entities together instead of individually
 
 
