@@ -57,10 +57,16 @@ X undo/redo system, buttons, and hotkeys:
         have them reassigned
     X account for dnd onto same positions (should not cause a history step)
 - make multi-select rotations rotate entities together instead of individually
+- copy paste (single and multi)
+- game play/pause/restart system and controls:
+    - play tick system
+    - add some entity automated behaviors
+    - entity automated behaviors are triggered at every tick
 
 
 BUGS:
 X multiple placement bug when in inventory hotkey mode
+- some history step tracking is being skipped 
 - switching modes while dragging causes placement bugs
 - still some buggy behaviour where entities are not being tracked by the 
     GameEntityManager
@@ -73,9 +79,7 @@ X better separation of entity space occupation from selection and drag-drop
 
 
 LATER:
-- game play/pause/restart system and controls
 - add controls instructions
-- copy paste (single and multi)
 - save system
 
 

@@ -72,6 +72,7 @@ public class PlayerInputManager : MonoBehaviour
             this.HandleEntityDeleteByKeyDown();
             this.HandleEntityRotation();
             this.HandleEntityStateUndoRedo();
+            this.HandleEntityCopyPaste();
             this.HandleMouseEntityInteraction();
         }
     }
@@ -554,6 +555,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityRotation()
     {
+        // TODO: implement multi rotation handling here
         int rot = 0;
         if (Input.GetKeyDown(GameSettings.ROTATE_ENTITIES_LEFT_KEY))
         {
@@ -598,6 +600,12 @@ public class PlayerInputManager : MonoBehaviour
             this.InitEntitySelect();
             PlaySceneManager.instance.gameEntityManager.GoStateHistoryStep(backOrForward);
         }
+    }
+
+    private void HandleEntityCopyPaste()
+    {
+        // STUB
+        // TODO: implement copy & paste handling here
     }
 
     private void HandleHotkeyEntityPlacement()
