@@ -255,31 +255,43 @@ public class GameEntityManager : MonoBehaviour
 
     private bool IsDiffHistorySteps(List<GameEntityState> historyStep1, List<GameEntityState> historyStep2)
     {
-        if (historyStep1 == null || historyStep2 == null)
+        return Diff(historyStep1, historyStep2) || Diff(historyStep2, historyStep1);
+        bool Diff(List<GameEntityState> historyStep1, List<GameEntityState> historyStep2)
         {
-            if (this.useLogging)
+            if (historyStep1 == null || historyStep2 == null)
             {
-                Debug.Log("One of the diffed history steps is null");
-            }
-            return true;
-        }
-        Dictionary<string, GameEntityState> uuidToGameEntityState = new Dictionary<string, GameEntityState>();
-        foreach (var s in historyStep1)
-        {
-            uuidToGameEntityState.Add(s.uuid, s);
-        }
-        foreach (var s2 in historyStep2)
-        {
-            if (uuidToGameEntityState.ContainsKey(s2.uuid))
-            {
-                GameEntityState s1 = uuidToGameEntityState[s2.uuid];
-                if (
-                    s1.prefabName == s2.prefabName &&
-                    s1.position == s2.position &&
-                    s1.rotation == s2.rotation
-                )
+                if (this.useLogging)
                 {
-                    // pass
+                    Debug.Log("One of the diffed history steps is null");
+                }
+                return true;
+            }
+            Dictionary<string, GameEntityState> uuidToGameEntityState = new Dictionary<string, GameEntityState>();
+            foreach (var s in historyStep1)
+            {
+                uuidToGameEntityState.Add(s.uuid, s);
+            }
+            foreach (var s2 in historyStep2)
+            {
+                if (uuidToGameEntityState.ContainsKey(s2.uuid))
+                {
+                    GameEntityState s1 = uuidToGameEntityState[s2.uuid];
+                    if (
+                        s1.prefabName == s2.prefabName &&
+                        s1.position == s2.position &&
+                        s1.rotation == s2.rotation
+                    )
+                    {
+                        // pass
+                    }
+                    else
+                    {
+                        if (this.useLogging)
+                        {
+                            Debug.Log("A history step diff was found");
+                        }
+                        return true;
+                    }
                 }
                 else
                 {
@@ -290,20 +302,12 @@ public class GameEntityManager : MonoBehaviour
                     return true;
                 }
             }
-            else
+            if (this.useLogging)
             {
-                if (this.useLogging)
-                {
-                    Debug.Log("A history step diff was found");
-                }
-                return true;
+                Debug.Log("A history step diff was NOT found");
             }
+            return false;
         }
-        if (this.useLogging)
-        {
-            Debug.Log("A history step diff was NOT found");
-        }
-        return false;
     }
 
 
