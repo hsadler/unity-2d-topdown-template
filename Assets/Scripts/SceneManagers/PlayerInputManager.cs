@@ -605,7 +605,17 @@ public class PlayerInputManager : MonoBehaviour
     private void HandleEntityCopyPaste()
     {
         // STUB
-        // TODO: implement copy & paste handling here
+        if(Input.GetKey(GameSettings.CTL_Key))
+        {
+            if(Input.GetKeyDown(GameSettings.COPY_Key))
+            {
+                // TODO: implement copy
+            }
+            else if(Input.GetKeyDown(GameSettings.PASTE_Key))
+            {
+                // TODO: implement paste
+            }
+        }
     }
 
     private void HandleHotkeyEntityPlacement()

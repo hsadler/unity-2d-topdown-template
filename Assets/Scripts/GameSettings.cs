@@ -36,6 +36,9 @@ public class GameSettings
     public const KeyCode ADDITIVE_SELECTION_KEY = KeyCode.LeftShift;
     public const KeyCode UNDO_KEY = KeyCode.Comma;
     public const KeyCode REDO_KEY = KeyCode.Period;
+    public const KeyCode CTL_Key = KeyCode.LeftControl;
+    public const KeyCode COPY_Key = KeyCode.C;
+    public const KeyCode PASTE_Key = KeyCode.V;
 
 
     // renderer sorting layers
