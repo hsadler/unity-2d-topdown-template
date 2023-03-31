@@ -35,6 +35,9 @@ public class PlayerInputManager : MonoBehaviour
     private List<GameObject> currentEntitiesSelected = new List<GameObject>();
     private IDictionary<int, Vector3> entityIdToMouseOffset;
 
+    // entity copy + paste
+    private List<GameObject> copyPasteEntities = new List<GameObject>();
+
     // inventory hotkey
     public List<InventoryItem> inventoryItemScripts = new List<InventoryItem>();
     private GameObject inventoryHotkeyPrefab;
@@ -604,16 +607,18 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityCopyPaste()
     {
-        // STUB
-        if(Input.GetKey(GameSettings.CTL_Key))
+        if (Input.GetKey(GameSettings.CTL_Key) || Input.GetKey(GameSettings.CMD_Key))
         {
-            if(Input.GetKeyDown(GameSettings.COPY_Key))
+            if (Input.GetKeyDown(GameSettings.COPY_Key))
             {
                 // TODO: implement copy
+                Debug.Log("Doing copy...");
+                this.copyPasteEntities = new List<GameObject>(this.currentEntitiesSelected);
             }
-            else if(Input.GetKeyDown(GameSettings.PASTE_Key))
+            else if (Input.GetKeyDown(GameSettings.PASTE_Key))
             {
                 // TODO: implement paste
+                Debug.Log("Doing paste...");
             }
         }
     }
