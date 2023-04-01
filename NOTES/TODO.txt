@@ -56,12 +56,9 @@ X undo/redo system, buttons, and hotkeys:
     X use own UUIDs for history tracking so that objects can be instantiated and 
         have them reassigned
     X account for dnd onto same positions (should not cause a history step)
+- fix game entity management BUGS
 - make multi-select rotations rotate entities together instead of individually
 - copy paste (single and multi)
-- game play/pause/restart system and controls:
-    - play tick system
-    - add some entity automated behaviors
-    - entity automated behaviors are triggered at every tick
 
 
 BUGS:
@@ -74,13 +71,19 @@ X multiple placement bug when in inventory hotkey mode
 
 SYSTEM/CODE REFACTORS:
 X better separation of entity space occupation from selection and drag-drop
+- create central system for setting avail inventory items based on what's placed 
+    on the inventory bar
 - (maybe) PlayerInputManager has too much responsibility. Break it up.
 - (maybe) move selected entity data management to GameEntityManager
 
 
 LATER:
-- add controls instructions
+- game play/pause/restart system and controls:
+    - play tick system
+    - add some entity automated behaviors
+    - entity automated behaviors are triggered at every tick
 - save system
+- add controls instructions
 
 
 MAYBE:
