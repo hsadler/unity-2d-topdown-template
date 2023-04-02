@@ -75,7 +75,7 @@ public class PlayerInputManager : MonoBehaviour
             this.HandleEntityDeleteByKeyDown();
             this.HandleEntityRotation();
             this.HandleEntityStateUndoRedo();
-            this.HandleEntityCopyPaste();
+            // this.HandleEntityCopyPaste();
             this.HandleMouseEntityInteraction();
         }
     }
