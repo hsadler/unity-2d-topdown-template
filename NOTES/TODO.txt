@@ -59,6 +59,12 @@ X undo/redo system, buttons, and hotkeys:
 - fix game entity management BUGS
 - make multi-select rotations rotate entities together instead of individually
 - copy paste (single and multi)
+- create test scene for testing various entity behaviors:
+    - draggable vs. not draggable
+    - removable vs. not removable
+    - selectable vs. not selectable
+    - turnable vs. not turnable
+    - automatic behaviors such as movement and rotation
 
 
 BUGS:

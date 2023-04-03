@@ -305,10 +305,11 @@ public class PlayerInputManager : MonoBehaviour
             }
             else if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
             {
-                // entity click
+                // entity click and start drag
                 if (this.hoveredEntity != null)
                 {
                     this.HandleEntityClicked(this.hoveredEntity);
+                    this.HandleEntityDrag();
                 }
                 // initialize the selection-box
                 else
