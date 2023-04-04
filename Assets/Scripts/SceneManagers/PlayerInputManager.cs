@@ -309,6 +309,8 @@ public class PlayerInputManager : MonoBehaviour
                 if (this.hoveredEntity != null)
                 {
                     this.HandleEntityClicked(this.hoveredEntity);
+                    // NOTE: this is required in order to make sure the entity 
+                    // is in a drag state for the next frame update
                     this.HandleEntityDrag();
                 }
                 // initialize the selection-box
