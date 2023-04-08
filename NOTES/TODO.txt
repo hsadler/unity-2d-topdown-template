@@ -57,6 +57,7 @@ X undo/redo system, buttons, and hotkeys:
         have them reassigned
     X account for dnd onto same positions (should not cause a history step)
 - fix game entity management BUGS
+- make all multiplace hotkey changes result in separate history steps
 - make multi-select rotations rotate entities together instead of individually
 - copy paste (single and multi)
 - create test scene for testing various entity behaviors:
@@ -68,16 +69,11 @@ X undo/redo system, buttons, and hotkeys:
 
 
 BUGS:
-X switching modes while dragging causes placement bugs (not seeing anymore)
-X some history tracking steps are being skipped (not seeing anymore)
-X pure drag BUG: Without creating or destroying entities, there's an 
-    occasional bug where a simple drag causes an entity's position to no 
-    longer be tracked properly and ends up tracking the prior position. This 
-    position dot is still left in the prior position while dragging and it 
-    remains there after the drop. It seems to happen on a fast drag where 
-    the position dot is not given enough time to be removed from the scene.
-- rotation while dragging BUG: Rotating while dragging causes a history step to 
-    be added where the entities rotated are deleted.
+- BUG: Multi-drag resulting in placement where another block was previously 
+    occupying causes duplicate entity bug when using history.
+- BUG: Rotating while dragging causes a history step to be added where the 
+    entities rotated are deleted.
+- INVESTIGATE: tracking lost when doing multi-placement
 
 
 SYSTEM/CODE REFACTORS:
