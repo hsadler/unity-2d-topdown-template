@@ -180,18 +180,34 @@ public class GameEntityManager : MonoBehaviour
             {
                 e.SetActive(false);
             }
-            // 2. set entities to previous states and reregister
+
+            // 2. gather game entity game objects to be processed and remove from board tracking
+            var uuidToGameEntity = new Dictionary<string, GameObject>();
             foreach (GameEntityState s in states)
             {
                 GameObject gameEntity = this.GetEntityByInstanceUUID(s.uuid);
                 if (gameEntity != null)
                 {
+                    uuidToGameEntity.Add(s.uuid, gameEntity);
+                    this.RemoveGameEntity(gameEntity);
+                }
+            }
+
+            // 3. set entities to previous states and add to board tracking
+            foreach (GameEntityState s in states)
+            {
+                if (this.useLogging)
+                {
+                    Debug.Log("Procesing game-entity-state with UUID: " + s.uuid);
+                }
+                if (uuidToGameEntity.ContainsKey(s.uuid))
+                {
+                    GameObject gameEntity = uuidToGameEntity[s.uuid];
                     if (this.useLogging)
                     {
-                        Debug.Log("Restoring game entity state at position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
+                        Debug.Log("Restoring game entity: " + gameEntity.name + " from state with position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
                     }
                     gameEntity.SetActive(true);
-                    this.RemoveGameEntity(gameEntity);
                     gameEntity.transform.position = s.position;
                     gameEntity.transform.rotation = s.rotation;
                     this.AddGameEntity(gameEntity);
@@ -200,12 +216,15 @@ public class GameEntityManager : MonoBehaviour
                 {
                     GameObject prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(s.prefabName);
                     GameObject spawned = Instantiate(prefab, s.position, s.rotation);
+                    if (this.useLogging)
+                    {
+                        Debug.Log("Instantiated game entity: " + spawned.name + " from state with position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
+                    }
                     spawned.GetComponent<GameEntity>().SetUUID(s.uuid);
                     this.AddGameEntity(spawned);
                 }
             }
-            // 3. any game entities with a remaining non-active state are 
-            // de-registered and destroyed
+            // 4. any game entities with a remaining non-active state are de-registered and destroyed
             foreach (GameObject e in entities)
             {
                 if (e.activeSelf == false)
