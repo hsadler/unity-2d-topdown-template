@@ -56,8 +56,7 @@ X undo/redo system, buttons, and hotkeys:
     X use own UUIDs for history tracking so that objects can be instantiated and 
         have them reassigned
     X account for dnd onto same positions (should not cause a history step)
-- fix game entity management BUGS
-- make all multiplace hotkey changes result in separate history steps
+X fix game entity management BUGS
 - make multi-select rotations rotate entities together instead of individually
 - copy paste (single and multi)
 - create test scene for testing various entity behaviors:
@@ -69,11 +68,11 @@ X undo/redo system, buttons, and hotkeys:
 
 
 BUGS:
-- BUG: Multi-drag resulting in placement where another block was previously 
+X BUG: Multi-drag resulting in placement where another block was previously 
     occupying causes duplicate entity bug when using history.
-- BUG: Rotating while dragging causes a history step to be added where the 
+X BUG: Rotating while dragging causes a history step to be added where the 
     entities rotated are deleted.
-- INVESTIGATE: tracking lost when doing multi-placement
+X INVESTIGATE: tracking lost when doing multi-placement
 
 
 SYSTEM/CODE REFACTORS:

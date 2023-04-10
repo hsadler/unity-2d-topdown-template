@@ -29,6 +29,7 @@ public class PlayerInputManager : MonoBehaviour
     public GameObject selectionBoxPrefab;
     public GameObject selectionBoxGO;
     private bool mouseIsUIHovered;
+    private bool isEntityDragging;
 
     // entity selection
     private GameObject hoveredEntity;
@@ -52,6 +53,8 @@ public class PlayerInputManager : MonoBehaviour
     void Start()
     {
         this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
+        this.mouseIsUIHovered = false;
+        this.isEntityDragging = false;
         this.MenuGO.SetActive(false);
         this.targetCameraSize = Camera.main.orthographicSize;
         this.targetCameraPositionWorld = Camera.main.transform.position;
@@ -73,10 +76,11 @@ public class PlayerInputManager : MonoBehaviour
             this.HandleCameraZoom();
             // entity interaction
             this.HandleEntityDeleteByKeyDown();
-            this.HandleEntityRotation();
-            this.HandleEntityStateUndoRedo();
-            // this.HandleEntityCopyPaste();
             this.HandleMouseEntityInteraction();
+            this.HandleEntityRotation();
+            // TODO: enable when ready
+            // this.HandleEntityCopyPaste();
+            this.HandleEntityStateUndoRedo();
         }
     }
 
@@ -312,6 +316,7 @@ public class PlayerInputManager : MonoBehaviour
                     // NOTE: this is required in order to make sure the entity 
                     // is in a drag state for the next frame update
                     this.HandleEntityDrag();
+                    this.isEntityDragging = true;
                 }
                 // initialize the selection-box
                 else
@@ -339,6 +344,7 @@ public class PlayerInputManager : MonoBehaviour
                 else
                 {
                     this.HandleEntityDrag();
+                    this.isEntityDragging = true;
                 }
             }
             // continue dropping inventory-hotkey entities
@@ -366,6 +372,7 @@ public class PlayerInputManager : MonoBehaviour
                 else
                 {
                     this.HandleEntityDrop();
+                    this.isEntityDragging = false;
                 }
             }
             // drop final entity from inventory-hotkey drag
@@ -577,7 +584,11 @@ public class PlayerInputManager : MonoBehaviour
             {
                 e.transform.Rotate(new Vector3(0, 0, rot));
             }
-            PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
+            // push history step only if input mode is default and entities are not currently being dragged
+            if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT && !this.isEntityDragging)
+            {
+                PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
+            }
         }
     }
 
