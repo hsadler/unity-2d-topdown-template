@@ -34,24 +34,28 @@ TEST BEHAVIOR MANUALLY:
 - selected entities can be deleted with Backspace hotkey
 - entity item hover over UI delete zones results in display of delete indicator
 
-// inventory
+// inventory dnd
 - single entity creation with dnd from inventory-item UI
 - inventory-item click results in create and delete of entity
 - inventory-item dnd over existing entity results in delete of created entity
 - inventory-item drag over existing entity results in display of illegal placement indicator
 
-// inventory hotkey
-- hotkey press results in inventory-hotkey placement mode
-- inventory-hotkey mode is toggleable with second press of the same hotkey
-- inventory-hotkey mode switch to different inventory item if second press is a different hotkey
-- inventory-hotkey mode results in entity following the mouse cursor
+// inventory multi-placement
+- hotkey press results in multi-placement mode
+- multi-placement mode is toggleable with additional press of the same hotkey
+- multi-placement mode switch to different inventory item if additional press is a different hotkey
+- multi-placement mode results in entity following the mouse cursor
 - lmb-click results in entity placement
+- entity to be placed is rotatable
 - placed enities are not selected and have a default appearance
-- multiple placements are possible as long as inventory-hotkey mode is active
-- camera movement and zoom are possible while in inventory-hotkey mode
-- selection is not possible in inventory-hotkey mode
-- mouse over existing entity, while in inventory-hotkey mode, results in display of illegal placement indicator
+- multiple placements are possible as long as multi-placement mode is active
+- camera movement and zoom are possible while in multi-placement mode
+- selection is not possible in multi-placement mode
+- mouse over existing entity, while in multi-placement mode, results in display of illegal placement indicator
 - placement while over existing entity results in a noop
+
+// undo/redo history
+- TODO
 
 // menu modal
 - esc toggles menu

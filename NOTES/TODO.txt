@@ -57,6 +57,8 @@ X undo/redo system, buttons, and hotkeys:
         have them reassigned
     X account for dnd onto same positions (should not cause a history step)
 X fix game entity management BUGS
+- rename entity-hotkey mode to multi-place mode (and other renaming)
+- add undo/redo history behavioral descriptions to MANUAL_TESTING doc
 - make multi-select rotations rotate entities together instead of individually
 - copy paste (single and multi)
 - create test scene for testing various entity behaviors:

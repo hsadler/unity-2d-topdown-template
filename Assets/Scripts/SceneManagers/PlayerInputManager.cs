@@ -179,7 +179,7 @@ public class PlayerInputManager : MonoBehaviour
         if (Input.GetKeyDown(GameSettings.ESC_KEY))
         {
             // exit inventory hotkey mode
-            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
+            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
             {
                 this.ClearInventoryHotkeyEntity();
                 this.DeleteSelectedEntities();
@@ -325,7 +325,7 @@ public class PlayerInputManager : MonoBehaviour
                 }
             }
             // place inventory-hotkey entity
-            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
+            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
             {
                 this.HandleHotkeyEntityPlacement();
             }
@@ -348,7 +348,7 @@ public class PlayerInputManager : MonoBehaviour
                 }
             }
             // continue dropping inventory-hotkey entities
-            else if (!this.mouseIsUIHovered && this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
+            else if (!this.mouseIsUIHovered && this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
             {
                 this.HandleEntityDrag();
                 this.HandleHotkeyEntityPlacement();
@@ -376,7 +376,7 @@ public class PlayerInputManager : MonoBehaviour
                 }
             }
             // drop final entity from inventory-hotkey drag
-            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
+            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
             {
                 this.HandleHotkeyEntityPlacement();
                 PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
@@ -385,7 +385,7 @@ public class PlayerInputManager : MonoBehaviour
         // mouse move
         else
         {
-            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_HOTKEY)
+            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
             {
                 this.HandleEntityDrag();
             }
