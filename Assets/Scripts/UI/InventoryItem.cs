@@ -11,7 +11,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     public string entityName;
 
     private GameObject prefab;
-    private bool isHotkeyActive = false;
+    private bool isInventoryKeyActive = false;
 
     private IDictionary<string, string> keycodeToHumanReadable = new Dictionary<string, string>()
     {
@@ -21,7 +21,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     };
 
     // child references
-    public GameObject hotkeyDisplay;
+    public GameObject inventoryKeyDisplay;
 
     // manager refs
     private PlayerInputManager playerInputManager;
@@ -36,17 +36,17 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         if (this.keyCode != KeyCode.None && this.entityName.Length > 0)
         {
             this.prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(this.entityName);
-            this.hotkeyDisplay.GetComponent<TextMeshProUGUI>().text = this.keycodeToHumanReadable[this.keyCode.ToString()];
+            this.inventoryKeyDisplay.GetComponent<TextMeshProUGUI>().text = this.keycodeToHumanReadable[this.keyCode.ToString()];
         }
         else
         {
-            this.hotkeyDisplay.GetComponent<TextMeshProUGUI>().text = "";
+            this.inventoryKeyDisplay.GetComponent<TextMeshProUGUI>().text = "";
         }
     }
 
     void Update()
     {
-        this.HandleInventoryHotkey();
+        this.HandleInventoryKeyPress();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -56,9 +56,9 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
 
     // INTF METHODS
 
-    public void DeactivateHotkey()
+    public void DeactivateInventoryKey()
     {
-        this.isHotkeyActive = false;
+        this.isInventoryKeyActive = false;
     }
 
     // IMPL METHODS
@@ -85,19 +85,19 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         }
     }
 
-    private void HandleInventoryHotkey()
+    private void HandleInventoryKeyPress()
     {
         // key match
         if (this.keyCode != KeyCode.None && Input.GetKeyDown(this.keyCode))
         {
-            bool isToggleCurrentSelectedOff = this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE && this.isHotkeyActive;
-            // already a selected hotkey condition
+            bool isToggleCurrentSelectedOff = this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE && this.isInventoryKeyActive;
+            // already a selected an inventory key
             if (this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
             {
                 this.playerInputManager.DeleteSelectedEntities();
                 this.playerInputManager.ClearInventoryHotkeyEntity();
             }
-            // fresh selected hotkey condition
+            // fresh selected inventory key
             else
             {
                 this.playerInputManager.InitEntitySelect();
@@ -106,7 +106,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
             this.playerInputManager.inputMode = GameSettings.INPUT_MODE_DEFAULT;
             foreach (var inventoryItemScript in this.playerInputManager.inventoryItemScripts)
             {
-                inventoryItemScript.isHotkeyActive = false;
+                inventoryItemScript.isInventoryKeyActive = false;
             }
             // action is toggle-off, so noop
             if (isToggleCurrentSelectedOff)
@@ -120,7 +120,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
                 GameObject spawned = this.playerInputManager.CreateInventoryHotkeyEntity(this.playerInputManager.inventoryHotkeyMemRotation);
                 this.playerInputManager.SelectSingleEntity(spawned);
                 this.playerInputManager.inputMode = GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE;
-                this.isHotkeyActive = true;
+                this.isInventoryKeyActive = true;
             }
         }
     }

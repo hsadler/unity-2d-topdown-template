@@ -188,7 +188,7 @@ public class PlayerInputManager : MonoBehaviour
                 // manually deactivate all inventory item flags
                 foreach (GameObject inventoryItem in GameObject.FindGameObjectsWithTag("InventoryItem"))
                 {
-                    inventoryItem.GetComponent<InventoryItem>().DeactivateHotkey();
+                    inventoryItem.GetComponent<InventoryItem>().DeactivateInventoryKey();
                 }
             }
             // deselect entities
@@ -327,7 +327,7 @@ public class PlayerInputManager : MonoBehaviour
             // place inventory-hotkey entity
             else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
             {
-                this.HandleHotkeyEntityPlacement();
+                this.HandleMultiEntityPlacement();
             }
         }
         // button held
@@ -351,7 +351,7 @@ public class PlayerInputManager : MonoBehaviour
             else if (!this.mouseIsUIHovered && this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
             {
                 this.HandleEntityDrag();
-                this.HandleHotkeyEntityPlacement();
+                this.HandleMultiEntityPlacement();
             }
         }
         // button up
@@ -378,7 +378,7 @@ public class PlayerInputManager : MonoBehaviour
             // drop final entity from inventory-hotkey drag
             else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
             {
-                this.HandleHotkeyEntityPlacement();
+                this.HandleMultiEntityPlacement();
                 PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
             }
         }
@@ -637,7 +637,7 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    private void HandleHotkeyEntityPlacement()
+    private void HandleMultiEntityPlacement()
     {
         bool dropIsValid = true;
         foreach (GameObject e in this.currentEntitiesSelected)

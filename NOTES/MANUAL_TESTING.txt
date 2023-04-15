@@ -31,7 +31,7 @@ TEST BEHAVIOR MANUALLY:
 - multi entity delete by dnd over delete UI
 - single entity delete by dnd over inventory UI
 - multi entity delete by dnd over inventory UI
-- selected entities can be deleted with Backspace hotkey
+- selected entities can be deleted with Backspace key
 - entity item hover over UI delete zones results in display of delete indicator
 
 // inventory dnd
@@ -41,9 +41,9 @@ TEST BEHAVIOR MANUALLY:
 - inventory-item drag over existing entity results in display of illegal placement indicator
 
 // inventory multi-placement
-- hotkey press results in multi-placement mode
-- multi-placement mode is toggleable with additional press of the same hotkey
-- multi-placement mode switch to different inventory item if additional press is a different hotkey
+- inventory key press results in multi-placement mode
+- multi-placement mode is toggleable with additional press of the same inventory key
+- multi-placement mode switch to different inventory item if additional press is a different inventory key
 - multi-placement mode results in entity following the mouse cursor
 - lmb-click results in entity placement
 - entity to be placed is rotatable
@@ -63,6 +63,6 @@ TEST BEHAVIOR MANUALLY:
 - menu button press "quit" quits game
 
 // mode switches
-- entering inventory-hotkey mode deselects all entities
+- entering multi-placement mode deselects all entities
 - entering menu-mode deselects all entities and cancels other modes
 - exiting menu-mode enters default-mode
