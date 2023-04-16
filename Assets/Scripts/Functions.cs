@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -15,6 +16,14 @@ public class Functions
             (int)Math.Round(v.y, 0),
             (int)Math.Round(v.z, 0)
         );
+    }
+
+    // borrowed from: https://answers.unity.com/questions/164257/find-the-average-of-10-vectors.html
+    public static Vector3 VectorMidpoint(List<Vector3> vectors)
+    {
+        var midpoint = vectors.Aggregate(Vector3.zero, (acc, v) => acc + v) / vectors.Count;
+        Debug.Log("midpoint: " + midpoint.ToString());
+        return midpoint;
     }
 
 

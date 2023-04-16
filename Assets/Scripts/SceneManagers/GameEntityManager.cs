@@ -19,8 +19,8 @@ public class GameEntityManager : MonoBehaviour
     private HistoryStack<List<GameEntityState>> entityStateHistoryStack;
 
     // debug
-    private bool useLogging = false;
-    private bool useDebugIndicators = false;
+    private bool useLogging = true;
+    private bool useDebugIndicators = true;
     public GameObject occupiedIndicatorPrefab;
     private IDictionary<string, GameObject> positionToOccupiedIndicator;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -38,6 +39,7 @@ public class PlayerInputManager : MonoBehaviour
 
     // entity copy + paste
     private List<GameObject> copyPasteEntities = new List<GameObject>();
+    private IDictionary<int, Vector3> entityIdToCopyPastePointOffset;
 
     // inventory multi-placement
     public List<InventoryItem> inventoryItemScripts = new List<InventoryItem>();
@@ -60,6 +62,8 @@ public class PlayerInputManager : MonoBehaviour
         this.targetCameraPositionWorld = Camera.main.transform.position;
         this.selectionBoxGO = Instantiate(this.selectionBoxPrefab, Vector3.zero, Quaternion.identity);
         this.selectionBoxGO.SetActive(false);
+        this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
+        this.entityIdToCopyPastePointOffset = new Dictionary<int, Vector3>();
     }
 
     void Update()
@@ -78,8 +82,7 @@ public class PlayerInputManager : MonoBehaviour
             this.HandleEntityDeleteByKeyDown();
             this.HandleMouseEntityInteraction();
             this.HandleEntityRotation();
-            // TODO: enable when ready
-            // this.HandleEntityCopyPaste();
+            this.HandleEntityCopyPaste();
             this.HandleEntityStateUndoRedo();
         }
     }
@@ -625,14 +628,31 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (Input.GetKeyDown(GameSettings.COPY_Key))
             {
-                // TODO: implement copy
                 Debug.Log("Doing copy...");
                 this.copyPasteEntities = new List<GameObject>(this.currentEntitiesSelected);
+                Vector3 midpoint = Functions.VectorMidpoint(this.copyPasteEntities.ConvertAll<Vector3>(x => x.transform.position));
+                this.entityIdToCopyPastePointOffset = new Dictionary<int, Vector3>();
+                foreach (GameObject e in this.copyPasteEntities)
+                {
+                    this.entityIdToCopyPastePointOffset.Add(e.GetInstanceID(), e.transform.position - midpoint);
+                }
             }
             else if (Input.GetKeyDown(GameSettings.PASTE_Key))
             {
-                // TODO: implement paste
                 Debug.Log("Doing paste...");
+                foreach (GameObject e in this.copyPasteEntities)
+                {
+                    string prefabName = e.GetComponent<GameEntity>().prefabName;
+                    GameObject prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(prefabName);
+                    Vector3 position = this.currentMousePositionWorld + this.entityIdToCopyPastePointOffset[e.GetInstanceID()];
+                    Vector3 quantizedPosition = Functions.RoundVector(position);
+                    GameObject spawned = Instantiate(
+                        prefab,
+                        new Vector3(quantizedPosition.x, quantizedPosition.y, 0),
+                        e.transform.rotation
+                    );
+                    PlaySceneManager.instance.gameEntityManager.AddGameEntity(spawned);
+                }
             }
         }
     }
