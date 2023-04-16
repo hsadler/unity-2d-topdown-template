@@ -39,10 +39,10 @@ public class PlayerInputManager : MonoBehaviour
     // entity copy + paste
     private List<GameObject> copyPasteEntities = new List<GameObject>();
 
-    // inventory hotkey
+    // inventory multi-placement
     public List<InventoryItem> inventoryItemScripts = new List<InventoryItem>();
-    private GameObject inventoryHotkeyPrefab;
-    public Quaternion inventoryHotkeyMemRotation = Quaternion.identity;
+    private GameObject inventoryMultiPlacementPrefab;
+    public Quaternion inventoryMultiPlacementMemRotation = Quaternion.identity;
 
     // inventory canvas
     public GameObject inventoryCanvas;
@@ -139,16 +139,16 @@ public class PlayerInputManager : MonoBehaviour
         return areNewlyCreated;
     }
 
-    public void SetInventoryHotkeyPrefab(GameObject entityPrefab)
+    public void SetInventoryMultiPlacementPrefab(GameObject entityPrefab)
     {
-        this.inventoryHotkeyPrefab = entityPrefab;
+        this.inventoryMultiPlacementPrefab = entityPrefab;
     }
 
-    public GameObject CreateInventoryHotkeyEntity(Quaternion rotation)
+    public GameObject CreateInventoryMultiPlacementEntity(Quaternion rotation)
     {
         Vector3 quantizedPosition = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         quantizedPosition.z = 0;
-        GameObject spawned = Instantiate(this.inventoryHotkeyPrefab, quantizedPosition, rotation);
+        GameObject spawned = Instantiate(this.inventoryMultiPlacementPrefab, quantizedPosition, rotation);
         if (spawned != null)
         {
             var geScript = spawned.GetComponent<GameEntity>();
@@ -156,15 +156,15 @@ public class PlayerInputManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Could not create inventory hotkey entity at position: " + quantizedPosition.ToString());
+            Debug.LogWarning("Could not create inventory multi-placement entity at position: " + quantizedPosition.ToString());
         }
         return spawned;
     }
 
-    public void ClearInventoryHotkeyEntity()
+    public void ClearInventoryMultiPlacementEntity()
     {
-        this.inventoryHotkeyPrefab = null;
-        this.inventoryHotkeyMemRotation = Quaternion.identity;
+        this.inventoryMultiPlacementPrefab = null;
+        this.inventoryMultiPlacementMemRotation = Quaternion.identity;
     }
 
     public void DoEntitySelectionWithSelectionBox()
@@ -178,10 +178,10 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (Input.GetKeyDown(GameSettings.ESC_KEY))
         {
-            // exit inventory hotkey mode
-            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
+            // exit inventory multi-placement mode
+            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT)
             {
-                this.ClearInventoryHotkeyEntity();
+                this.ClearInventoryMultiPlacementEntity();
                 this.DeleteSelectedEntities();
                 this.InitEntitySelect();
                 this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
@@ -324,8 +324,8 @@ public class PlayerInputManager : MonoBehaviour
                     this.HandleStartSelectionBox();
                 }
             }
-            // place inventory-hotkey entity
-            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
+            // inventory multi-placement
+            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT)
             {
                 this.HandleMultiEntityPlacement();
             }
@@ -347,8 +347,8 @@ public class PlayerInputManager : MonoBehaviour
                     this.isEntityDragging = true;
                 }
             }
-            // continue dropping inventory-hotkey entities
-            else if (!this.mouseIsUIHovered && this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
+            // continue multi-placement of entities
+            else if (!this.mouseIsUIHovered && this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT)
             {
                 this.HandleEntityDrag();
                 this.HandleMultiEntityPlacement();
@@ -375,8 +375,8 @@ public class PlayerInputManager : MonoBehaviour
                     this.isEntityDragging = false;
                 }
             }
-            // drop final entity from inventory-hotkey drag
-            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
+            // drop final entity from inventory multi-placement drag
+            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT)
             {
                 this.HandleMultiEntityPlacement();
                 PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
@@ -385,7 +385,7 @@ public class PlayerInputManager : MonoBehaviour
         // mouse move
         else
         {
-            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACE)
+            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT)
             {
                 this.HandleEntityDrag();
             }
@@ -652,18 +652,18 @@ public class PlayerInputManager : MonoBehaviour
             // commit placement, init, and create another entity
             foreach (GameObject e in this.currentEntitiesSelected)
             {
-                this.inventoryHotkeyMemRotation = e.transform.rotation;
+                this.inventoryMultiPlacementMemRotation = e.transform.rotation;
                 e.GetComponent<Draggable>().SetDragging(false);
                 e.GetComponent<GameEntity>().isNewlyCreated = false;
                 PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
             }
             this.InitEntitySelect();
-            GameObject spawned = this.CreateInventoryHotkeyEntity(this.inventoryHotkeyMemRotation);
+            GameObject spawned = this.CreateInventoryMultiPlacementEntity(this.inventoryMultiPlacementMemRotation);
             this.SelectSingleEntity(spawned);
         }
         else
         {
-            // Debug.Log("inventory hotkey entity drop not valid");
+            // Debug.Log("inventory multi-placement entity drop not valid");
         }
     }
 
