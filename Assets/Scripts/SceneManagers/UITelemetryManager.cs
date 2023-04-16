@@ -34,6 +34,7 @@ public class UITelemetryManager : MonoBehaviour
             var style = new GUIStyle();
             style.alignment = TextAnchor.UpperRight;
             style.normal.textColor = Color.green;
+            style.fontSize = GameSettings.GUI_FONT_SIZE;
             GUI.Label(
                 this.guiRect,
                 displayText,

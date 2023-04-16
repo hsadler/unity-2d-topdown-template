@@ -22,7 +22,6 @@ public class UIControlsInstructionsManager : MonoBehaviour
 
     void OnGUI()
     {
-        GUI.contentColor = Color.green;
         int fps = (int)(1.0f / Time.smoothDeltaTime);
         string displayText =
             "Select: LMB" +
@@ -38,9 +37,14 @@ public class UIControlsInstructionsManager : MonoBehaviour
             "Map zoom: Mouse Wheel" +
             "\n" +
             "Menu: Esc";
+        var style = new GUIStyle();
+        style.alignment = TextAnchor.UpperLeft;
+        style.normal.textColor = Color.green;
+        style.fontSize = GameSettings.GUI_FONT_SIZE;
         GUI.Label(
             this.guiRect,
-            displayText
+            displayText,
+            style
         );
     }
 

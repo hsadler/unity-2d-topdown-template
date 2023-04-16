@@ -60,8 +60,8 @@ X fix game entity management BUGS
 X rename entity-hotkey mode to multi-place mode (and other renaming)
 X add undo/redo history behavioral descriptions to MANUAL_TESTING doc
 X add controls instructions
-- make multi-select rotations rotate entities together instead of individually
 - copy paste (single and multi)
+- make multi-select rotations rotate entities together instead of individually
 - create test scene for testing various entity behaviors:
     - draggable vs. not draggable
     - removable vs. not removable

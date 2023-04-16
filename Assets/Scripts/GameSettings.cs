@@ -48,6 +48,10 @@ public class GameSettings
     public const string SORTING_LAYER_ENTITY_DRAGGING = "EntityDragging";
 
 
+    // styling
+    public const int GUI_FONT_SIZE = 20;
+
+
     // dev settings
     public const bool DISPLAY_TELEMETRY = true;
 
