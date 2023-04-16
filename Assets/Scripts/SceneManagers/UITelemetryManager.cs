@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TelemetryManager : MonoBehaviour
+public class UITelemetryManager : MonoBehaviour
 {
 
 
@@ -11,7 +11,7 @@ public class TelemetryManager : MonoBehaviour
 
     public int gameEntityCount = 0;
 
-    private Rect guiSceneTelemetryRect = new Rect(10, 10, 800, 2000);
+    private Rect guiRect = new Rect(Screen.width - 900, 10, 800, 2000);
 
 
     // UNITY HOOKS
@@ -33,9 +33,12 @@ public class TelemetryManager : MonoBehaviour
                 "FPS: " + fps.ToString() +
                 "\n" +
                 "Game Entity Count: " + this.gameEntityCount.ToString();
+            // var style = new GUIStyle();
+            // style.alignment = TextAnchor.UpperRight;
             GUI.Label(
-                this.guiSceneTelemetryRect,
+                this.guiRect,
                 displayText
+            // style
             );
         }
     }

@@ -59,6 +59,7 @@ X undo/redo system, buttons, and hotkeys:
 X fix game entity management BUGS
 X rename entity-hotkey mode to multi-place mode (and other renaming)
 X add undo/redo history behavioral descriptions to MANUAL_TESTING doc
+- add controls instructions
 - make multi-select rotations rotate entities together instead of individually
 - copy paste (single and multi)
 - create test scene for testing various entity behaviors:
@@ -70,19 +71,6 @@ X add undo/redo history behavioral descriptions to MANUAL_TESTING doc
 
 
 BUGS:
-X BUG: Multi-drag resulting in placement where another block was previously 
-    occupying causes duplicate entity bug when using history.
-X BUG: Rotating while dragging causes a history step to be added where the 
-    entities rotated are deleted.
-X INVESTIGATE: tracking lost when doing multi-placement
-
-
-SYSTEM/CODE REFACTORS:
-X better separation of entity space occupation from selection and drag-drop
-- create central system for setting avail inventory items based on what's placed 
-    on the inventory bar
-- (maybe) PlayerInputManager has too much responsibility. Break it up.
-- (maybe) move selected entity data management to GameEntityManager
 
 
 LATER:
@@ -91,8 +79,3 @@ LATER:
     - add some entity automated behaviors
     - entity automated behaviors are triggered at every tick
 - save system
-- add controls instructions
-
-
-MAYBE:
-

@@ -14,7 +14,8 @@ public class PlaySceneManager : MonoBehaviour
     public GameEntityManager gameEntityManager;
     public PlayerInputManager playerInputManager;
     public PlayerInventoryManager playerInventoryManager;
-    public TelemetryManager telemetryManager;
+    public UIControlsInstructionsManager uiControlsInstructionsManager;
+    public UITelemetryManager uiTelemetryManager;
 
     // the static reference to the singleton instance
     public static PlaySceneManager instance;

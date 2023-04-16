@@ -22,14 +22,14 @@ public class GameEntity : MonoBehaviour
 
     void Start()
     {
-        PlaySceneManager.instance.telemetryManager.gameEntityCount += 1;
+        PlaySceneManager.instance.uiTelemetryManager.gameEntityCount += 1;
     }
 
     void Update() { }
 
     void OnDestroy()
     {
-        PlaySceneManager.instance.telemetryManager.gameEntityCount -= 1;
+        PlaySceneManager.instance.uiTelemetryManager.gameEntityCount -= 1;
     }
 
     // INTF METHODS
