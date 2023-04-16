@@ -55,7 +55,12 @@ TEST BEHAVIOR MANUALLY:
 - placement while over existing entity results in a noop
 
 // undo/redo history
-- TODO
+- moves should cause a history step
+- rotations should cause a history step
+- move with a rotation while moving should cause a single history step
+- "<" key should set game state 1 step back in history
+- follow-up ">" key should set game state 1 step forward in history
+- if at some midpoint in history, additional moves cause current state to be the new head of history
 
 // menu modal
 - esc toggles menu
