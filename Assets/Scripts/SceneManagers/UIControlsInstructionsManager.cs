@@ -35,7 +35,9 @@ public class UIControlsInstructionsManager : MonoBehaviour
             "\n" +
             "Map move: RMB + drag" +
             "\n" +
-            "Map zoom: Mouse Wheel";
+            "Map zoom: Mouse Wheel" +
+            "\n" +
+            "Menu: Esc";
         GUI.Label(
             this.guiRect,
             displayText

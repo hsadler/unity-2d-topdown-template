@@ -20,7 +20,7 @@ public class GameEntityManager : MonoBehaviour
 
     // debug
     private bool useLogging = false;
-    private bool useDebugIndicators = true;
+    private bool useDebugIndicators = false;
     public GameObject occupiedIndicatorPrefab;
     private IDictionary<string, GameObject> positionToOccupiedIndicator;
 
