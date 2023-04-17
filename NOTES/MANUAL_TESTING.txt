@@ -40,7 +40,7 @@ TEST BEHAVIOR MANUALLY:
 - inventory-item dnd over existing entity results in delete of created entity
 - inventory-item drag over existing entity results in display of illegal placement indicator
 
-// inventory multi-placement
+// multi-placement
 - inventory key press results in multi-placement mode
 - multi-placement mode is toggleable with additional press of the same inventory key
 - multi-placement mode switch to different inventory item if additional press is a different inventory key
@@ -53,6 +53,13 @@ TEST BEHAVIOR MANUALLY:
 - selection is not possible in multi-placement mode
 - mouse over existing entity, while in multi-placement mode, results in display of illegal placement indicator
 - placement while over existing entity results in a noop
+
+// copy+paste
+- selection of one or more entities is required to use mode
+- copy command should result in multi-placement mode
+- mode causes draggable multi-placement of the initial entities selected
+- the multi-place entities are rotatable
+- escape press exits mode
 
 // undo/redo history
 - moves should cause a history step

@@ -628,7 +628,6 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (Input.GetKeyDown(GameSettings.COPY_Key))
             {
-                Debug.Log("Doing copy...");
                 this.copyPasteEntities = new List<GameObject>(this.currentEntitiesSelected);
                 Vector3 midpoint = Functions.VectorMidpoint(this.copyPasteEntities.ConvertAll<Vector3>(x => x.transform.position));
                 this.entityIdToCopyPastePointOffset = new Dictionary<int, Vector3>();
@@ -639,7 +638,6 @@ public class PlayerInputManager : MonoBehaviour
             }
             else if (Input.GetKeyDown(GameSettings.PASTE_Key))
             {
-                Debug.Log("Doing paste...");
                 foreach (GameObject e in this.copyPasteEntities)
                 {
                     string prefabName = e.GetComponent<GameEntity>().prefabName;

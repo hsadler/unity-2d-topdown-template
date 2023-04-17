@@ -60,7 +60,12 @@ X fix game entity management BUGS
 X rename entity-hotkey mode to multi-place mode (and other renaming)
 X add undo/redo history behavioral descriptions to MANUAL_TESTING doc
 X add controls instructions
-- copy paste (single and multi)
+- copy paste (single and multi):
+    - selection of one or more entities is required to use mode
+    - copy command should result in multi-placement mode
+    - mode causes draggable multi-placement of the initial entities selected
+    - the multi-place entities are rotatable
+    - escape press exits mode
 - make multi-select rotations rotate entities together instead of individually
 - create test scene for testing various entity behaviors:
     - draggable vs. not draggable
