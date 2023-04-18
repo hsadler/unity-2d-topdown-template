@@ -59,6 +59,9 @@ TEST BEHAVIOR MANUALLY:
 - copy command should result in multi-placement mode
 - mode causes draggable multi-placement of the initial entities selected
 - the multi-place entities are rotatable
+- lmb-click causes placement
+- lmb held down causes continuous placement
+- placement is committed only if it is valid
 - escape press exits mode
 
 // undo/redo history
