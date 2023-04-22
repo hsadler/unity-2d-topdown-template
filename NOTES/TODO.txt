@@ -60,6 +60,7 @@ X fix game entity management BUGS
 X rename entity-hotkey mode to multi-place mode (and other renaming)
 X add undo/redo history behavioral descriptions to MANUAL_TESTING doc
 X add controls instructions
+- refactor selection+drag
 - copy+paste (single and multi):
     - selection of one or more entities is required to use mode
     - copy command should result in multi-placement mode
@@ -79,6 +80,12 @@ X add controls instructions
 
 
 BUGS:
+
+
+REFACTORS:
+- Change entity selection to wrap selected entities in a parent game object. 
+    De-selection causes the entities to be de-parented. This may help with doing
+    rotations on multiple game objects at the same time.
 
 
 LATER:

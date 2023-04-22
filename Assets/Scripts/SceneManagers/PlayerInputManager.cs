@@ -34,6 +34,7 @@ public class PlayerInputManager : MonoBehaviour
 
     // entity selection
     private GameObject hoveredEntity;
+    public GameObject currentEntitiesSelectedContainer;
     private List<GameObject> currentEntitiesSelected = new List<GameObject>();
     private IDictionary<int, Vector3> entityIdToMouseOffset;
 
@@ -79,9 +80,10 @@ public class PlayerInputManager : MonoBehaviour
             this.HandleCameraMovement();
             this.HandleCameraZoom();
             // entity interaction
-            this.HandleEntityDeleteByKeyDown();
             this.HandleMouseEntityInteraction();
-            this.HandleEntityRotation();
+            this.HandleEntityDeleteByKeyDown();
+            // TODO: testing
+            this.HandleEntityRotation_NEW();
             this.HandleEntityCopyPaste();
             this.HandleEntityStateUndoRedo();
         }
@@ -97,6 +99,9 @@ public class PlayerInputManager : MonoBehaviour
         {
             e.GetComponent<Selectable>().SetSelected(false);
             e.GetComponent<Draggable>().SetDragging(false);
+            // TODO: this is for the selection refactor
+            e.transform.SetParent(null);
+
         }
         this.currentEntitiesSelected = new List<GameObject>();
         this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
@@ -595,6 +600,37 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    private void HandleEntityRotation_NEW()
+    {
+        // TODO: implement multi rotation handling here
+        if (Input.GetKeyDown(GameSettings.ROTATE_ENTITIES_LEFT_KEY))
+        {
+            this.currentEntitiesSelectedContainer.transform.Rotate(new Vector3(0, 0, 90));
+        }
+
+        // int rot = 0;
+        // if (Input.GetKeyDown(GameSettings.ROTATE_ENTITIES_LEFT_KEY))
+        // {
+        //     rot += 90;
+        // }
+        // if (Input.GetKeyDown(GameSettings.ROTATE_ENTITIES_RIGHT_KEY))
+        // {
+        //     rot -= 90;
+        // }
+        // if (rot != 0 && this.currentEntitiesSelected.Count > 0)
+        // {
+        //     foreach (GameObject e in this.currentEntitiesSelected)
+        //     {
+        //         e.transform.Rotate(new Vector3(0, 0, rot));
+        //     }
+        //     // push history step only if input mode is default and entities are not currently being dragged
+        //     if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT && !this.isEntityDragging)
+        //     {
+        //         PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
+        //     }
+        // }
+    }
+
     private void HandleEntityDeleteByKeyDown()
     {
         if (this.currentEntitiesSelected.Count > 0 && Input.GetKeyDown(GameSettings.DELETE_ENTITIES_KEY))
@@ -715,6 +751,8 @@ public class PlayerInputManager : MonoBehaviour
             if (selectable != null)
             {
                 this.currentEntitiesSelected.Add(entity);
+                // TODO: this is for the selection refactor
+                entity.transform.SetParent(this.currentEntitiesSelectedContainer.transform);
                 selectable.SetSelected(true);
                 Draggable draggable = selectable.gameObject.GetComponent<Draggable>();
                 if (draggable != null)

@@ -537,6 +537,68 @@ MonoBehaviour:
   playerInventoryManager: {fileID: 1566915147}
   uiControlsInstructionsManager: {fileID: 1468288663}
   uiTelemetryManager: {fileID: 1066267582}
+--- !u!1001 &160235322
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1268000053343201206, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268000053343201206, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268000053343201206, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268000053343201206, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268000053343201206, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268000053343201206, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268000053343201206, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268000053343201206, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268000053343201206, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268000053343201206, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268000053343201206, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268000053343201207, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+      propertyPath: m_Name
+      value: EntitiesSelectedContainer
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+--- !u!1 &160235323 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1268000053343201207, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
+  m_PrefabInstance: {fileID: 160235322}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &165152555
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,6 +647,7 @@ MonoBehaviour:
   MenuGO: {fileID: 1355896446}
   selectionBoxPrefab: {fileID: 6734921932508682108, guid: 00096cb28fe9f86478357a27e071e049, type: 3}
   selectionBoxGO: {fileID: 0}
+  currentEntitiesSelectedContainer: {fileID: 160235323}
   inventoryItemScripts: []
   inventoryMultiPlacementMemRotation: {x: 0, y: 0, z: 0, w: 1}
   inventoryCanvas: {fileID: 1007808885}
@@ -2379,7 +2442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2321029a94cabdc4e8f7d80d32bcb9e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameEntityCount: 0
 --- !u!1 &1473334570
 GameObject:
   m_ObjectHideFlags: 0
