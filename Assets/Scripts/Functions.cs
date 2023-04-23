@@ -22,8 +22,14 @@ public class Functions
     public static Vector3 VectorMidpoint(List<Vector3> vectors)
     {
         var midpoint = vectors.Aggregate(Vector3.zero, (acc, v) => acc + v) / vectors.Count;
-        Debug.Log("midpoint: " + midpoint.ToString());
         return midpoint;
+    }
+
+    public static Vector3 QuantizedMidpointFromGameObjects(List<GameObject> gameObjects)
+    {
+        // STUB: TODO
+        var vectors = new List<Vector3>();
+        return Vector3.zero;
     }
 
 

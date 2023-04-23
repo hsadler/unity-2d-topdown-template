@@ -605,7 +605,15 @@ public class PlayerInputManager : MonoBehaviour
         // TODO: implement multi rotation handling here
         if (Input.GetKeyDown(GameSettings.ROTATE_ENTITIES_LEFT_KEY))
         {
+            foreach (var e in this.currentEntitiesSelected)
+            {
+                PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
+            }
             this.currentEntitiesSelectedContainer.transform.Rotate(new Vector3(0, 0, 90));
+            foreach (var e in this.currentEntitiesSelected)
+            {
+                PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
+            }
         }
 
         // int rot = 0;
