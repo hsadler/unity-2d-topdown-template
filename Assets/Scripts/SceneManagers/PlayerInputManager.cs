@@ -82,8 +82,7 @@ public class PlayerInputManager : MonoBehaviour
             // entity interaction
             this.HandleMouseEntityInteraction();
             this.HandleEntityDeleteByKeyDown();
-            // TODO: testing
-            this.HandleEntityRotation_NEW();
+            this.HandleEntityRotation();
             this.HandleEntityCopyPaste();
             this.HandleEntityStateUndoRedo();
         }
@@ -576,7 +575,6 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityRotation()
     {
-        // TODO: implement multi rotation handling here
         int rot = 0;
         if (Input.GetKeyDown(GameSettings.ROTATE_ENTITIES_LEFT_KEY))
         {
@@ -588,55 +586,27 @@ public class PlayerInputManager : MonoBehaviour
         }
         if (rot != 0 && this.currentEntitiesSelected.Count > 0)
         {
-            foreach (GameObject e in this.currentEntitiesSelected)
+            if (this.isEntityDragging)
             {
-                e.transform.Rotate(new Vector3(0, 0, rot));
+                // rotate selected entities as a group
+                Debug.Log("rotate selected entities as a group");
+                this.currentEntitiesSelectedContainer.transform.Rotate(new Vector3(0, 0, rot));
             }
-            // push history step only if input mode is default and entities are not currently being dragged
-            if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT && !this.isEntityDragging)
+            else
             {
-                PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
-            }
-        }
-    }
-
-    private void HandleEntityRotation_NEW()
-    {
-        // TODO: implement multi rotation handling here
-        if (Input.GetKeyDown(GameSettings.ROTATE_ENTITIES_LEFT_KEY))
-        {
-            foreach (var e in this.currentEntitiesSelected)
-            {
-                PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
-            }
-            this.currentEntitiesSelectedContainer.transform.Rotate(new Vector3(0, 0, 90));
-            foreach (var e in this.currentEntitiesSelected)
-            {
-                PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
+                // rotate selected entities as individuals
+                Debug.Log("rotate selected entities as individuals");
+                foreach (GameObject e in this.currentEntitiesSelected)
+                {
+                    e.transform.Rotate(new Vector3(0, 0, rot));
+                }
+                // push history step only if input mode is default and entities are not currently being dragged
+                if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
+                {
+                    PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
+                }
             }
         }
-
-        // int rot = 0;
-        // if (Input.GetKeyDown(GameSettings.ROTATE_ENTITIES_LEFT_KEY))
-        // {
-        //     rot += 90;
-        // }
-        // if (Input.GetKeyDown(GameSettings.ROTATE_ENTITIES_RIGHT_KEY))
-        // {
-        //     rot -= 90;
-        // }
-        // if (rot != 0 && this.currentEntitiesSelected.Count > 0)
-        // {
-        //     foreach (GameObject e in this.currentEntitiesSelected)
-        //     {
-        //         e.transform.Rotate(new Vector3(0, 0, rot));
-        //     }
-        //     // push history step only if input mode is default and entities are not currently being dragged
-        //     if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT && !this.isEntityDragging)
-        //     {
-        //         PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
-        //     }
-        // }
     }
 
     private void HandleEntityDeleteByKeyDown()
