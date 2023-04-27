@@ -26,6 +26,7 @@ public class PlayerInputManager : MonoBehaviour
 
     // mouse interaction
     private Vector3 currentMousePositionWorld;
+    private Vector3 quantizedMousePos;
     private Vector3 initialMultiselectMousePosition;
     public GameObject selectionBoxPrefab;
     public GameObject selectionBoxGO;
@@ -34,9 +35,11 @@ public class PlayerInputManager : MonoBehaviour
 
     // entity selection
     private GameObject hoveredEntity;
-    public GameObject currentEntitiesSelectedContainer;
     private List<GameObject> currentEntitiesSelected = new List<GameObject>();
     private IDictionary<int, Vector3> entityIdToMouseOffset;
+
+    // entity drag
+    public GameObject entityDragContainer;
 
     // entity copy + paste
     private List<GameObject> copyPasteEntities = new List<GameObject>();
@@ -71,9 +74,15 @@ public class PlayerInputManager : MonoBehaviour
     {
         // set state
         this.currentMousePositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        this.quantizedMousePos = Functions.RoundVector(this.currentMousePositionWorld);
+        // move drag group container to match quantized mouse position
+        this.entityDragContainer.transform.position = new Vector3(
+            this.quantizedMousePos.x,
+            this.quantizedMousePos.y,
+            0
+        );
         // player input
         this.CheckEscPress();
-        // camera
         if (this.inputMode != GameSettings.INPUT_MODE_MENU)
         {
             // camera interaction
@@ -98,9 +107,6 @@ public class PlayerInputManager : MonoBehaviour
         {
             e.GetComponent<Selectable>().SetSelected(false);
             e.GetComponent<Draggable>().SetDragging(false);
-            // TODO: this is for the selection refactor
-            e.transform.SetParent(null);
-
         }
         this.currentEntitiesSelected = new List<GameObject>();
         this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
@@ -319,11 +325,10 @@ public class PlayerInputManager : MonoBehaviour
                 // entity click and start drag
                 if (this.hoveredEntity != null)
                 {
-                    this.HandleEntityClicked(this.hoveredEntity);
-                    // NOTE: this is required in order to make sure the entity 
-                    // is in a drag state for the next frame update
-                    this.HandleEntityDrag();
                     this.isEntityDragging = true;
+                    this.HandleEntityClicked(this.hoveredEntity);
+                    this.TryGroupDraggingEntities(this.currentEntitiesSelected);
+                    this.HandleEntityDrag();
                 }
                 // initialize the selection-box
                 else
@@ -379,6 +384,7 @@ public class PlayerInputManager : MonoBehaviour
                 else
                 {
                     this.HandleEntityDrop();
+                    this.UngroupDraggingEntities(this.currentEntitiesSelected);
                     this.isEntityDragging = false;
                 }
             }
@@ -485,7 +491,6 @@ public class PlayerInputManager : MonoBehaviour
     private void HandleEntityDrag()
     {
         // get draggables from selected entities and move with respect to mouse position
-        Vector3 quantizedMousePos = Functions.RoundVector(this.currentMousePositionWorld);
         foreach (GameObject e in this.currentEntitiesSelected)
         {
             Draggable draggable = e.GetComponent<Draggable>();
@@ -493,8 +498,8 @@ public class PlayerInputManager : MonoBehaviour
             {
                 Vector3 offset = this.entityIdToMouseOffset[e.GetInstanceID()];
                 e.transform.position = new Vector3(
-                    quantizedMousePos.x + offset.x,
-                    quantizedMousePos.y + offset.y,
+                    this.quantizedMousePos.x + offset.x,
+                    this.quantizedMousePos.y + offset.y,
                     e.transform.position.z
                 );
                 if (GameSettings.ENTITY_POSITIONS_DISCRETE)
@@ -590,7 +595,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 // rotate selected entities as a group
                 Debug.Log("rotate selected entities as a group");
-                this.currentEntitiesSelectedContainer.transform.Rotate(new Vector3(0, 0, rot));
+                this.entityDragContainer.transform.Rotate(new Vector3(0, 0, rot));
             }
             else
             {
@@ -729,8 +734,6 @@ public class PlayerInputManager : MonoBehaviour
             if (selectable != null)
             {
                 this.currentEntitiesSelected.Add(entity);
-                // TODO: this is for the selection refactor
-                entity.transform.SetParent(this.currentEntitiesSelectedContainer.transform);
                 selectable.SetSelected(true);
                 Draggable draggable = selectable.gameObject.GetComponent<Draggable>();
                 if (draggable != null)
@@ -738,6 +741,26 @@ public class PlayerInputManager : MonoBehaviour
                     draggable.preDragPosition = draggable.transform.position;
                 }
             }
+        }
+    }
+
+    private void TryGroupDraggingEntities(List<GameObject> entities)
+    {
+        foreach (GameObject e in entities)
+        {
+            var draggable = e.GetComponent<Draggable>();
+            if (draggable != null)
+            {
+                e.transform.SetParent(this.entityDragContainer.transform);
+            }
+        }
+    }
+
+    private void UngroupDraggingEntities(List<GameObject> entities)
+    {
+        foreach (GameObject e in entities)
+        {
+            e.transform.SetParent(null);
         }
     }
 

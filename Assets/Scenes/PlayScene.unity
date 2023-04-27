@@ -590,7 +590,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1268000053343201207, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
       propertyPath: m_Name
-      value: EntitiesSelectedContainer
+      value: EntityDragContainer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aeb872e842f1e0945879fed960eb748e, type: 3}
@@ -647,7 +647,7 @@ MonoBehaviour:
   MenuGO: {fileID: 1355896446}
   selectionBoxPrefab: {fileID: 6734921932508682108, guid: 00096cb28fe9f86478357a27e071e049, type: 3}
   selectionBoxGO: {fileID: 0}
-  currentEntitiesSelectedContainer: {fileID: 160235323}
+  entityDragContainer: {fileID: 160235323}
   inventoryItemScripts: []
   inventoryMultiPlacementMemRotation: {x: 0, y: 0, z: 0, w: 1}
   inventoryCanvas: {fileID: 1007808885}
