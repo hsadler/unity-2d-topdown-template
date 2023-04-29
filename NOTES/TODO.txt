@@ -60,7 +60,11 @@ X fix game entity management BUGS
 X rename entity-hotkey mode to multi-place mode (and other renaming)
 X add undo/redo history behavioral descriptions to MANUAL_TESTING doc
 X add controls instructions
-- refactor selection+drag
+- refactor selection+drag:
+    - decompose functions for setting and applying mouse->entity positional offsets
+    - add to reset of offsets to entity group rotation
+    - add a global mode for ui-debug (should override local debug settings)
+    - add group drag container to the ui-debug mode
 - copy+paste (single and multi):
     - selection of one or more entities is required to use mode
     - copy command should result in multi-placement mode

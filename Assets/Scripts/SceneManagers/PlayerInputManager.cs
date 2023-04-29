@@ -417,7 +417,7 @@ public class PlayerInputManager : MonoBehaviour
                 int instanceId = e.GetInstanceID();
                 if (!this.entityIdToMouseOffset.ContainsKey(instanceId))
                 {
-                    this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - Functions.RoundVector(this.currentMousePositionWorld));
+                    this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - this.quantizedMousePos);
                 }
             }
         }
@@ -593,9 +593,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (this.isEntityDragging)
             {
-                // rotate selected entities as a group
-                Debug.Log("rotate selected entities as a group");
-                this.entityDragContainer.transform.Rotate(new Vector3(0, 0, rot));
+                this.RotateSelectedEntitiesAsGroup(rotationAmount: rot);
             }
             else
             {
@@ -612,6 +610,14 @@ public class PlayerInputManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void RotateSelectedEntitiesAsGroup(int rotationAmount)
+    {
+        // rotate selected entities as a group
+        Debug.Log("rotate selected entities as a group");
+        this.entityDragContainer.transform.Rotate(new Vector3(0, 0, rotationAmount));
+        // TODO BUGFIX: add reset of drag offsets here
     }
 
     private void HandleEntityDeleteByKeyDown()
