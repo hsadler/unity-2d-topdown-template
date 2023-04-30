@@ -117,8 +117,7 @@ public class PlayerInputManager : MonoBehaviour
     public void SelectSingleEntity(GameObject entity)
     {
         this.TrySelectEntities(new List<GameObject>() { entity });
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        this.entityIdToMouseOffset.Add(entity.GetInstanceID(), entity.transform.position - mousePosition);
+        this.SetEntityOffsets(this.quantizedMousePos, this.currentEntitiesSelected);
     }
 
     public void DisplayImpendingDeleteForSelectedEntities(bool status)
@@ -407,19 +406,11 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityClicked(GameObject clickedEntity)
     {
-        this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
         // multi entity start drag
         if (this.currentEntitiesSelected.Count > 0 && this.currentEntitiesSelected.Contains(clickedEntity))
         {
             // set selected entity initial offsets from mouse position to prepare for entity drag
-            foreach (GameObject e in this.currentEntitiesSelected)
-            {
-                int instanceId = e.GetInstanceID();
-                if (!this.entityIdToMouseOffset.ContainsKey(instanceId))
-                {
-                    this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - this.quantizedMousePos);
-                }
-            }
+            this.SetEntityOffsets(this.quantizedMousePos, this.currentEntitiesSelected);
         }
         // single entity selection
         else
@@ -490,35 +481,34 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityDrag()
     {
-        // get draggables from selected entities and move with respect to mouse position
+        // get draggables subset from selected entities
+        List<GameObject> draggables = new List<GameObject>();
         foreach (GameObject e in this.currentEntitiesSelected)
         {
             Draggable draggable = e.GetComponent<Draggable>();
-            if (draggable != null && this.entityIdToMouseOffset.ContainsKey(e.GetInstanceID()))
+            if (draggable != null)
             {
-                Vector3 offset = this.entityIdToMouseOffset[e.GetInstanceID()];
-                e.transform.position = new Vector3(
-                    this.quantizedMousePos.x + offset.x,
-                    this.quantizedMousePos.y + offset.y,
-                    e.transform.position.z
-                );
-                if (GameSettings.ENTITY_POSITIONS_DISCRETE)
+                draggables.Add(e);
+            }
+        }
+        // move draggables with respect to mouse position
+        this.ApplySelectedEntityOffsets(this.quantizedMousePos, draggables);
+        // set draggable state on entities and remove from game-entity-manager if needed
+        foreach (var e in draggables)
+        {
+            Draggable draggable = e.GetComponent<Draggable>();
+            // is already dragging
+            if (draggable.isDragging)
+            {
+                // noop
+            }
+            // drag initiated
+            else
+            {
+                draggable.SetDragging(true);
+                if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
                 {
-                    e.transform.position = Functions.RoundVector(e.transform.position);
-                }
-                // is already dragging
-                if (draggable.isDragging)
-                {
-                    // noop
-                }
-                // drag initiated
-                else
-                {
-                    draggable.SetDragging(true);
-                    if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
-                    {
-                        PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
-                    }
+                    PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
                 }
             }
         }
@@ -598,7 +588,6 @@ public class PlayerInputManager : MonoBehaviour
             else
             {
                 // rotate selected entities as individuals
-                Debug.Log("rotate selected entities as individuals");
                 foreach (GameObject e in this.currentEntitiesSelected)
                 {
                     e.transform.Rotate(new Vector3(0, 0, rot));
@@ -615,9 +604,8 @@ public class PlayerInputManager : MonoBehaviour
     private void RotateSelectedEntitiesAsGroup(int rotationAmount)
     {
         // rotate selected entities as a group
-        Debug.Log("rotate selected entities as a group");
         this.entityDragContainer.transform.Rotate(new Vector3(0, 0, rotationAmount));
-        // TODO BUGFIX: add reset of drag offsets here
+        this.SetEntityOffsets(this.quantizedMousePos, this.currentEntitiesSelected);
     }
 
     private void HandleEntityDeleteByKeyDown()
@@ -767,6 +755,34 @@ public class PlayerInputManager : MonoBehaviour
         foreach (GameObject e in entities)
         {
             e.transform.SetParent(null);
+        }
+    }
+
+    private void SetEntityOffsets(Vector3 referencePos, List<GameObject> entities)
+    {
+        // set entity offsets from reference position
+        this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
+        foreach (GameObject e in entities)
+        {
+            this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - referencePos);
+        }
+    }
+
+    private void ApplySelectedEntityOffsets(Vector3 referencePos, List<GameObject> entities)
+    {
+        // set entity positions as offsets relative to reference position
+        foreach (GameObject e in entities)
+        {
+            int instanceID = e.GetInstanceID();
+            if (this.entityIdToMouseOffset.ContainsKey(instanceID))
+            {
+                Vector3 offset = this.entityIdToMouseOffset[instanceID];
+                e.transform.position = new Vector3(
+                    referencePos.x + offset.x,
+                    referencePos.y + offset.y,
+                    e.transform.position.z
+                );
+            }
         }
     }
 
