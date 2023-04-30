@@ -19,8 +19,8 @@ public class GameEntityManager : MonoBehaviour
     private HistoryStack<List<GameEntityState>> entityStateHistoryStack;
 
     // debug
-    private bool useLogging = true;
-    private bool useDebugIndicators = true;
+    private bool useLogging = false;
+    private bool useDebugIndicators = false;
     public GameObject occupiedIndicatorPrefab;
     private IDictionary<string, GameObject> positionToOccupiedIndicator;
 
@@ -84,7 +84,7 @@ public class GameEntityManager : MonoBehaviour
             string sPos = position.ToString();
             this.positionToGameEntity[sPos] = gameEntity;
             this.gameEntityUUIDToSerializedPosition[eUUID] = sPos;
-            if (this.useDebugIndicators)
+            if (GameSettings.DISPLAY_UI_DEBUG || this.useDebugIndicators)
             {
                 GameObject occupiedIndicatior = Instantiate(this.occupiedIndicatorPrefab, position + new Vector3(0, 0.5f, 0), Quaternion.identity);
                 this.positionToOccupiedIndicator[sPos] = occupiedIndicatior;
@@ -117,7 +117,7 @@ public class GameEntityManager : MonoBehaviour
                 }
                 this.positionToGameEntity.Remove(sPos);
                 this.gameEntityUUIDToSerializedPosition.Remove(eUUID);
-                if (this.useDebugIndicators)
+                if (GameSettings.DISPLAY_UI_DEBUG || this.useDebugIndicators)
                 {
                     GameObject occupiedIndicator = this.positionToOccupiedIndicator[sPos];
                     this.positionToOccupiedIndicator.Remove(sPos);

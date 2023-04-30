@@ -25,12 +25,5 @@ public class Functions
         return midpoint;
     }
 
-    public static Vector3 QuantizedMidpointFromGameObjects(List<GameObject> gameObjects)
-    {
-        // STUB: TODO
-        var vectors = new List<Vector3>();
-        return Vector3.zero;
-    }
-
 
 }
