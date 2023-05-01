@@ -25,5 +25,21 @@ public class Functions
         return midpoint;
     }
 
+    public static Vector3 VectorMidpointFromGameObjects(List<GameObject> gameObjects)
+    {
+        List<Vector3> positions = gameObjects.Select(go => go.transform.position).ToList();
+        return VectorMidpoint(positions);
+    }
+
+    public static GameObject MostCenterObjectOfGameObjects(List<GameObject> gameObjects)
+    {
+        if (gameObjects.Count == 0)
+        {
+            return null;
+        }
+        Vector3 midpoint = VectorMidpointFromGameObjects(gameObjects);
+        return gameObjects.OrderBy(go => Vector3.Distance(go.transform.position, midpoint)).First<GameObject>();
+    }
+
 
 }

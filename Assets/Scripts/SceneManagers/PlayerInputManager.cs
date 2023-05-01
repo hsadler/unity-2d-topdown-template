@@ -92,7 +92,7 @@ public class PlayerInputManager : MonoBehaviour
             this.HandleMouseEntityInteraction();
             this.HandleEntityDeleteByKeyDown();
             this.HandleEntityRotation();
-            this.HandleEntityCopyPaste();
+            this.HandleEntityCopyPaste_NEW();
             this.HandleEntityStateUndoRedo();
         }
     }
@@ -665,6 +665,39 @@ public class PlayerInputManager : MonoBehaviour
                     PlaySceneManager.instance.gameEntityManager.AddGameEntity(spawned);
                 }
             }
+        }
+    }
+
+    private void HandleEntityCopyPaste_NEW()
+    {
+        if (Input.GetKey(GameSettings.CTL_Key) || Input.GetKey(GameSettings.CMD_Key))
+        {
+            if (Input.GetKeyDown(GameSettings.COPY_Key))
+            {
+                this.copyPasteEntities = new List<GameObject>(this.currentEntitiesSelected);
+                Vector3 midpoint = Functions.VectorMidpoint(this.copyPasteEntities.ConvertAll<Vector3>(x => x.transform.position));
+                this.entityIdToCopyPastePointOffset = new Dictionary<int, Vector3>();
+                foreach (GameObject e in this.copyPasteEntities)
+                {
+                    this.entityIdToCopyPastePointOffset.Add(e.GetInstanceID(), e.transform.position - midpoint);
+                }
+            }
+            // else if (Input.GetKeyDown(GameSettings.PASTE_Key))
+            // {
+            //     foreach (GameObject e in this.copyPasteEntities)
+            //     {
+            //         string prefabName = e.GetComponent<GameEntity>().prefabName;
+            //         GameObject prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(prefabName);
+            //         Vector3 position = this.currentMousePositionWorld + this.entityIdToCopyPastePointOffset[e.GetInstanceID()];
+            //         Vector3 quantizedPosition = Functions.RoundVector(position);
+            //         GameObject spawned = Instantiate(
+            //             prefab,
+            //             new Vector3(quantizedPosition.x, quantizedPosition.y, 0),
+            //             e.transform.rotation
+            //         );
+            //         PlaySceneManager.instance.gameEntityManager.AddGameEntity(spawned);
+            //     }
+            // }
         }
     }
 
