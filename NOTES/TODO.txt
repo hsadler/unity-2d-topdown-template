@@ -66,7 +66,12 @@ X refactor selection+drag:
     X add a global mode for ui-debug (should override local debug settings)
     X add group drag container to the ui-debug mode
 X make multi-select rotations rotate entities together instead of individually
-- refactor multi-place to use drag-group
+- refactor multi-place to use drag-group:
+    - make multi-place use a list of prefabs
+    - make multi-place ghost entity support multiple entities
+    - make multi-place system agnostic to inventory bar selection
+    - ensure placement validation is working
+    - ensure rotation is working
 - refactor player inventory to have single source of truth
     (SOT should be owned by PlayerInventoryManager)
 - copy+paste (single and multi):
