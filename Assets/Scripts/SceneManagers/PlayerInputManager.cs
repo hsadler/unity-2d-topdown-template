@@ -45,10 +45,10 @@ public class PlayerInputManager : MonoBehaviour
     private List<GameObject> copyPasteEntities = new List<GameObject>();
     private IDictionary<int, Vector3> entityIdToCopyPastePointOffset;
 
-    // inventory multi-placement
+    // multi-placement
+    private List<GameObject> multiPlacementEntities = new List<GameObject>();
+    private Quaternion multiPlacementMemRotation = Quaternion.identity;
     public List<InventoryItem> inventoryItemScripts = new List<InventoryItem>();
-    private GameObject inventoryMultiPlacementPrefab;
-    public Quaternion inventoryMultiPlacementMemRotation = Quaternion.identity;
 
     // inventory canvas
     public GameObject inventoryCanvas;
@@ -92,7 +92,7 @@ public class PlayerInputManager : MonoBehaviour
             this.HandleMouseEntityInteraction();
             this.HandleEntityDeleteByKeyDown();
             this.HandleEntityRotation();
-            this.HandleEntityCopyPaste_NEW();
+            this.HandleEntityCopyPaste();
             this.HandleEntityStateUndoRedo();
         }
     }
@@ -151,32 +151,44 @@ public class PlayerInputManager : MonoBehaviour
         return areNewlyCreated;
     }
 
-    public void SetInventoryMultiPlacementPrefab(GameObject entityPrefab)
+    // multi-placement (NEW)
+
+    public void StartMultiPlacement(List<GameObject> entities, Quaternion rotation)
     {
-        this.inventoryMultiPlacementPrefab = entityPrefab;
+        this.multiPlacementEntities = entities;
+        this.multiPlacementMemRotation = rotation;
+        List<GameObject> spawned = this.CreateMultiPlacementEntities();
+        // reposition using most center entity position
+        this.entityDragContainer.transform.position = Functions.MostCenterGameObject(spawned).transform.position;
+        foreach (var e in spawned)
+        {
+            e.transform.SetParent(this.entityDragContainer.transform);
+        }
+        // subsequently reposition to mouse cursor
+        this.entityDragContainer.transform.position = this.quantizedMousePos;
+        this.InitEntitySelect();
+        this.TrySelectEntities(spawned);
+        this.inputMode = GameSettings.INPUT_MODE_MULTIPLACEMENT;
     }
 
-    public GameObject CreateInventoryMultiPlacementEntity(Quaternion rotation)
+    public void ExitMultiPlacement()
     {
-        Vector3 quantizedPosition = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        quantizedPosition.z = 0;
-        GameObject spawned = Instantiate(this.inventoryMultiPlacementPrefab, quantizedPosition, rotation);
-        if (spawned != null)
+        this.multiPlacementEntities = new List<GameObject>();
+        this.multiPlacementMemRotation = Quaternion.identity;
+        this.DeleteSelectedEntities();
+        this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
+    }
+
+    public List<GameObject> CreateMultiPlacementEntities()
+    {
+        var spawned = new List<GameObject>();
+        foreach (var e in this.multiPlacementEntities)
         {
-            var geScript = spawned.GetComponent<GameEntity>();
-            geScript.isNewlyCreated = true;
-        }
-        else
-        {
-            Debug.LogWarning("Could not create inventory multi-placement entity at position: " + quantizedPosition.ToString());
+            GameObject prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(e.GetComponent<GameEntity>().prefabName);
+            GameObject newEntity = Instantiate(prefab, e.transform.position, e.transform.rotation);
+            spawned.Add(newEntity);
         }
         return spawned;
-    }
-
-    public void ClearInventoryMultiPlacementEntity()
-    {
-        this.inventoryMultiPlacementPrefab = null;
-        this.inventoryMultiPlacementMemRotation = Quaternion.identity;
     }
 
     public void DoEntitySelectionWithSelectionBox()
@@ -191,12 +203,9 @@ public class PlayerInputManager : MonoBehaviour
         if (Input.GetKeyDown(GameSettings.ESC_KEY))
         {
             // exit inventory multi-placement mode
-            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT)
+            if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
             {
-                this.ClearInventoryMultiPlacementEntity();
-                this.DeleteSelectedEntities();
-                this.InitEntitySelect();
-                this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
+                this.ExitMultiPlacement();
                 // manually deactivate all inventory item flags
                 foreach (GameObject inventoryItem in GameObject.FindGameObjectsWithTag("InventoryItem"))
                 {
@@ -336,7 +345,7 @@ public class PlayerInputManager : MonoBehaviour
                 }
             }
             // inventory multi-placement
-            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT)
+            else if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
             {
                 this.HandleMultiEntityPlacement();
             }
@@ -359,7 +368,7 @@ public class PlayerInputManager : MonoBehaviour
                 }
             }
             // continue multi-placement of entities
-            else if (!this.mouseIsUIHovered && this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT)
+            else if (!this.mouseIsUIHovered && this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
             {
                 this.HandleEntityDrag();
                 this.HandleMultiEntityPlacement();
@@ -387,8 +396,8 @@ public class PlayerInputManager : MonoBehaviour
                     this.isEntityDragging = false;
                 }
             }
-            // drop final entity from inventory multi-placement drag
-            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT)
+            // drop final entity from multi-placement drag
+            else if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
             {
                 this.HandleMultiEntityPlacement();
                 PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
@@ -397,7 +406,7 @@ public class PlayerInputManager : MonoBehaviour
         // mouse move
         else
         {
-            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT)
+            if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
             {
                 this.HandleEntityDrag();
             }
@@ -581,7 +590,7 @@ public class PlayerInputManager : MonoBehaviour
         }
         if (rot != 0 && this.currentEntitiesSelected.Count > 0)
         {
-            if (this.isEntityDragging)
+            if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT || this.isEntityDragging)
             {
                 this.RotateSelectedEntitiesAsGroup(rotationAmount: rot);
             }
@@ -637,67 +646,15 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityCopyPaste()
     {
-        if (Input.GetKey(GameSettings.CTL_Key) || Input.GetKey(GameSettings.CMD_Key))
+        if (
+            (Input.GetKey(GameSettings.CTL_Key) || Input.GetKey(GameSettings.CMD_Key)) &&
+            Input.GetKeyDown(GameSettings.COPY_Key) &&
+            this.currentEntitiesSelected.Count > 0
+        )
         {
-            if (Input.GetKeyDown(GameSettings.COPY_Key))
-            {
-                this.copyPasteEntities = new List<GameObject>(this.currentEntitiesSelected);
-                Vector3 midpoint = Functions.VectorMidpoint(this.copyPasteEntities.ConvertAll<Vector3>(x => x.transform.position));
-                this.entityIdToCopyPastePointOffset = new Dictionary<int, Vector3>();
-                foreach (GameObject e in this.copyPasteEntities)
-                {
-                    this.entityIdToCopyPastePointOffset.Add(e.GetInstanceID(), e.transform.position - midpoint);
-                }
-            }
-            else if (Input.GetKeyDown(GameSettings.PASTE_Key))
-            {
-                foreach (GameObject e in this.copyPasteEntities)
-                {
-                    string prefabName = e.GetComponent<GameEntity>().prefabName;
-                    GameObject prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(prefabName);
-                    Vector3 position = this.currentMousePositionWorld + this.entityIdToCopyPastePointOffset[e.GetInstanceID()];
-                    Vector3 quantizedPosition = Functions.RoundVector(position);
-                    GameObject spawned = Instantiate(
-                        prefab,
-                        new Vector3(quantizedPosition.x, quantizedPosition.y, 0),
-                        e.transform.rotation
-                    );
-                    PlaySceneManager.instance.gameEntityManager.AddGameEntity(spawned);
-                }
-            }
-        }
-    }
-
-    private void HandleEntityCopyPaste_NEW()
-    {
-        if (Input.GetKey(GameSettings.CTL_Key) || Input.GetKey(GameSettings.CMD_Key))
-        {
-            if (Input.GetKeyDown(GameSettings.COPY_Key))
-            {
-                this.copyPasteEntities = new List<GameObject>(this.currentEntitiesSelected);
-                Vector3 midpoint = Functions.VectorMidpoint(this.copyPasteEntities.ConvertAll<Vector3>(x => x.transform.position));
-                this.entityIdToCopyPastePointOffset = new Dictionary<int, Vector3>();
-                foreach (GameObject e in this.copyPasteEntities)
-                {
-                    this.entityIdToCopyPastePointOffset.Add(e.GetInstanceID(), e.transform.position - midpoint);
-                }
-            }
-            // else if (Input.GetKeyDown(GameSettings.PASTE_Key))
-            // {
-            //     foreach (GameObject e in this.copyPasteEntities)
-            //     {
-            //         string prefabName = e.GetComponent<GameEntity>().prefabName;
-            //         GameObject prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(prefabName);
-            //         Vector3 position = this.currentMousePositionWorld + this.entityIdToCopyPastePointOffset[e.GetInstanceID()];
-            //         Vector3 quantizedPosition = Functions.RoundVector(position);
-            //         GameObject spawned = Instantiate(
-            //             prefab,
-            //             new Vector3(quantizedPosition.x, quantizedPosition.y, 0),
-            //             e.transform.rotation
-            //         );
-            //         PlaySceneManager.instance.gameEntityManager.AddGameEntity(spawned);
-            //     }
-            // }
+            this.copyPasteEntities = new List<GameObject>(this.currentEntitiesSelected);
+            this.InitEntitySelect();
+            this.StartMultiPlacement(this.copyPasteEntities, Quaternion.identity);
         }
     }
 
@@ -713,17 +670,15 @@ public class PlayerInputManager : MonoBehaviour
         }
         if (dropIsValid)
         {
-            // commit placement, init, and create another entity
+            // commit placement and re-init multi-placement
             foreach (GameObject e in this.currentEntitiesSelected)
             {
-                this.inventoryMultiPlacementMemRotation = e.transform.rotation;
                 e.GetComponent<Draggable>().SetDragging(false);
                 e.GetComponent<GameEntity>().isNewlyCreated = false;
                 PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
+                e.transform.SetParent(null);
             }
-            this.InitEntitySelect();
-            GameObject spawned = this.CreateInventoryMultiPlacementEntity(this.inventoryMultiPlacementMemRotation);
-            this.SelectSingleEntity(spawned);
+            this.StartMultiPlacement(this.currentEntitiesSelected, Quaternion.identity);
         }
         else
         {

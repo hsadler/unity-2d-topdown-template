@@ -25,13 +25,14 @@ public class Functions
         return midpoint;
     }
 
-    public static Vector3 VectorMidpointFromGameObjects(List<GameObject> gameObjects)
+    public static Vector3 VectorMidpointFromGameObjects(List<GameObject> gameObjects, bool quantized = false)
     {
         List<Vector3> positions = gameObjects.Select(go => go.transform.position).ToList();
-        return VectorMidpoint(positions);
+        Vector3 midpoint = VectorMidpoint(positions);
+        return quantized ? RoundVector(midpoint) : midpoint;
     }
 
-    public static GameObject MostCenterObjectOfGameObjects(List<GameObject> gameObjects)
+    public static GameObject MostCenterGameObject(List<GameObject> gameObjects)
     {
         if (gameObjects.Count == 0)
         {

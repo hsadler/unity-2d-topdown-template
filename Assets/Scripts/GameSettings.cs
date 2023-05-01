@@ -22,7 +22,7 @@ public class GameSettings
 
     // input modes
     public const int INPUT_MODE_DEFAULT = 1;
-    public const int INPUT_MODE_INVENTORY_MULTIPLACEMENT = 2;
+    public const int INPUT_MODE_MULTIPLACEMENT = 2;
     public const int INPUT_MODE_MENU = 3;
 
 
@@ -54,7 +54,7 @@ public class GameSettings
 
     // dev settings
     public const bool DISPLAY_TELEMETRY = true;
-    public const bool DISPLAY_UI_DEBUG = true;
+    public const bool DISPLAY_UI_DEBUG = false;
 
 
 }

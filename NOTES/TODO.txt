@@ -66,23 +66,16 @@ X refactor selection+drag:
     X add a global mode for ui-debug (should override local debug settings)
     X add group drag container to the ui-debug mode
 X make multi-select rotations rotate entities together instead of individually
-- refactor multi-place to use drag-group:
-    - make multi-place use a list of prefabs
-    - make multi-place ghost entity support multiple entities
-    - make multi-place system agnostic to inventory bar selection
-    - ensure placement validation is working
-    - ensure rotation is working
-- refactor player inventory to have single source of truth
-    (SOT should be owned by PlayerInventoryManager)
-- copy+paste (single and multi):
-    - selection of one or more entities is required to use mode
-    - copy command should result in multi-placement mode
-    - mode causes draggable multi-placement of the initial entities selected
-    - the multi-place entities are rotatable
-    - lmb-click causes placement
-    - lmb held down causes continuous placement
-    - placement is committed only if it is valid
-    - escape press exits mode
+X refactor multi-place to use drag-group
+X copy+paste (single and multi):
+    X selection of one or more entities is required to use mode
+    X copy command should result in multi-placement mode
+    X mode causes draggable multi-placement of the initial entities selected
+    X the multi-place entities are rotatable
+    X lmb-click causes placement
+    X lmb held down causes continuous placement
+    X placement is committed only if it is valid
+    X escape press exits mode
 - add inventory selection indicator to inventory bar
 - create test scene for testing various entity behaviors:
     - draggable vs. not draggable
@@ -93,12 +86,13 @@ X make multi-select rotations rotate entities together instead of individually
 
 
 BUGS:
+    - switching modes while dragging causes bugs
+    - memorized rotation of inventory bar items is no longer working, consider removal 
 
 
 REFACTORS:
-- Change entity selection to wrap selected entities in a parent game object. 
-    De-selection causes the entities to be de-parented. This may help with doing
-    rotations on multiple game objects at the same time.
+    - refactor player inventory to have single source of truth
+        (SOT should be owned by PlayerInventoryManager)
 
 
 LATER:

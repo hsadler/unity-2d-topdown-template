@@ -90,12 +90,11 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
         // key match
         if (this.keyCode != KeyCode.None && Input.GetKeyDown(this.keyCode))
         {
-            bool isToggleCurrentSelectedOff = this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT && this.isInventoryKeyActive;
+            bool isToggleCurrentSelectedOff = this.playerInputManager.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT && this.isInventoryKeyActive;
             // already a selected an inventory key
-            if (this.playerInputManager.inputMode == GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT)
+            if (this.playerInputManager.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
             {
-                this.playerInputManager.DeleteSelectedEntities();
-                this.playerInputManager.ClearInventoryMultiPlacementEntity();
+                this.playerInputManager.ExitMultiPlacement();
             }
             // fresh selected inventory key
             else
@@ -116,10 +115,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
             // toggle on
             else
             {
-                this.playerInputManager.SetInventoryMultiPlacementPrefab(this.prefab);
-                GameObject spawned = this.playerInputManager.CreateInventoryMultiPlacementEntity(this.playerInputManager.inventoryMultiPlacementMemRotation);
-                this.playerInputManager.SelectSingleEntity(spawned);
-                this.playerInputManager.inputMode = GameSettings.INPUT_MODE_INVENTORY_MULTIPLACEMENT;
+                this.playerInputManager.StartMultiPlacement(new List<GameObject>() { this.prefab }, Quaternion.identity);
                 this.isInventoryKeyActive = true;
             }
         }
