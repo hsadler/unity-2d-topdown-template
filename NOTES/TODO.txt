@@ -83,6 +83,7 @@ X copy+paste (single and multi):
     - selectable vs. not selectable
     - turnable vs. not turnable
     - automatic behaviors such as movement and rotation
+- another pass on controls instructions
 
 
 BUGS:
