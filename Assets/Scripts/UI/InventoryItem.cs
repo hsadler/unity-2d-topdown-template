@@ -9,6 +9,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
 
     public KeyCode keyCode;
     public string entityName;
+    public GameObject selectionIndicator;
 
     private GameObject prefab;
     private bool isInventoryKeyActive = false;
@@ -47,6 +48,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     void Update()
     {
         this.HandleInventoryKeyPress();
+        this.selectionIndicator.SetActive(this.isInventoryKeyActive);
     }
 
     public void OnPointerDown(PointerEventData eventData)

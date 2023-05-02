@@ -76,7 +76,7 @@ X copy+paste (single and multi):
     X lmb held down causes continuous placement
     X placement is committed only if it is valid
     X escape press exits mode
-- add inventory selection indicator to inventory bar
+X add inventory selection indicator to inventory bar
 - create test scene for testing various entity behaviors:
     - draggable vs. not draggable
     - removable vs. not removable
