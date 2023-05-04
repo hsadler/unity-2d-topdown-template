@@ -491,15 +491,7 @@ public class PlayerInputManager : MonoBehaviour
     private void HandleEntityDrag()
     {
         // get draggables subset from selected entities
-        List<GameObject> draggables = new List<GameObject>();
-        foreach (GameObject e in this.currentEntitiesSelected)
-        {
-            Draggable draggable = e.GetComponent<Draggable>();
-            if (draggable != null)
-            {
-                draggables.Add(e);
-            }
-        }
+        List<GameObject> draggables = this.GetCurrentSelectedDraggables();
         // move draggables with respect to mouse position
         this.ApplySelectedEntityOffsets(this.quantizedMousePos, draggables);
         // set draggable state on entities and remove from game-entity-manager if needed
@@ -528,14 +520,7 @@ public class PlayerInputManager : MonoBehaviour
         // TODO: make impl more efficient
 
         // collect draggables subset
-        List<GameObject> draggables = new List<GameObject>();
-        foreach (GameObject e in this.currentEntitiesSelected)
-        {
-            if (e.GetComponent<Draggable>() != null)
-            {
-                draggables.Add(e);
-            }
-        }
+        List<GameObject> draggables = this.GetCurrentSelectedDraggables();
         // check if there are any invalid drop positions
         bool invalidDragDetected = false;
         foreach (GameObject e in draggables)
@@ -550,22 +535,7 @@ public class PlayerInputManager : MonoBehaviour
         // otherwise, roll-back positions to pre-drag positions
         if (invalidDragDetected)
         {
-            if (this.AreCurrentSelectedEntitiesNewlyCreated())
-            {
-                foreach (GameObject e in draggables)
-                {
-                    PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
-                    Destroy(e);
-                }
-                this.InitEntitySelect();
-            }
-            else
-            {
-                foreach (GameObject e in draggables)
-                {
-                    e.transform.position = e.GetComponent<Draggable>().preDragPosition;
-                }
-            }
+            this.CancelEntityDrag();
         }
         // commit drops and mark any newly created entities as no longer newly created
         foreach (GameObject e in draggables)
@@ -726,6 +696,20 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    private List<GameObject> GetCurrentSelectedDraggables()
+    {
+        var draggables = new List<GameObject>();
+        foreach (GameObject e in this.currentEntitiesSelected)
+        {
+            Draggable draggable = e.GetComponent<Draggable>();
+            if (draggable != null)
+            {
+                draggables.Add(e);
+            }
+        }
+        return draggables;
+    }
+
     private void TryGroupDraggingEntities(List<GameObject> entities)
     {
         foreach (GameObject e in entities)
@@ -743,6 +727,27 @@ public class PlayerInputManager : MonoBehaviour
         foreach (GameObject e in entities)
         {
             e.transform.SetParent(null);
+        }
+    }
+
+    private void CancelEntityDrag()
+    {
+        var draggables = this.GetCurrentSelectedDraggables();
+        if (this.AreCurrentSelectedEntitiesNewlyCreated())
+        {
+            foreach (GameObject e in draggables)
+            {
+                PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
+                Destroy(e);
+            }
+            this.InitEntitySelect();
+        }
+        else
+        {
+            foreach (GameObject e in draggables)
+            {
+                e.transform.position = e.GetComponent<Draggable>().preDragPosition;
+            }
         }
     }
 
