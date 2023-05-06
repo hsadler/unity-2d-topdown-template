@@ -27,6 +27,9 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     // manager refs
     private PlayerInputManager playerInputManager;
 
+    // debug
+    private bool useLogging = true;
+
 
     // UNITY HOOKS
 
@@ -101,6 +104,12 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
             // fresh selected inventory key
             else
             {
+                if (this.useLogging)
+                {
+                    Debug.Log("Player did fresh inventory select with inventory keypress: " + this.keyCode.ToString());
+                }
+                this.playerInputManager.CancelEntityDrag();
+                this.playerInputManager.CommitEntityDrop();
                 this.playerInputManager.InitEntitySelect();
             }
             // init state
@@ -112,6 +121,10 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
             // action is toggle-off, so noop
             if (isToggleCurrentSelectedOff)
             {
+                if (this.useLogging)
+                {
+                    Debug.Log("Player toggled-off selected inventory item with keypress: " + this.keyCode.ToString());
+                }
                 return;
             }
             // toggle on

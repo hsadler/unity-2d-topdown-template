@@ -78,7 +78,7 @@ X copy+paste (single and multi):
     X escape press exits mode
 X add inventory selection indicator to inventory bar
 - fix bugs:
-    - mode change to mulitplace while dragging should cancel drag
+    - mode change to multiplace while dragging should cancel drag
     - esc press while dragging should cancel drag
 - create test scene for testing various entity behaviors:
     - draggable vs. not draggable
