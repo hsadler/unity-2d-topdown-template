@@ -28,7 +28,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     private PlayerInputManager playerInputManager;
 
     // debug
-    private bool useLogging = true;
+    private bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -108,8 +108,11 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
                 {
                     Debug.Log("Player did fresh inventory select with inventory keypress: " + this.keyCode.ToString());
                 }
-                this.playerInputManager.CancelEntityDrag();
-                this.playerInputManager.CommitEntityDrop();
+                if (this.playerInputManager.isEntityDragging)
+                {
+                    this.playerInputManager.CancelEntityDrag();
+                    this.playerInputManager.CommitEntityDrop();
+                }
                 this.playerInputManager.InitEntitySelect();
             }
             // init state

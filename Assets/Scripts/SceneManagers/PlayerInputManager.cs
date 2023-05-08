@@ -14,7 +14,7 @@ public class PlayerInputManager : MonoBehaviour
 
 
     // input mode
-    public int inputMode;
+    public string inputMode;
 
     // menu
     public GameObject MenuGO;
@@ -31,7 +31,6 @@ public class PlayerInputManager : MonoBehaviour
     public GameObject selectionBoxPrefab;
     public GameObject selectionBoxGO;
     private bool mouseIsUIHovered;
-    private bool isEntityDragging;
 
     // entity selection
     private GameObject hoveredEntity;
@@ -39,6 +38,7 @@ public class PlayerInputManager : MonoBehaviour
     private IDictionary<int, Vector3> entityIdToMouseOffset;
 
     // entity drag
+    public bool isEntityDragging;
     public GameObject entityDragContainer;
 
     // entity copy + paste
@@ -124,7 +124,7 @@ public class PlayerInputManager : MonoBehaviour
 
     public void InitEntitySelect()
     {
-        Debug.Log("initializing entity select for: " + this.currentEntitiesSelected.Count.ToString() + " entities");
+        // Debug.Log("initializing entity select for: " + this.currentEntitiesSelected.Count.ToString() + " entities");
         // init selection and dragging on all currently selected entities
         foreach (GameObject e in this.currentEntitiesSelected)
         {
@@ -223,7 +223,7 @@ public class PlayerInputManager : MonoBehaviour
         // delete newly created entities and init select
         // otherwise, roll-back positions to pre-drag positions
         var draggables = this.GetCurrentSelectedDraggables();
-        Debug.Log("Cancelling entity drag for entity count: " + draggables.Count.ToString());
+        // Debug.Log("Cancelling entity drag for entity count: " + draggables.Count.ToString());
         if (this.AreCurrentSelectedEntitiesNewlyCreated())
         {
             foreach (GameObject e in draggables)
@@ -246,19 +246,22 @@ public class PlayerInputManager : MonoBehaviour
     {
         // commit drops and mark any newly created entities as no longer newly created
         var draggables = this.GetCurrentSelectedDraggables();
-        Debug.Log("Committing entity drop for entity count: " + draggables.Count.ToString());
+        // Debug.Log("Committing entity drop for entity count: " + draggables.Count.ToString());
         foreach (GameObject e in draggables)
         {
             e.GetComponent<Draggable>().SetDragging(false);
             e.GetComponent<GameEntity>().isNewlyCreated = false;
             PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
         }
+        this.UngroupDraggingEntities(this.currentEntitiesSelected);
+        this.isEntityDragging = false;
     }
 
     // IMPL METHODS
 
     private void CheckEscPress()
     {
+        // TODO: drag bug is here
         if (Input.GetKeyDown(GameSettings.ESC_KEY))
         {
             // exit inventory multi-placement mode
@@ -271,12 +274,17 @@ public class PlayerInputManager : MonoBehaviour
                     inventoryItem.GetComponent<InventoryItem>().DeactivateInventoryKey();
                 }
             }
+            else if (this.isEntityDragging)
+            {
+                this.CancelEntityDrag();
+                this.CommitEntityDrop();
+            }
             // deselect entities
             else if (this.currentEntitiesSelected.Count > 0)
             {
                 this.InitEntitySelect();
             }
-            // should enter menu mode, if on any other mode
+            // otherwise enter menu mode
             else
             {
                 bool isEnteringMenuMode = !(this.inputMode == GameSettings.INPUT_MODE_MENU);
@@ -451,8 +459,6 @@ public class PlayerInputManager : MonoBehaviour
                 else
                 {
                     this.HandleEntityDrop();
-                    this.UngroupDraggingEntities(this.currentEntitiesSelected);
-                    this.isEntityDragging = false;
                 }
             }
             // drop final entity from multi-placement drag

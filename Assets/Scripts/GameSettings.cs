@@ -21,9 +21,9 @@ public class GameSettings
 
 
     // input modes
-    public const int INPUT_MODE_DEFAULT = 1;
-    public const int INPUT_MODE_MULTIPLACEMENT = 2;
-    public const int INPUT_MODE_MENU = 3;
+    public const string INPUT_MODE_DEFAULT = "INPUT_MODE_DEFAULT";
+    public const string INPUT_MODE_MULTIPLACEMENT = "INPUT_MODE_MULTIPLACEMENT";
+    public const string INPUT_MODE_MENU = "INPUT_MODE_MENU";
 
 
     // player input mappings

@@ -51,6 +51,8 @@ public class UITelemetryManager : MonoBehaviour
             string displayText =
                 "FPS: " + fps.ToString() +
                 "\n" +
+                "Input Mode: " + this.playerInputManager.inputMode.ToString() +
+                "\n" +
                 "Entity Total Count: " + this.gameEntityCount.ToString() +
                 "\n" +
                 "Entity Hovered: " + gameEntityHoveredName +
