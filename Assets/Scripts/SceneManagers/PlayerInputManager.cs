@@ -278,6 +278,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 this.CancelEntityDrag();
                 this.CommitEntityDrop();
+                this.InitEntitySelect();
             }
             // deselect entities
             else if (this.currentEntitiesSelected.Count > 0)
