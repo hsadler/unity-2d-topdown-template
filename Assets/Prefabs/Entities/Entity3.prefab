@@ -79,8 +79,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6177c2a52727344182799bc5a4f1bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uuid: 
   prefabName: Entity3
+  uuid: 
   isNewlyCreated: 0
   renders:
   - {fileID: 7429123663600729190}
@@ -234,6 +234,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InvalidDragIndicatorRenderer
       objectReference: {fileID: 0}
+    - target: {fileID: 1592881032782179396, guid: 23c36cb45bae05c4c8888f41afc81390, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5643451264563729100, guid: 23c36cb45bae05c4c8888f41afc81390, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -374,7 +378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1592881032782179396, guid: 7c2c306d069bbfc45b6bda9737f98451, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5643451264563729100, guid: 7c2c306d069bbfc45b6bda9737f98451, type: 3}
       propertyPath: m_RootOrder
