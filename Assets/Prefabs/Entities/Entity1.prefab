@@ -97,8 +97,6 @@ GameObject:
   - component: {fileID: 2768410703144203168}
   - component: {fileID: 1609427600843478505}
   - component: {fileID: 1609427600843478504}
-  - component: {fileID: 1314439884215172765}
-  - component: {fileID: -8193000435345982864}
   m_Layer: 0
   m_Name: Entity1
   m_TagString: GameEntity
@@ -199,30 +197,6 @@ MonoBehaviour:
   isDragging: 0
   invalidDragIndicator: {fileID: 3973658475283295790}
   preDragPosition: {x: 0, y: 0, z: 0}
---- !u!114 &1314439884215172765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1609427600843478509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17a3382ca3cb23c43b201d26cc8819fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-8193000435345982864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1609427600843478509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a68ccf47101eb194198cd3cb131a9257, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2395432901707252330
 PrefabInstance:
   m_ObjectHideFlags: 0

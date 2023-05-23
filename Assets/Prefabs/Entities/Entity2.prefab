@@ -96,9 +96,7 @@ GameObject:
   - component: {fileID: 7473259256686004595}
   - component: {fileID: 4848585215855239140}
   - component: {fileID: 2907271628457060369}
-  - component: {fileID: 1285987304608708486}
   - component: {fileID: 5791841533779909828}
-  - component: {fileID: -2762263267789251663}
   m_Layer: 0
   m_Name: Entity2
   m_TagString: GameEntity
@@ -186,18 +184,6 @@ MonoBehaviour:
   isDragging: 0
   invalidDragIndicator: {fileID: 6050672405609462478}
   preDragPosition: {x: 0, y: 0, z: 0}
---- !u!114 &1285987304608708486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3961495332834830440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a68ccf47101eb194198cd3cb131a9257, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5791841533779909828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,18 +197,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionIndicator: {fileID: 7425689898073933065}
---- !u!114 &-2762263267789251663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3961495332834830440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17a3382ca3cb23c43b201d26cc8819fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5035942074515216010
 PrefabInstance:
   m_ObjectHideFlags: 0

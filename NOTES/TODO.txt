@@ -80,18 +80,13 @@ X add inventory selection indicator to inventory bar
 X fix bugs:
     X mode change to multiplace while dragging should cancel drag
     X esc press while dragging should cancel drag
-- create test scene for testing various entity behaviors:
-    - draggable vs. not draggable
-    - removable vs. not removable
-    - selectable vs. not selectable
-    - turnable vs. not turnable
+- test various entity behaviors:
+    X reduce interaction behavioral scripts to be only selectable and draggable 
     - automatic behaviors such as movement and rotation
 - another pass on controls instructions
 
 
 BUGS:
-    - switching modes while dragging causes bugs
-    - memorized rotation of inventory bar items is no longer working, consider removal 
 
 
 REFACTORS:

@@ -128,8 +128,8 @@ public class PlayerInputManager : MonoBehaviour
         // init selection and dragging on all currently selected entities
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            e.GetComponent<Selectable>().SetSelected(false);
-            e.GetComponent<Draggable>().SetDragging(false);
+            e.GetComponent<Selectable>()?.SetSelected(false);
+            e.GetComponent<Draggable>()?.SetDragging(false);
         }
         this.currentEntitiesSelected = new List<GameObject>();
         this.InitEntityOffsets();
@@ -147,16 +147,19 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            e.GetComponent<Selectable>().SetPendingDelete(status);
+            e.GetComponent<Selectable>()?.SetPendingDelete(status);
         }
     }
 
-    public void DeleteSelectedEntities()
+    public void DeleteSelectedEntities(bool forceDelete = false)
     {
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
-            Destroy(e);
+            if (forceDelete || e.GetComponent<Selectable>())
+            {
+                PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
+                Destroy(e);
+            }
         }
         this.InitEntitySelect();
     }
@@ -196,7 +199,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         this.multiPlacementEntities = new List<GameObject>();
         this.multiPlacementMemRotation = Quaternion.identity;
-        this.DeleteSelectedEntities();
+        this.DeleteSelectedEntities(forceDelete: true);
         this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
     }
 
@@ -686,7 +689,8 @@ public class PlayerInputManager : MonoBehaviour
     private void HandleMultiEntityPlacement()
     {
         bool dropIsValid = true;
-        foreach (GameObject e in this.currentEntitiesSelected)
+        var draggables = this.GetCurrentSelectedDraggables();
+        foreach (GameObject e in draggables)
         {
             if (!e.GetComponent<Draggable>().PositionIsValid())
             {
@@ -696,7 +700,7 @@ public class PlayerInputManager : MonoBehaviour
         if (dropIsValid)
         {
             // commit placement and re-init multi-placement
-            foreach (GameObject e in this.currentEntitiesSelected)
+            foreach (GameObject e in draggables)
             {
                 e.GetComponent<Draggable>().SetDragging(false);
                 e.GetComponent<GameEntity>().isNewlyCreated = false;
@@ -725,7 +729,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (Collider2D hit in hits)
         {
-            if (hit != null && hit.gameObject.GetComponent<Selectable>() != null)
+            if (hit != null && hit.gameObject.GetComponent<Selectable>())
             {
                 return hit.gameObject;
             }
@@ -738,12 +742,12 @@ public class PlayerInputManager : MonoBehaviour
         foreach (GameObject entity in entities)
         {
             var selectable = entity.GetComponent<Selectable>();
-            if (selectable != null)
+            if (selectable)
             {
                 this.currentEntitiesSelected.Add(entity);
                 selectable.SetSelected(true);
                 Draggable draggable = selectable.gameObject.GetComponent<Draggable>();
-                if (draggable != null)
+                if (draggable)
                 {
                     draggable.preDragPosition = draggable.transform.position;
                 }
@@ -757,7 +761,7 @@ public class PlayerInputManager : MonoBehaviour
         foreach (GameObject e in this.currentEntitiesSelected)
         {
             Draggable draggable = e.GetComponent<Draggable>();
-            if (draggable != null)
+            if (draggable)
             {
                 draggables.Add(e);
             }
@@ -770,7 +774,7 @@ public class PlayerInputManager : MonoBehaviour
         foreach (GameObject e in entities)
         {
             var draggable = e.GetComponent<Draggable>();
-            if (draggable != null)
+            if (draggable)
             {
                 e.transform.SetParent(this.entityDragContainer.transform);
             }
