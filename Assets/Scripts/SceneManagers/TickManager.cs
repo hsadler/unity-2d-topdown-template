@@ -6,35 +6,42 @@ public class TickManager : MonoBehaviour
 {
 
 
-    public MyEvent1 event1;
-    public MyEvent2 event2;
+    public bool tickIsRunning;
+
+    public TimeTickEvent timeTickEvent;
 
 
     // UNITY HOOKS
 
     void Awake()
     {
-        this.event1 = new MyEvent1();
-        this.event2 = new MyEvent2();
+        this.tickIsRunning = false;
+        this.timeTickEvent = new TimeTickEvent();
     }
 
-    void Start()
-    {
-        InvokeRepeating("SendEvents", 0f, 1f);
-    }
+    void Start() { }
 
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (this.tickIsRunning)
+            {
+                CancelInvoke();
+            }
+            else
+            {
+                InvokeRepeating("SendTick", 0f, 1f);
+            }
+            this.tickIsRunning = !this.tickIsRunning;
+        }
     }
 
     // IMPL METHODS
 
-    private void SendEvents()
+    private void SendTick()
     {
-        Debug.Log("Sending events...");
-        event1.Invoke(123, "Event1 message");
-        event2.Invoke(234, "Event2 message");
+        this.timeTickEvent.Invoke(1);
     }
 
 

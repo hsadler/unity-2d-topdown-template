@@ -6,7 +6,6 @@ using UnityEngine;
 public class Mover_TEST : MonoBehaviour
 {
 
-    private bool moverIsActive;
     private bool eventListenersRegistered;
     private System.Random random;
 
@@ -17,7 +16,6 @@ public class Mover_TEST : MonoBehaviour
 
     void Awake()
     {
-        this.moverIsActive = false;
         this.eventListenersRegistered = false;
         this.random = new System.Random();
     }
@@ -26,16 +24,9 @@ public class Mover_TEST : MonoBehaviour
     {
         this.gem = PlaySceneManager.instance.gameEntityManager;
         this.AddEventListeners();
-        InvokeRepeating("AutoBehavior", 0f, 1f);
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            this.moverIsActive = !this.moverIsActive;
-        }
-    }
+    void Update() { }
 
     void OnEnable()
     {
@@ -51,7 +42,7 @@ public class Mover_TEST : MonoBehaviour
 
     private void AutoBehavior()
     {
-        if (!this.moverIsActive)
+        if (!this.gem.GetGameEntityAtPosition(this.transform.position))
         {
             return;
         }
@@ -91,15 +82,12 @@ public class Mover_TEST : MonoBehaviour
     {
         // moves forward one space
 
-        if (this.gem.GetGameEntityAtPosition(this.transform.position))
+        Vector3 movePos = Functions.RoundVector(this.transform.position + this.transform.up);
+        if (!this.gem.PositionIsOccupied(movePos))
         {
-            Vector3 movePos = Functions.RoundVector(this.transform.position + this.transform.up);
-            if (!this.gem.PositionIsOccupied(movePos))
-            {
-                this.gem.RemoveGameEntity(this.gameObject);
-                this.transform.position = movePos;
-                this.gem.AddGameEntity(this.gameObject);
-            }
+            this.gem.RemoveGameEntity(this.gameObject);
+            this.transform.position = movePos;
+            this.gem.AddGameEntity(this.gameObject);
         }
     }
 
@@ -107,33 +95,20 @@ public class Mover_TEST : MonoBehaviour
     {
         if (!this.eventListenersRegistered && PlaySceneManager.instance)
         {
-            PlaySceneManager.instance.tickManager.event1.AddListener(this.Event1Handler);
-            PlaySceneManager.instance.tickManager.event2.AddListener(this.Event2Handler);
+            PlaySceneManager.instance.tickManager.timeTickEvent.AddListener(this.TimeTickHandler);
             this.eventListenersRegistered = true;
-            Debug.Log("event listeners added");
-        }
-        else
-        {
-            Debug.Log("couldn't add event listeners...");
         }
     }
 
     private void RemoveEventListeners()
     {
-        PlaySceneManager.instance.tickManager.event1.RemoveListener(this.Event1Handler);
-        PlaySceneManager.instance.tickManager.event2.RemoveListener(this.Event2Handler);
+        PlaySceneManager.instance.tickManager.timeTickEvent.RemoveListener(this.TimeTickHandler);
         this.eventListenersRegistered = false;
-        Debug.Log("event listeners removed");
     }
 
-    private void Event1Handler(int val, string message)
+    private void TimeTickHandler(int val)
     {
-        Debug.Log("Event1 received with arg1: " + val.ToString() + " and arg2: " + message);
-    }
-
-    private void Event2Handler(int val, string message)
-    {
-        Debug.Log("Event2 received with arg1: " + val.ToString() + " and arg2: " + message);
+        this.AutoBehavior();
     }
 
 
