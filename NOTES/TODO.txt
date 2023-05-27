@@ -85,9 +85,11 @@ X test various entity behaviors:
     X automatic behaviors such as movement and rotation
     X push history step per automatic behavior action
 - build tick system:
-    - tick manager
-    - event listeners
-    - play/pause controls
+    X tick manager
+    X event listeners
+    X play/pause controls
+    - fix bugs:
+        - restart of scene makes mover not respond to play/pause
 - another pass on controls instructions
 
 

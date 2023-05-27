@@ -7,8 +7,9 @@ public class TickManager : MonoBehaviour
 
 
     public bool tickIsRunning;
-
     public TimeTickEvent timeTickEvent;
+
+    private bool useLogging = true;
 
 
     // UNITY HOOKS
@@ -28,13 +29,26 @@ public class TickManager : MonoBehaviour
             if (this.tickIsRunning)
             {
                 CancelInvoke();
+                if (this.useLogging)
+                {
+                    Debug.Log("time tick turned OFF");
+                }
             }
             else
             {
                 InvokeRepeating("SendTick", 0f, 1f);
+                if (this.useLogging)
+                {
+                    Debug.Log("time tick turned ON");
+                }
             }
             this.tickIsRunning = !this.tickIsRunning;
         }
+    }
+
+    void OnDestroy()
+    {
+        CancelInvoke();
     }
 
     // IMPL METHODS
@@ -42,6 +56,10 @@ public class TickManager : MonoBehaviour
     private void SendTick()
     {
         this.timeTickEvent.Invoke(1);
+        if (this.useLogging)
+        {
+            Debug.Log("time tick event sent");
+        }
     }
 
 

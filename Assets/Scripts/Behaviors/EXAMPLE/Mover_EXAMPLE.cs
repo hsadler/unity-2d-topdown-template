@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class Mover_TEST : MonoBehaviour
+public class Mover_EXAMPLE : MonoBehaviour
 {
 
     private bool eventListenersRegistered;
@@ -34,6 +34,11 @@ public class Mover_TEST : MonoBehaviour
     }
 
     void OnDisable()
+    {
+        this.RemoveEventListeners();
+    }
+
+    void OnDestroy()
     {
         this.RemoveEventListeners();
     }
