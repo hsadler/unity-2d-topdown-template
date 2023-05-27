@@ -80,9 +80,14 @@ X add inventory selection indicator to inventory bar
 X fix bugs:
     X mode change to multiplace while dragging should cancel drag
     X esc press while dragging should cancel drag
-- test various entity behaviors:
+X test various entity behaviors:
     X reduce interaction behavioral scripts to be only selectable and draggable 
-    - automatic behaviors such as movement and rotation
+    X automatic behaviors such as movement and rotation
+    X push history step per automatic behavior action
+- build tick system:
+    - tick manager
+    - event listeners
+    - play/pause controls
 - another pass on controls instructions
 
 

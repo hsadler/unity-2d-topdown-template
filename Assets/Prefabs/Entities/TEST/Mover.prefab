@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6177c2a52727344182799bc5a4f1bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabName: Entity3
+  prefabName: Mover
   uuid: 
   isNewlyCreated: 0
   renders:
