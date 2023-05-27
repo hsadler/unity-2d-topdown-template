@@ -97,6 +97,7 @@ BUGS:
 REFACTORS:
     - refactor player inventory to have single source of truth
         (SOT should be owned by PlayerInventoryManager)
+    - convert constant groups to be enums
 
 
 LATER:

@@ -14,6 +14,7 @@ public class PlaySceneManager : MonoBehaviour
     public GameEntityManager gameEntityManager;
     public PlayerInputManager playerInputManager;
     public PlayerInventoryManager playerInventoryManager;
+    public TickManager tickManager;
     public UIControlsInstructionsManager uiControlsInstructionsManager;
     public UITelemetryManager uiTelemetryManager;
 

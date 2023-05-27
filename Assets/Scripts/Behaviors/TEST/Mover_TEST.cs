@@ -7,16 +7,25 @@ public class Mover_TEST : MonoBehaviour
 {
 
     private bool moverIsActive;
-    private System.Random random = new System.Random();
+    private bool eventListenersRegistered;
+    private System.Random random;
+
     private GameEntityManager gem;
 
 
     // UNITY HOOKS
 
-    void Start()
+    void Awake()
     {
         this.moverIsActive = false;
+        this.eventListenersRegistered = false;
+        this.random = new System.Random();
+    }
+
+    void Start()
+    {
         this.gem = PlaySceneManager.instance.gameEntityManager;
+        this.AddEventListeners();
         InvokeRepeating("AutoBehavior", 0f, 1f);
     }
 
@@ -28,6 +37,15 @@ public class Mover_TEST : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        this.AddEventListeners();
+    }
+
+    void OnDisable()
+    {
+        this.RemoveEventListeners();
+    }
 
     // IMPL METHODS
 
@@ -84,5 +102,39 @@ public class Mover_TEST : MonoBehaviour
             }
         }
     }
+
+    private void AddEventListeners()
+    {
+        if (!this.eventListenersRegistered && PlaySceneManager.instance)
+        {
+            PlaySceneManager.instance.tickManager.event1.AddListener(this.Event1Handler);
+            PlaySceneManager.instance.tickManager.event2.AddListener(this.Event2Handler);
+            this.eventListenersRegistered = true;
+            Debug.Log("event listeners added");
+        }
+        else
+        {
+            Debug.Log("couldn't add event listeners...");
+        }
+    }
+
+    private void RemoveEventListeners()
+    {
+        PlaySceneManager.instance.tickManager.event1.RemoveListener(this.Event1Handler);
+        PlaySceneManager.instance.tickManager.event2.RemoveListener(this.Event2Handler);
+        this.eventListenersRegistered = false;
+        Debug.Log("event listeners removed");
+    }
+
+    private void Event1Handler(int val, string message)
+    {
+        Debug.Log("Event1 received with arg1: " + val.ToString() + " and arg2: " + message);
+    }
+
+    private void Event2Handler(int val, string message)
+    {
+        Debug.Log("Event2 received with arg1: " + val.ToString() + " and arg2: " + message);
+    }
+
 
 }
