@@ -9,7 +9,7 @@ public class TickManager : MonoBehaviour
     public bool tickIsRunning;
     public TimeTickEvent timeTickEvent;
 
-    private bool useLogging = true;
+    private bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -20,7 +20,7 @@ public class TickManager : MonoBehaviour
         this.timeTickEvent = new TimeTickEvent();
         if (this.useLogging)
         {
-            Debug.Log("New TickManager instantiated");
+            Debug.Log("Instantiated TickManager");
         }
     }
 
@@ -40,7 +40,7 @@ public class TickManager : MonoBehaviour
             }
             else
             {
-                InvokeRepeating("SendTick", 0f, 1f);
+                InvokeRepeating("SendTick", GameSettings.DEFAULT_TICK_DURATION, GameSettings.DEFAULT_TICK_DURATION);
                 if (this.useLogging)
                 {
                     Debug.Log("time tick turned ON");

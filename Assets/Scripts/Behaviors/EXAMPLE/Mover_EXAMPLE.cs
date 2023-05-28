@@ -26,6 +26,7 @@ public class Mover_EXAMPLE : MonoBehaviour
     void Start()
     {
         this.gem = PlaySceneManager.instance.gameEntityManager;
+        this.RemoveEventListeners();
         this.AddEventListeners();
     }
 
@@ -101,11 +102,11 @@ public class Mover_EXAMPLE : MonoBehaviour
 
     private void AddEventListeners()
     {
-        if (!this.eventListenersRegistered && PlaySceneManager.instance)
+        if (!this.eventListenersRegistered && PlaySceneManager.instance && PlaySceneManager.instance.tickManager)
         {
             if (this.useLogging)
             {
-                Debug.Log("Event listeners ADDED for Mover: " + this.GetComponent<GameEntity>().uuid);
+                Debug.Log("Event listeners ADDED for Mover: " + this.gameObject.GetInstanceID().ToString());
             }
             PlaySceneManager.instance.tickManager.timeTickEvent.AddListener(this.TimeTickHandler);
             this.eventListenersRegistered = true;
@@ -114,7 +115,7 @@ public class Mover_EXAMPLE : MonoBehaviour
         {
             if (this.useLogging)
             {
-                Debug.Log("Event listeners already added for Mover: " + this.GetComponent<GameEntity>().uuid);
+                Debug.Log("Could not add event listeners for Mover: " + this.gameObject.GetInstanceID().ToString());
             }
         }
     }
@@ -125,7 +126,7 @@ public class Mover_EXAMPLE : MonoBehaviour
         this.eventListenersRegistered = false;
         if (this.useLogging)
         {
-            Debug.Log("Event listeners REMOVED for Mover: " + this.GetComponent<GameEntity>().uuid);
+            Debug.Log("Event listeners REMOVED for Mover: " + this.gameObject.GetInstanceID().ToString());
         }
     }
 
@@ -133,8 +134,8 @@ public class Mover_EXAMPLE : MonoBehaviour
     {
         if (this.useLogging)
         {
+            Debug.Log("Executing time tick handler for Mover: " + this.gameObject.GetInstanceID().ToString());
         }
-        Debug.Log("Executing time tick handler for Mover: " + this.GetComponent<GameEntity>().uuid);
         this.AutoBehavior();
     }
 

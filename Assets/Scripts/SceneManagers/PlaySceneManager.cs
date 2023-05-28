@@ -21,18 +21,24 @@ public class PlaySceneManager : MonoBehaviour
     // the static reference to the singleton instance
     public static PlaySceneManager instance;
 
+    private bool useLogging = false;
+
 
     // UNITY HOOKS
 
     void Awake()
     {
+        if (this.useLogging)
+        {
+            Debug.Log("Instantiated PlaySceneManager");
+        }
         if (instance == null)
         {
             instance = this;
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
 
