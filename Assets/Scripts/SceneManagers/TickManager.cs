@@ -18,6 +18,10 @@ public class TickManager : MonoBehaviour
     {
         this.tickIsRunning = false;
         this.timeTickEvent = new TimeTickEvent();
+        if (this.useLogging)
+        {
+            Debug.Log("New TickManager instantiated");
+        }
     }
 
     void Start() { }
@@ -49,6 +53,7 @@ public class TickManager : MonoBehaviour
     void OnDestroy()
     {
         CancelInvoke();
+        this.timeTickEvent.RemoveAllListeners();
     }
 
     // IMPL METHODS

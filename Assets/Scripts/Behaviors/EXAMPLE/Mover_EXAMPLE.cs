@@ -6,10 +6,13 @@ using UnityEngine;
 public class Mover_EXAMPLE : MonoBehaviour
 {
 
+
     private bool eventListenersRegistered;
     private System.Random random;
 
     private GameEntityManager gem;
+
+    private bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -47,7 +50,7 @@ public class Mover_EXAMPLE : MonoBehaviour
 
     private void AutoBehavior()
     {
-        if (!this.gem.GetGameEntityAtPosition(this.transform.position))
+        if (!this.GetComponent<GameEntity>().EntityIsPlaying())
         {
             return;
         }
@@ -100,8 +103,19 @@ public class Mover_EXAMPLE : MonoBehaviour
     {
         if (!this.eventListenersRegistered && PlaySceneManager.instance)
         {
+            if (this.useLogging)
+            {
+                Debug.Log("Event listeners ADDED for Mover: " + this.GetComponent<GameEntity>().uuid);
+            }
             PlaySceneManager.instance.tickManager.timeTickEvent.AddListener(this.TimeTickHandler);
             this.eventListenersRegistered = true;
+        }
+        else
+        {
+            if (this.useLogging)
+            {
+                Debug.Log("Event listeners already added for Mover: " + this.GetComponent<GameEntity>().uuid);
+            }
         }
     }
 
@@ -109,10 +123,18 @@ public class Mover_EXAMPLE : MonoBehaviour
     {
         PlaySceneManager.instance.tickManager.timeTickEvent.RemoveListener(this.TimeTickHandler);
         this.eventListenersRegistered = false;
+        if (this.useLogging)
+        {
+            Debug.Log("Event listeners REMOVED for Mover: " + this.GetComponent<GameEntity>().uuid);
+        }
     }
 
     private void TimeTickHandler(int val)
     {
+        if (this.useLogging)
+        {
+        }
+        Debug.Log("Executing time tick handler for Mover: " + this.GetComponent<GameEntity>().uuid);
         this.AutoBehavior();
     }
 

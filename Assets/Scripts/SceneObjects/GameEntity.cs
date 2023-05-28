@@ -12,6 +12,8 @@ public class GameEntity : MonoBehaviour
     public bool isNewlyCreated = false;
     public List<GameObject> renders;
 
+    private PlaySceneManager psm;
+
 
     // UNITY HOOKS
 
@@ -22,17 +24,26 @@ public class GameEntity : MonoBehaviour
 
     void Start()
     {
-        PlaySceneManager.instance.uiTelemetryManager.gameEntityCount += 1;
+        this.psm = PlaySceneManager.instance;
+        this.psm.uiTelemetryManager.gameEntityCount += 1;
     }
 
     void Update() { }
 
     void OnDestroy()
     {
-        PlaySceneManager.instance.uiTelemetryManager.gameEntityCount -= 1;
+        this.psm.uiTelemetryManager.gameEntityCount -= 1;
     }
 
     // INTF METHODS
+
+    public bool EntityIsPlaying()
+    {
+        Vector3 quantizedPos = Functions.RoundVector(this.transform.position);
+        GameObject trackedEntity = this.psm.gameEntityManager.GetGameEntityAtPosition(quantizedPos);
+        bool isPlaying = trackedEntity && trackedEntity == this.gameObject;
+        return isPlaying;
+    }
 
     public void SetUUID(string uuid)
     {
