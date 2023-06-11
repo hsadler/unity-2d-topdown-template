@@ -84,12 +84,21 @@ X test various entity behaviors:
     X reduce interaction behavioral scripts to be only selectable and draggable 
     X automatic behaviors such as movement and rotation
     X push history step per automatic behavior action
-- build tick system:
+X build tick system:
     X tick manager
     X event listeners
     X play/pause controls
-    - fix bugs:
-        - restart of scene makes mover not respond to play/pause
+    X fix bugs
+- more entities with behaviors:
+    - behavioral (spawner, destroyer, copier, pusher, rotator, etc.)
+    - zone with effect (road, conveyor, etc.)
+    - zone without effect (decoration)
+    - wall
+    - resource
+    - modifiers (switch on wall, etc.)
+- refactor tick to apply auto-behaviors to managed-entities directly instead of 
+    through events (this will fix the history-step problem)
+- another pass on telemetry
 - another pass on controls instructions
 
 
@@ -103,8 +112,8 @@ REFACTORS:
 
 
 LATER:
-- game play/pause/restart system and controls:
-    - play tick system
-    - add some entity automated behaviors
-    - entity automated behaviors are triggered at every tick
+- admin system for environment design:
+    - toggleable
+    - place & move normally unmovable entities
+    - workflow for multi-scene creation
 - save system
