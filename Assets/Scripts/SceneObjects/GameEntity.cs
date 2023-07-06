@@ -12,6 +12,8 @@ public class GameEntity : MonoBehaviour
     public bool isNewlyCreated = false;
     public List<GameObject> renders;
 
+    private List<IEnumerator> autoBehaviorActions = new List<IEnumerator>();
+
     private PlaySceneManager psm;
 
 
@@ -28,7 +30,13 @@ public class GameEntity : MonoBehaviour
         this.psm.uiTelemetryManager.gameEntityCount += 1;
     }
 
-    void Update() { }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            StartCoroutine(this.PerformAutoBehaviorActions());
+        }
+    }
 
     void OnDestroy()
     {
@@ -36,6 +44,11 @@ public class GameEntity : MonoBehaviour
     }
 
     // INTF METHODS
+
+    public void AddAutoBehaviorAction(IEnumerator action)
+    {
+        this.autoBehaviorActions.Add(action);
+    }
 
     public bool EntityIsPlaying()
     {
@@ -82,6 +95,18 @@ public class GameEntity : MonoBehaviour
     }
 
     // IMPL METHODS
+
+    private IEnumerator PerformAutoBehaviorActions()
+    {
+        if (this.autoBehaviorActions.Count > 0)
+        {
+            foreach (var action in this.autoBehaviorActions)
+            {
+                yield return StartCoroutine(action);
+            }
+            Debug.Log("All auto behavior actions completed");
+        }
+    }
 
 
 }

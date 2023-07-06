@@ -7,53 +7,41 @@ public class Mover_EXAMPLE : MonoBehaviour
 {
 
 
-    private bool eventListenersRegistered;
-    private System.Random random;
-
     private GameEntityManager gem;
+    private GameEntity ge;
 
-    private bool useLogging = false;
+    private bool useLogging = true;
+
+    private System.Random random;
 
 
     // UNITY HOOKS
 
     void Awake()
     {
-        this.eventListenersRegistered = false;
         this.random = new System.Random();
     }
 
     void Start()
     {
         this.gem = PlaySceneManager.instance.gameEntityManager;
-        this.RemoveEventListeners();
-        this.AddEventListeners();
+        this.ge = this.GetComponent<GameEntity>();
+        this.ge.AddAutoBehaviorAction(this.AutoBehavior());
     }
 
     void Update() { }
 
-    void OnEnable()
-    {
-        this.AddEventListeners();
-    }
+    // INTF METHODS
 
-    void OnDisable()
+    public IEnumerator AutoBehavior()
     {
-        this.RemoveEventListeners();
-    }
-
-    void OnDestroy()
-    {
-        this.RemoveEventListeners();
-    }
-
-    // IMPL METHODS
-
-    private void AutoBehavior()
-    {
+        if (this.useLogging)
+        {
+            Debug.Log("AutoBehavior() called for Mover: " + this.gameObject.GetInstanceID().ToString());
+        }
         if (!this.GetComponent<GameEntity>().EntityIsPlaying())
         {
-            return;
+            yield break;
         }
         int randomNumber = this.random.Next(2);
         if (randomNumber == 0)
@@ -66,6 +54,8 @@ public class Mover_EXAMPLE : MonoBehaviour
         }
         this.gem.TryPushEntityStateHistoryStep();
     }
+
+    // IMPL METHODS
 
     private void Turn()
     {
@@ -98,45 +88,6 @@ public class Mover_EXAMPLE : MonoBehaviour
             this.transform.position = movePos;
             this.gem.AddGameEntity(this.gameObject);
         }
-    }
-
-    private void AddEventListeners()
-    {
-        if (!this.eventListenersRegistered && PlaySceneManager.instance && PlaySceneManager.instance.tickManager)
-        {
-            if (this.useLogging)
-            {
-                Debug.Log("Event listeners ADDED for Mover: " + this.gameObject.GetInstanceID().ToString());
-            }
-            PlaySceneManager.instance.tickManager.timeTickEvent.AddListener(this.TimeTickHandler);
-            this.eventListenersRegistered = true;
-        }
-        else
-        {
-            if (this.useLogging)
-            {
-                Debug.Log("Could not add event listeners for Mover: " + this.gameObject.GetInstanceID().ToString());
-            }
-        }
-    }
-
-    private void RemoveEventListeners()
-    {
-        PlaySceneManager.instance.tickManager.timeTickEvent.RemoveListener(this.TimeTickHandler);
-        this.eventListenersRegistered = false;
-        if (this.useLogging)
-        {
-            Debug.Log("Event listeners REMOVED for Mover: " + this.gameObject.GetInstanceID().ToString());
-        }
-    }
-
-    private void TimeTickHandler(int val)
-    {
-        if (this.useLogging)
-        {
-            Debug.Log("Executing time tick handler for Mover: " + this.gameObject.GetInstanceID().ToString());
-        }
-        this.AutoBehavior();
     }
 
 

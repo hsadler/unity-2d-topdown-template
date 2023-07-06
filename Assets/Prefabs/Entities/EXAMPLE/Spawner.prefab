@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 2768410703144203168}
   - component: {fileID: 1609427600843478505}
   - component: {fileID: 1609427600843478504}
+  - component: {fileID: 7621825404319064453}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: GameEntity
@@ -197,6 +198,18 @@ MonoBehaviour:
   isDragging: 0
   invalidDragIndicator: {fileID: 3973658475283295790}
   preDragPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &7621825404319064453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609427600843478509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b67ff6989a60f84789b734cd6c36a84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2395432901707252330
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -356,7 +369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3929914065874583655, guid: 165c349048099d647b43a9e0a3555364, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.52
+      value: 0.53
       objectReference: {fileID: 0}
     - target: {fileID: 3929914065874583655, guid: 165c349048099d647b43a9e0a3555364, type: 3}
       propertyPath: m_LocalPosition.z
