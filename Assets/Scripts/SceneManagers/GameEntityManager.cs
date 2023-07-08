@@ -8,7 +8,8 @@ public class GameEntityManager : MonoBehaviour
 
     // Manages Game Entity positions within the play area. Assumes that multiple 
     // Game Entities cannot occupy the same discrete position. Also manages 
-    // entity state history for undo/redo functionality.
+    // entity state history for undo/redo functionality. Also manages 
+    // game-entity auto-behavior
 
 
     // position state management
@@ -38,6 +39,7 @@ public class GameEntityManager : MonoBehaviour
     void Start()
     {
         this.RegisterInitialGameEntities();
+        PlaySceneManager.instance.tickManager.timeTickEvent.AddListener(this.ExecuteAutoBehaviorActions);
     }
 
     void Update() { }
@@ -327,6 +329,16 @@ public class GameEntityManager : MonoBehaviour
             }
             return false;
         }
+    }
+
+    private void ExecuteAutoBehaviorActions(int value)
+    {
+        // NOTE: new list is required in order to not mutate the collection while iterating
+        foreach (GameObject entity in new List<GameObject>(this.positionToGameEntity.Values))
+        {
+            entity.GetComponent<IGameEntityAutoBehavior>()?.AutoBehavior();
+        }
+        this.TryPushEntityStateHistoryStep();
     }
 
 

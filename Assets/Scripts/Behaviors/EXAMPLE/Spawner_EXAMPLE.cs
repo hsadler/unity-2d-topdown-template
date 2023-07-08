@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawner_EXAMPLE : MonoBehaviour
+public class Spawner_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
 {
 
-
+    private bool useLogging = true;
     private GameObject spawnPrefab;
 
 
@@ -25,7 +25,11 @@ public class Spawner_EXAMPLE : MonoBehaviour
 
     public void AutoBehavior()
     {
-        // STUB
+        // TODO: implement stub
+        if (this.useLogging)
+        {
+            Debug.Log("AutoBehavior() called for Spawner: " + this.gameObject.GetInstanceID().ToString());
+        }
     }
 
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class Mover_EXAMPLE : MonoBehaviour
+public class Mover_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
 {
 
 
@@ -26,14 +26,13 @@ public class Mover_EXAMPLE : MonoBehaviour
     {
         this.gem = PlaySceneManager.instance.gameEntityManager;
         this.ge = this.GetComponent<GameEntity>();
-        this.ge.AddAutoBehaviorAction(this.AutoBehavior());
     }
 
     void Update() { }
 
     // INTF METHODS
 
-    public IEnumerator AutoBehavior()
+    public void AutoBehavior()
     {
         if (this.useLogging)
         {
@@ -41,7 +40,7 @@ public class Mover_EXAMPLE : MonoBehaviour
         }
         if (!this.GetComponent<GameEntity>().EntityIsPlaying())
         {
-            yield break;
+            return;
         }
         int randomNumber = this.random.Next(2);
         if (randomNumber == 0)
@@ -52,7 +51,6 @@ public class Mover_EXAMPLE : MonoBehaviour
         {
             this.Turn();
         }
-        this.gem.TryPushEntityStateHistoryStep();
     }
 
     // IMPL METHODS
