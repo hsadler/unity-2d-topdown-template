@@ -57,8 +57,9 @@ public class Mover_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
 
     private void Turn()
     {
+        //
         // rotates randomly left or right
-
+        //
         int randomNumber = this.random.Next(2);
         int rot = 0;
         if (randomNumber == 0)
@@ -77,8 +78,9 @@ public class Mover_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
 
     private void Move()
     {
+        //
         // moves forward one space
-
+        //
         Vector3 movePos = Functions.RoundVector(this.transform.position + this.transform.up);
         if (!this.gem.PositionIsOccupied(movePos))
         {

@@ -12,8 +12,6 @@ public class GameEntity : MonoBehaviour
     public bool isNewlyCreated = false;
     public List<GameObject> renders;
 
-    // private List<IEnumerator> autoBehaviorActions = new List<IEnumerator>();
-
     private PlaySceneManager psm;
 
 

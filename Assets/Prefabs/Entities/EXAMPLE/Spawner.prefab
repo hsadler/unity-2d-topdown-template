@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6177c2a52727344182799bc5a4f1bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabName: Entity1
+  prefabName: Spawner
   uuid: 
   isNewlyCreated: 0
   renders:
@@ -210,6 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b67ff6989a60f84789b734cd6c36a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPrefab: {fileID: 2403585086607018275, guid: d5f2545e82e5edf429913564e590f4b4, type: 3}
 --- !u!1001 &2395432901707252330
 PrefabInstance:
   m_ObjectHideFlags: 0

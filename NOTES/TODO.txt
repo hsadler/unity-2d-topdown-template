@@ -89,6 +89,8 @@ X build tick system:
     X event listeners
     X play/pause controls
     X fix bugs
+X refactor tick to apply auto-behaviors to managed-entities directly instead of 
+    through events (this will fix the history-step problem)
 - more entities with behaviors:
     - behavioral (spawner, destroyer, copier, pusher, rotator, etc.)
     - zone with effect (road, conveyor, etc.)
@@ -96,8 +98,6 @@ X build tick system:
     - wall
     - resource
     - modifiers (switch on wall, etc.)
-- refactor tick to apply auto-behaviors to managed-entities directly instead of 
-    through events (this will fix the history-step problem)
 - another pass on telemetry
 - another pass on controls instructions
 
