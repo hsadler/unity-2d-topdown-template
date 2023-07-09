@@ -9,7 +9,8 @@ public class Spawner_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     public GameObject spawnPrefab;
 
     private GameEntityManager gem;
-    private bool useLogging = true;
+
+    private bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -31,13 +32,13 @@ public class Spawner_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         }
         if (this.GetComponent<GameEntity>().EntityIsPlaying())
         {
-            this.SpawnGameEntity();
+            this.TrySpawnGameEntity();
         }
     }
 
     // IMPL METHODS
 
-    public void SpawnGameEntity()
+    public void TrySpawnGameEntity()
     {
         //
         // spawn a new game entity next to the spawner position
@@ -47,7 +48,7 @@ public class Spawner_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         {
             if (this.useLogging)
             {
-                Debug.Log("Spawning new entity at: " + spawnPos.ToString());
+                Debug.Log("Spawning new entity at position: " + spawnPos.ToString());
             }
             GameObject newEntity = Instantiate(this.spawnPrefab, spawnPos, Quaternion.identity);
             this.gem.AddGameEntity(newEntity);

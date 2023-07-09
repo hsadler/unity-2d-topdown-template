@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8786208478068431940}
   - component: {fileID: 7004017909684251840}
   m_Layer: 0
-  m_Name: NotInteractable
+  m_Name: Wall
   m_TagString: GameEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6177c2a52727344182799bc5a4f1bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabName: NotInteractable
+  prefabName: Wall
   uuid: 
   isNewlyCreated: 0
   renders:

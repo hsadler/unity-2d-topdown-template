@@ -10,7 +10,7 @@ public class GameSettings
     public const int GRID_SIZE = 200;
     public const bool ENTITY_POSITIONS_DISCRETE = true;
     public const int ENTITY_STATE_MAX_HISTORY = 100;
-    public const float DEFAULT_TICK_DURATION = 0.5f;
+    public const float DEFAULT_TICK_DURATION = 0.1f;
 
 
     // camera settings

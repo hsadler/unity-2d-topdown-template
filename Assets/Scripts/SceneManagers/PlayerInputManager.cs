@@ -128,8 +128,11 @@ public class PlayerInputManager : MonoBehaviour
         // init selection and dragging on all currently selected entities
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            e.GetComponent<Selectable>()?.SetSelected(false);
-            e.GetComponent<Draggable>()?.SetDragging(false);
+            if (e != null)
+            {
+                e.GetComponent<Selectable>()?.SetSelected(false);
+                e.GetComponent<Draggable>()?.SetDragging(false);
+            }
         }
         this.currentEntitiesSelected = new List<GameObject>();
         this.InitEntityOffsets();
@@ -155,10 +158,13 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            if (forceDelete || e.GetComponent<Selectable>())
+            if (e != null)
             {
-                PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
-                Destroy(e);
+                if (forceDelete || e.GetComponent<Selectable>())
+                {
+                    PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
+                    Destroy(e);
+                }
             }
         }
         this.InitEntitySelect();

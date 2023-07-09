@@ -97,9 +97,9 @@ GameObject:
   - component: {fileID: 2768410703144203168}
   - component: {fileID: 1609427600843478505}
   - component: {fileID: 1609427600843478504}
-  - component: {fileID: 7621825404319064453}
+  - component: {fileID: 8710175240283537755}
   m_Layer: 0
-  m_Name: Spawner
+  m_Name: Destroyer
   m_TagString: GameEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6177c2a52727344182799bc5a4f1bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabName: Spawner
+  prefabName: Destroyer
   uuid: 
   isNewlyCreated: 0
   renders:
@@ -199,7 +199,7 @@ MonoBehaviour:
   isDragging: 0
   invalidDragIndicator: {fileID: 3973658475283295790}
   preDragPosition: {x: 0, y: 0, z: 0}
---- !u!114 &7621825404319064453
+--- !u!114 &8710175240283537755
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,10 +208,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1609427600843478509}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b67ff6989a60f84789b734cd6c36a84, type: 3}
+  m_Script: {fileID: 11500000, guid: 6fbc239c286615e4ba0b7c286be0918b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPrefab: {fileID: 2403585086607018275, guid: d5f2545e82e5edf429913564e590f4b4, type: 3}
 --- !u!1 &5989734657265948395
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,7 +222,7 @@ GameObject:
   - component: {fileID: 1791503593392449850}
   - component: {fileID: 7796828669351951550}
   m_Layer: 0
-  m_Name: SpawnArea
+  m_Name: DestroyArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -286,7 +285,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

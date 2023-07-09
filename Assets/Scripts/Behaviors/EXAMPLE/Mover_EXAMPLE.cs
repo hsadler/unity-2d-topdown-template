@@ -10,7 +10,7 @@ public class Mover_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     private GameEntityManager gem;
     private GameEntity ge;
 
-    private bool useLogging = true;
+    private bool useLogging = false;
 
     private System.Random random;
 

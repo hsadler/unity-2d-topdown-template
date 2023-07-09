@@ -98,6 +98,9 @@ X refactor tick to apply auto-behaviors to managed-entities directly instead of
     - wall
     - resource
     - modifiers (switch on wall, etc.)
+- better inventory bar system:
+    - Additional player-interactable game-entities should be simple and easy to
+        add to the game.
 - another pass on telemetry
 - another pass on controls instructions
 
