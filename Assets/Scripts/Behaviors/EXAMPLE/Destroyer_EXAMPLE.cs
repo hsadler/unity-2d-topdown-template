@@ -30,13 +30,13 @@ public class Destroyer_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         }
         if (this.GetComponent<GameEntity>().EntityIsPlaying())
         {
-            this.TryDestroyGameEntity();
+            this.TryDestroy();
         }
     }
 
     // IMPL METHODS
 
-    public void TryDestroyGameEntity()
+    public void TryDestroy()
     {
         //
         // destroy a game entity next to the destroyer position

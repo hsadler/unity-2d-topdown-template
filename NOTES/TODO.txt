@@ -92,7 +92,7 @@ X build tick system:
 X refactor tick to apply auto-behaviors to managed-entities directly instead of 
     through events (this will fix the history-step problem)
 - more entities with behaviors:
-    - behavioral (spawner, destroyer, copier, pusher, rotator, etc.)
+    - behavioral (spawner, destroyer, duplicator, pusher, rotator, etc.)
     - zone with effect (road, conveyor, etc.)
     - zone without effect (decoration)
     - wall
