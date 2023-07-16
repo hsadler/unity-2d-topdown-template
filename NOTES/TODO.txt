@@ -92,12 +92,12 @@ X build tick system:
 X refactor tick to apply auto-behaviors to managed-entities directly instead of 
     through events (this will fix the history-step problem)
 - more entities with behaviors:
-    - behavioral (spawner, destroyer, duplicator, pusher, rotator, etc.)
-    - zone with effect (road, conveyor, etc.)
-    - zone without effect (decoration)
-    - wall
+    X wall
     - resource
-    - modifiers (switch on wall, etc.)
+    - behavioral (spawner, destroyer, duplicator, pusher, rotator, etc.)
+    - (maybe) zone with effect (road, conveyor, etc.)
+    - (maybe) zone without effect (decoration)
+    - (maybe) modifiers (switch on wall, etc.)
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
         add to the game.
