@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 2768410703144203168}
   - component: {fileID: 1609427600843478505}
   - component: {fileID: 1609427600843478504}
-  - component: {fileID: 2199107855556569234}
+  - component: {fileID: 3214651302494865398}
   m_Layer: 0
   m_Name: Rotator
   m_TagString: GameEntity
@@ -199,7 +199,7 @@ MonoBehaviour:
   isDragging: 0
   invalidDragIndicator: {fileID: 3973658475283295790}
   preDragPosition: {x: 0, y: 0, z: 0}
---- !u!114 &2199107855556569234
+--- !u!114 &3214651302494865398
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

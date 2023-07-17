@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1125521629800319737}
   - component: {fileID: 2593059070761418768}
   m_Layer: 0
-  m_Name: SquareRender
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 2768410703144203168}
   - component: {fileID: 1609427600843478505}
   - component: {fileID: 1609427600843478504}
-  - component: {fileID: 1631339792907877536}
+  - component: {fileID: 7901279116837593360}
   m_Layer: 0
   m_Name: ResourceData
   m_TagString: GameEntity
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6177c2a52727344182799bc5a4f1bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabName: Resource
+  prefabName: ResourceData
   uuid: 
   isNewlyCreated: 0
   renders:
@@ -284,7 +284,7 @@ MonoBehaviour:
   isDragging: 0
   invalidDragIndicator: {fileID: 3973658475283295790}
   preDragPosition: {x: 0, y: 0, z: 0}
---- !u!114 &1631339792907877536
+--- !u!114 &7901279116837593360
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -293,9 +293,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1609427600843478509}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa0082d5ab0ecfb43a9e4405ccf03ebf, type: 3}
+  m_Script: {fileID: 11500000, guid: 14bb76f3c5e7b84468d2bb41aef4d144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodySpriteRenderer: {fileID: 2593059070761418768}
 --- !u!1 &7479950168698870634
 GameObject:
   m_ObjectHideFlags: 0
