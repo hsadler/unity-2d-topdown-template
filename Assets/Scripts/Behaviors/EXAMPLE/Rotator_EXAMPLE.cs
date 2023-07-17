@@ -39,7 +39,7 @@ public class Rotator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     public void TryRotate()
     {
         //
-        // rotates a game entity next to the destroyer position
+        // rotates a game-entity within the target area
         //
         Vector3 rotatePos = Functions.RoundVector(this.transform.position + this.transform.up);
         GameObject toRotate = this.gem.GetGameEntityAtPosition(rotatePos);

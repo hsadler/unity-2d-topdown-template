@@ -38,6 +38,9 @@ public class ResourceData_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior, IRes
 
     public void ToggleData()
     {
+        //
+        // toggles data state on/off
+        //
         if (this.useLogging)
         {
             Debug.Log("Data toggled for ResourceData: " + this.gameObject.GetInstanceID().ToString());

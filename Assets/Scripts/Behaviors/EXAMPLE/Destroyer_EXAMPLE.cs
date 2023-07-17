@@ -39,7 +39,7 @@ public class Destroyer_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     public void TryDestroy()
     {
         //
-        // destroy a game entity next to the destroyer position
+        // destroy a game-entity within the target area
         //
         Vector3 destroyPos = Functions.RoundVector(this.transform.position + this.transform.up);
         GameObject toDestroy = this.gem.GetGameEntityAtPosition(destroyPos);

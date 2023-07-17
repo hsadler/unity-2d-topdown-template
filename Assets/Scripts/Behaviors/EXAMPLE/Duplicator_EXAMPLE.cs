@@ -39,7 +39,7 @@ public class Duplicator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     public void TryDuplicate()
     {
         //
-        // take a game entity from the input area and duplicated it to the 
+        // take a game-entity from the input area and duplicated it to the 
         // output area
         //
         Vector3 inputPos = Functions.RoundVector(this.transform.position + transform.up);

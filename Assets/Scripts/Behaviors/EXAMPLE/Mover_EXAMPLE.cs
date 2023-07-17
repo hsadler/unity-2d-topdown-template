@@ -38,22 +38,29 @@ public class Mover_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         {
             Debug.Log("AutoBehavior() called for Mover: " + this.gameObject.GetInstanceID().ToString());
         }
-        if (!this.GetComponent<GameEntity>().EntityIsPlaying())
+        if (this.GetComponent<GameEntity>().EntityIsPlaying())
         {
-            return;
-        }
-        int randomNumber = this.random.Next(2);
-        if (randomNumber == 0)
-        {
-            this.Move();
-        }
-        else
-        {
-            this.Turn();
+            this.MoveOrTurn();
         }
     }
 
     // IMPL METHODS
+
+    private void MoveOrTurn()
+    {
+        //
+        // randomly moves forward or turns, favoring movement 2/3 of the time
+        //
+        int randomNumber = this.random.Next(3);
+        if (randomNumber == 0)
+        {
+            this.Turn();
+        }
+        else
+        {
+            this.Move();
+        }
+    }
 
     private void Turn()
     {
