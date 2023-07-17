@@ -91,13 +91,13 @@ X build tick system:
     X fix bugs
 X refactor tick to apply auto-behaviors to managed-entities directly instead of 
     through events (this will fix the history-step problem)
-- more entities with behaviors:
+X more entities with behaviors:
     X wall
-    - resource
-    - behavioral (spawner, destroyer, duplicator, pusher, rotator, etc.)
-    - (maybe) zone with effect (road, conveyor, etc.)
-    - (maybe) zone without effect (decoration)
-    - (maybe) modifiers (switch on wall, etc.)
+    X resource
+    X behavioral (spawner, destroyer, duplicator, pusher, rotator, etc.)
+- cleanup renderer ordering (broken upon game-entity selection)
+- provide move and rotate interfaces for game-entities, migrate to using them
+- make movement and rotation animated
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
         add to the game.
@@ -120,3 +120,8 @@ LATER:
     - place & move normally unmovable entities
     - workflow for multi-scene creation
 - save system
+- more entities with behaviors:
+    - (maybe) zone with effect (road, conveyor, etc.)
+    - (maybe) zone without effect (decoration)
+    - (maybe) modifiers (switch on wall, etc.)
+
