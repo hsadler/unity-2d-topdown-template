@@ -95,7 +95,7 @@ X more entities with behaviors:
     X wall
     X resource
     X behavioral (spawner, destroyer, duplicator, pusher, rotator, etc.)
-- cleanup renderer ordering (broken upon game-entity selection)
+X cleanup renderer ordering (broken upon game-entity selection)
 - provide move and rotate interfaces for game-entities, migrate to using them
 - make movement and rotation animated
 - better inventory bar system:

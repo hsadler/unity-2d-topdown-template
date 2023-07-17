@@ -20,15 +20,9 @@ public class Selectable : MonoBehaviour
         this.selectionIndicator.SetActive(false);
     }
 
-    void Start()
-    {
+    void Start() { }
 
-    }
-
-    void Update()
-    {
-
-    }
+    void Update() { }
 
     // INTF METHODS
 

@@ -172,6 +172,10 @@ MonoBehaviour:
   renders:
   - {fileID: 1415950843716393537}
   - {fileID: 2049719603086119021}
+  - {fileID: 2879835541731399903}
+  - {fileID: 4863236590860261127}
+  - {fileID: 4013877749296012690}
+  - {fileID: 8687142178138987920}
   - {fileID: 9142094778056590178}
   - {fileID: 3973658475283295790}
 --- !u!114 &1609427600843478505
@@ -495,6 +499,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3929914065874583655, guid: 165c349048099d647b43a9e0a3555364, type: 3}
   m_PrefabInstance: {fileID: 3201987444947727267}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4863236590860261127 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8003478679713146020, guid: 165c349048099d647b43a9e0a3555364, type: 3}
+  m_PrefabInstance: {fileID: 3201987444947727267}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5252651126763240571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -568,6 +577,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 165c349048099d647b43a9e0a3555364, type: 3}
+--- !u!1 &2879835541731399903 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8003478679713146020, guid: 165c349048099d647b43a9e0a3555364, type: 3}
+  m_PrefabInstance: {fileID: 5252651126763240571}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9109927020414057500 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3929914065874583655, guid: 165c349048099d647b43a9e0a3555364, type: 3}
@@ -646,6 +660,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 165c349048099d647b43a9e0a3555364, type: 3}
+--- !u!1 &4013877749296012690 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8003478679713146020, guid: 165c349048099d647b43a9e0a3555364, type: 3}
+  m_PrefabInstance: {fileID: 6387856891486468406}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7939817533930010961 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3929914065874583655, guid: 165c349048099d647b43a9e0a3555364, type: 3}
