@@ -156,7 +156,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            if (e.TryGetComponent<Selectable>(out Selectable selectable))
+            if (e != null && e.TryGetComponent<Selectable>(out Selectable selectable))
             {
                 selectable.SetPendingDelete(status);
             }
@@ -184,7 +184,7 @@ public class PlayerInputManager : MonoBehaviour
         bool areNewlyCreated = true;
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            if (!e.GetComponent<GameEntity>().isNewlyCreated)
+            if (e != null && !e.GetComponent<GameEntity>().isNewlyCreated)
             {
                 areNewlyCreated = false;
             }
@@ -201,7 +201,7 @@ public class PlayerInputManager : MonoBehaviour
         this.entityDragContainer.transform.position = Functions.MostCenterGameObject(spawned).transform.position;
         foreach (var e in spawned)
         {
-            e.transform.SetParent(this.entityDragContainer.transform);
+            e?.transform.SetParent(this.entityDragContainer.transform);
         }
         // subsequently reposition to mouse cursor
         this.entityDragContainer.transform.position = this.quantizedMousePos;
@@ -246,8 +246,11 @@ public class PlayerInputManager : MonoBehaviour
         {
             foreach (GameObject e in draggables)
             {
-                PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
-                Destroy(e);
+                if (e != null)
+                {
+                    PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
+                    Destroy(e);
+                }
             }
             this.InitEntitySelect();
         }
@@ -255,7 +258,10 @@ public class PlayerInputManager : MonoBehaviour
         {
             foreach (GameObject e in draggables)
             {
-                e.transform.position = e.GetComponent<Draggable>().preDragPosition;
+                if (e != null)
+                {
+                    e.transform.position = e.GetComponent<Draggable>().preDragPosition;
+                }
             }
         }
     }
@@ -267,9 +273,12 @@ public class PlayerInputManager : MonoBehaviour
         // Debug.Log("Committing entity drop for entity count: " + draggables.Count.ToString());
         foreach (GameObject e in draggables)
         {
-            e.GetComponent<Draggable>().SetDragging(false);
-            e.GetComponent<GameEntity>().isNewlyCreated = false;
-            PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
+            if (e != null)
+            {
+                e.GetComponent<Draggable>().SetDragging(false);
+                e.GetComponent<GameEntity>().isNewlyCreated = false;
+                PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
+            }
         }
         this.UngroupDraggingEntities(this.currentEntitiesSelected);
         this.isEntityDragging = false;
@@ -520,7 +529,7 @@ public class PlayerInputManager : MonoBehaviour
         // set pre-drag positions for currently selected entities
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            if (e.TryGetComponent<Draggable>(out Draggable draggable))
+            if (e != null && e.TryGetComponent<Draggable>(out Draggable draggable))
             {
                 draggable.preDragPosition = draggable.transform.position;
             }
@@ -579,6 +588,7 @@ public class PlayerInputManager : MonoBehaviour
         // set draggable state on entities and remove from game-entity-manager if needed
         foreach (var e in draggables)
         {
+            if (e == null) { continue; }
             Draggable draggable = e.GetComponent<Draggable>();
             // is already dragging
             if (draggable.isDragging)
@@ -605,7 +615,7 @@ public class PlayerInputManager : MonoBehaviour
         bool invalidDragDetected = false;
         foreach (GameObject e in draggables)
         {
-            if (!e.GetComponent<Draggable>().PositionIsValid())
+            if (e != null && !e.GetComponent<Draggable>().PositionIsValid())
             {
                 invalidDragDetected = true;
             }
@@ -640,7 +650,10 @@ public class PlayerInputManager : MonoBehaviour
                 // rotate selected entities as individuals
                 foreach (GameObject e in this.currentEntitiesSelected)
                 {
-                    e.transform.Rotate(new Vector3(0, 0, rot));
+                    if (e != null)
+                    {
+                        e.transform.Rotate(new Vector3(0, 0, rot));
+                    }
                 }
                 // push history step only if input mode is default and entities are not currently being dragged
                 if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
@@ -705,7 +718,7 @@ public class PlayerInputManager : MonoBehaviour
         var draggables = this.GetCurrentSelectedDraggables();
         foreach (GameObject e in draggables)
         {
-            if (!e.GetComponent<Draggable>().PositionIsValid())
+            if (e != null && !e.GetComponent<Draggable>().PositionIsValid())
             {
                 dropIsValid = false;
             }
@@ -715,10 +728,13 @@ public class PlayerInputManager : MonoBehaviour
             // commit placement and re-init multi-placement
             foreach (GameObject e in draggables)
             {
-                e.GetComponent<Draggable>().SetDragging(false);
-                e.GetComponent<GameEntity>().isNewlyCreated = false;
-                PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
-                e.transform.SetParent(null);
+                if (e != null)
+                {
+                    e.GetComponent<Draggable>().SetDragging(false);
+                    e.GetComponent<GameEntity>().isNewlyCreated = false;
+                    PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
+                    e.transform.SetParent(null);
+                }
             }
             this.StartMultiPlacement(this.currentEntitiesSelected, Quaternion.identity);
         }
@@ -754,7 +770,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject entity in entities)
         {
-            if (entity.TryGetComponent<Selectable>(out Selectable selectable))
+            if (entity != null && entity.TryGetComponent<Selectable>(out Selectable selectable))
             {
                 this.currentEntitiesSelected.Add(entity);
                 selectable.SetSelected(true);
@@ -794,7 +810,10 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject e in entities)
         {
-            e.transform.SetParent(null);
+            if (e != null)
+            {
+                e.transform.SetParent(null);
+            }
         }
     }
 
@@ -809,7 +828,10 @@ public class PlayerInputManager : MonoBehaviour
         this.InitEntityOffsets();
         foreach (GameObject e in entities)
         {
-            this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - referencePos);
+            if (e != null)
+            {
+                this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - referencePos);
+            }
         }
     }
 
@@ -818,15 +840,18 @@ public class PlayerInputManager : MonoBehaviour
         // set entity positions as offsets relative to reference position
         foreach (GameObject e in entities)
         {
-            int instanceID = e.GetInstanceID();
-            if (this.entityIdToMouseOffset.ContainsKey(instanceID))
+            if (e != null)
             {
-                Vector3 offset = this.entityIdToMouseOffset[instanceID];
-                e.transform.position = new Vector3(
-                    referencePos.x + offset.x,
-                    referencePos.y + offset.y,
-                    e.transform.position.z
-                );
+                int instanceID = e.GetInstanceID();
+                if (this.entityIdToMouseOffset.ContainsKey(instanceID))
+                {
+                    Vector3 offset = this.entityIdToMouseOffset[instanceID];
+                    e.transform.position = new Vector3(
+                        referencePos.x + offset.x,
+                        referencePos.y + offset.y,
+                        e.transform.position.z
+                    );
+                }
             }
         }
     }
