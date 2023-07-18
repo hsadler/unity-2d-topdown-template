@@ -270,7 +270,6 @@ public class PlayerInputManager : MonoBehaviour
 
     private void CheckEscPress()
     {
-        // TODO: drag bug is here
         if (Input.GetKeyDown(GameSettings.ESC_KEY))
         {
             // exit inventory multi-placement mode

@@ -45,11 +45,16 @@ public class Rotator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         GameObject toRotate = this.gem.GetGameEntityAtPosition(rotatePos);
         if (toRotate != null)
         {
-            if (this.useLogging)
+            var rotatable = toRotate.GetComponent<Rotatable>();
+            if (rotatable != null)
             {
-                Debug.Log("Rotating entity at position: " + rotatePos.ToString());
+                if (this.useLogging)
+                {
+                    Debug.Log("Rotating entity at position: " + rotatePos.ToString());
+                }
+                rotatable.Rotate(90);
             }
-            toRotate.transform.Rotate(0, 0, 90);
+            // special behavior for resource-data game-entities
             var resourceData = toRotate.GetComponent<IResourceData>();
             if (resourceData != null)
             {

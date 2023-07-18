@@ -96,7 +96,8 @@ X more entities with behaviors:
     X resource
     X behavioral (spawner, destroyer, duplicator, pusher, rotator, etc.)
 X cleanup renderer ordering (broken upon game-entity selection)
-- provide move and rotate interfaces for game-entities, migrate to using them
+X provide move and rotate interfaces for game-entities, migrate to using them
+- collect mutations per game-entity per tick and then perform an application step
 - make movement and rotation animated
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
