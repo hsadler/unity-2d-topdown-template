@@ -27,6 +27,7 @@ public class Movable : MonoBehaviour
         {
             Debug.Log(
                 "Trying to move game-entity: " + this.gameObject.GetInstanceID().ToString() +
+                " at current position: " + this.transform.position.ToString() +
                 " with direction: " + direction.ToString() +
                 " and distance: " + distance.ToString()
             );

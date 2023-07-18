@@ -107,6 +107,7 @@ X provide move and rotate interfaces for game-entities, migrate to using them
 
 
 BUGS:
+    - null ref exception with introduction of rotatable and movable interfaces
 
 
 REFACTORS:
