@@ -43,7 +43,7 @@ public class UITelemetryManager : MonoBehaviour
             for (int i = 0; i < dragContainer.transform.childCount; i++)
             {
                 GameObject child = dragContainer.transform.GetChild(i).gameObject;
-                if (child.GetComponent<GameEntity>() != null)
+                if (child.TryGetComponent<GameEntity>(out GameEntity ge))
                 {
                     dragContainterEntitiesCount += 1;
                 }

@@ -28,7 +28,7 @@ public class Spawner_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     {
         if (this.useLogging)
         {
-            Debug.Log("AutoBehavior() called for Spawner: " + this.gameObject.GetInstanceID().ToString());
+            Debug.Log("AutoBehavior executed for Spawner: " + this.gameObject.GetInstanceID().ToString());
         }
         if (this.GetComponent<GameEntity>().EntityIsPlaying())
         {

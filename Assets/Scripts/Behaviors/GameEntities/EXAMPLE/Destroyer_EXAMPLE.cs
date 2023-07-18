@@ -26,7 +26,7 @@ public class Destroyer_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     {
         if (this.useLogging)
         {
-            Debug.Log("AutoBehavior() called for Destroyer: " + this.gameObject.GetInstanceID().ToString());
+            Debug.Log("AutoBehavior executed for Destroyer: " + this.gameObject.GetInstanceID().ToString());
         }
         if (this.GetComponent<GameEntity>().EntityIsPlaying())
         {

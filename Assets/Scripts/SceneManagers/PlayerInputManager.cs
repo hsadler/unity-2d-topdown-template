@@ -130,8 +130,14 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (e != null)
             {
-                e.GetComponent<Selectable>()?.SetSelected(false);
-                e.GetComponent<Draggable>()?.SetDragging(false);
+                if (e.TryGetComponent<Selectable>(out Selectable selectable))
+                {
+                    selectable.SetSelected(false);
+                }
+                if (e.TryGetComponent<Draggable>(out Draggable draggable))
+                {
+                    draggable.SetDragging(false);
+                }
             }
         }
         this.currentEntitiesSelected = new List<GameObject>();
@@ -150,7 +156,10 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            e.GetComponent<Selectable>()?.SetPendingDelete(status);
+            if (e.TryGetComponent<Selectable>(out Selectable selectable))
+            {
+                selectable.SetPendingDelete(status);
+            }
         }
     }
 
@@ -160,7 +169,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (e != null)
             {
-                if (forceDelete || e.GetComponent<Selectable>())
+                if (forceDelete || e.TryGetComponent<Selectable>(out Selectable selectable))
                 {
                     PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
                     Destroy(e);
@@ -511,8 +520,7 @@ public class PlayerInputManager : MonoBehaviour
         // set pre-drag positions for currently selected entities
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            Draggable draggable = e.GetComponent<Draggable>();
-            if (draggable != null)
+            if (e.TryGetComponent<Draggable>(out Draggable draggable))
             {
                 draggable.preDragPosition = draggable.transform.position;
             }
@@ -552,7 +560,7 @@ public class PlayerInputManager : MonoBehaviour
             Collider2D[] selectionBoxHits = Physics2D.OverlapAreaAll(mPos1, mPos2);
             foreach (Collider2D col in selectionBoxHits)
             {
-                if (col.gameObject.GetComponent<Selectable>())
+                if (col.gameObject.TryGetComponent<Selectable>(out Selectable selectable))
                 {
                     entitiesToSelect.Add(col.gameObject);
                 }
@@ -734,7 +742,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (Collider2D hit in hits)
         {
-            if (hit != null && hit.gameObject.GetComponent<Selectable>())
+            if (hit != null && hit.gameObject.TryGetComponent<Selectable>(out Selectable selectable))
             {
                 return hit.gameObject;
             }
@@ -746,13 +754,11 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject entity in entities)
         {
-            var selectable = entity.GetComponent<Selectable>();
-            if (selectable)
+            if (entity.TryGetComponent<Selectable>(out Selectable selectable))
             {
                 this.currentEntitiesSelected.Add(entity);
                 selectable.SetSelected(true);
-                Draggable draggable = selectable.gameObject.GetComponent<Draggable>();
-                if (draggable)
+                if (selectable.gameObject.TryGetComponent<Draggable>(out Draggable draggable))
                 {
                     draggable.preDragPosition = draggable.transform.position;
                 }
@@ -765,8 +771,7 @@ public class PlayerInputManager : MonoBehaviour
         var draggables = new List<GameObject>();
         foreach (GameObject e in this.currentEntitiesSelected)
         {
-            Draggable draggable = e.GetComponent<Draggable>();
-            if (draggable)
+            if (e != null && e.TryGetComponent<Draggable>(out Draggable draggable))
             {
                 draggables.Add(e);
             }
@@ -778,10 +783,9 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject e in entities)
         {
-            var draggable = e.GetComponent<Draggable>();
-            if (draggable)
+            if (e != null && e.TryGetComponent<Draggable>(out Draggable draggable))
             {
-                e.transform.SetParent(this.entityDragContainer.transform);
+                draggable.transform.SetParent(this.entityDragContainer.transform);
             }
         }
     }

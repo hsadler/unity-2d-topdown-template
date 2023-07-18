@@ -29,7 +29,7 @@ public class Conveyor_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     {
         if (this.useLogging)
         {
-            Debug.Log("AutoBehavior() called for Conveyor: " + this.gameObject.GetInstanceID().ToString());
+            Debug.Log("AutoBehavior executed for Conveyor: " + this.gameObject.GetInstanceID().ToString());
         }
         if (this.GetComponent<GameEntity>().EntityIsPlaying())
         {
@@ -63,17 +63,13 @@ public class Conveyor_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
                 Debug.Log("Checking position in beam: " + beamPos.ToString());
             }
             GameObject go = this.gem.GetGameEntityAtPosition(beamPos);
-            if (go != null)
+            if (go != null && go.TryGetComponent(out Movable movable))
             {
-                var movable = go.GetComponent<Movable>();
-                if (movable != null)
+                if (this.useLogging)
                 {
-                    if (this.useLogging)
-                    {
-                        Debug.Log("Found movable game-entity at beam position: " + beamPos.ToString() + ". Trying to move it.");
-                    }
-                    movable.TryMove(this.transform.up, 1);
+                    Debug.Log("Found movable game-entity at beam position: " + beamPos.ToString() + ". Trying to move it.");
                 }
+                movable.TryMove(this.transform.up, 1);
             }
         }
     }

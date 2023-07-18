@@ -26,7 +26,7 @@ public class Rotator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     {
         if (this.useLogging)
         {
-            Debug.Log("AutoBehavior() called for Rotator: " + this.gameObject.GetInstanceID().ToString());
+            Debug.Log("AutoBehavior executed for Rotator: " + this.gameObject.GetInstanceID().ToString());
         }
         if (this.GetComponent<GameEntity>().EntityIsPlaying())
         {
@@ -45,8 +45,7 @@ public class Rotator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         GameObject toRotate = this.gem.GetGameEntityAtPosition(rotatePos);
         if (toRotate != null)
         {
-            var rotatable = toRotate.GetComponent<Rotatable>();
-            if (rotatable != null)
+            if (toRotate.TryGetComponent(out Rotatable rotatable))
             {
                 if (this.useLogging)
                 {
@@ -55,8 +54,7 @@ public class Rotator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
                 rotatable.Rotate(90);
             }
             // special behavior for resource-data game-entities
-            var resourceData = toRotate.GetComponent<IResourceData>();
-            if (resourceData != null)
+            if (toRotate.TryGetComponent(out IResourceData resourceData))
             {
                 if (this.useLogging)
                 {

@@ -336,7 +336,10 @@ public class GameEntityManager : MonoBehaviour
         // NOTE: new list is required in order to not mutate the collection while iterating
         foreach (GameObject entity in new List<GameObject>(this.positionToGameEntity.Values))
         {
-            entity.GetComponent<IGameEntityAutoBehavior>()?.AutoBehavior();
+            if (entity.TryGetComponent(out IGameEntityAutoBehavior autoBehavior))
+            {
+                autoBehavior.AutoBehavior();
+            }
         }
         this.TryPushEntityStateHistoryStep();
     }

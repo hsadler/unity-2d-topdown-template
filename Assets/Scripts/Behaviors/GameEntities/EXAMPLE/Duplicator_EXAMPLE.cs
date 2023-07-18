@@ -26,7 +26,7 @@ public class Duplicator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     {
         if (this.useLogging)
         {
-            Debug.Log("AutoBehavior() called for Duplicator: " + this.gameObject.GetInstanceID().ToString());
+            Debug.Log("AutoBehavior executed for Duplicator: " + this.gameObject.GetInstanceID().ToString());
         }
         if (this.GetComponent<GameEntity>().EntityIsPlaying())
         {

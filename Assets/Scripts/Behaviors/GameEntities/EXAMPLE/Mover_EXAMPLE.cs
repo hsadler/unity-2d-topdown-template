@@ -36,7 +36,7 @@ public class Mover_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     {
         if (this.useLogging)
         {
-            Debug.Log("AutoBehavior() called for Mover: " + this.gameObject.GetInstanceID().ToString());
+            Debug.Log("AutoBehavior executed for Mover: " + this.gameObject.GetInstanceID().ToString());
         }
         if (this.GetComponent<GameEntity>().EntityIsPlaying())
         {

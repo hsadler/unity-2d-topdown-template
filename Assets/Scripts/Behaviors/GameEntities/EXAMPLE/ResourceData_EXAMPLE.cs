@@ -28,7 +28,7 @@ public class ResourceData_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior, IRes
     {
         if (this.useLogging)
         {
-            Debug.Log("AutoBehavior() called for ResourceData: " + this.gameObject.GetInstanceID().ToString());
+            Debug.Log("AutoBehavior executed for ResourceData: " + this.gameObject.GetInstanceID().ToString());
         }
         if (this.GetComponent<GameEntity>().EntityIsPlaying())
         {
