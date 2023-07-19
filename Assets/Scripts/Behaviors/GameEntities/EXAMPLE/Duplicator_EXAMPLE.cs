@@ -61,7 +61,7 @@ public class Duplicator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
             }
             GameObject spawnPrefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(toDuplicate.GetComponent<GameEntity>().prefabName);
             GameObject newEntity = Instantiate(spawnPrefab, outputPos, toDuplicate.transform.rotation);
-            this.gem.AddGameEntity(newEntity);
+            this.gem.AddGameEntity(newEntity, newEntity.transform.position);
         }
     }
 

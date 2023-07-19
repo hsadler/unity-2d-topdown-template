@@ -52,8 +52,8 @@ public class Movable : MonoBehaviour
         if (this.gem.GetGameEntityAtPosition(newPosition) == null)
         {
             this.gem.RemoveGameEntity(this.gameObject);
-            this.transform.position = newPosition;
-            this.gem.AddGameEntity(this.gameObject);
+            this.gem.AddGameEntity(this.gameObject, newPosition);
+            StartCoroutine(this.MoveOverTime(this.gameObject, newPosition, GameSettings.DEFAULT_TICK_DURATION / 2));
             if (this.useLogging)
             {
                 Debug.Log(
@@ -76,6 +76,21 @@ public class Movable : MonoBehaviour
     }
 
     // IMPL METHODS
+
+    private IEnumerator MoveOverTime(GameObject go, Vector3 end, float duration)
+    {
+        // from chatGPT
+        Vector3 start = go.transform.position;
+        float timeElapsed = 0;
+        while (timeElapsed < duration)
+        {
+            float t = timeElapsed / duration;
+            go.transform.position = Vector3.Lerp(start, end, t);
+            yield return null;
+            timeElapsed += Time.deltaTime;
+        }
+        go.transform.position = end;
+    }
 
 
 }

@@ -51,7 +51,7 @@ public class Spawner_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
                 Debug.Log("Spawning new entity at position: " + spawnPos.ToString());
             }
             GameObject newEntity = Instantiate(this.spawnPrefab, spawnPos, Quaternion.identity);
-            this.gem.AddGameEntity(newEntity);
+            this.gem.AddGameEntity(newEntity, newEntity.transform.position);
         }
     }
 

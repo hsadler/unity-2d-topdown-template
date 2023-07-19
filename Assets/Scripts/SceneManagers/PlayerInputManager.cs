@@ -277,7 +277,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 e.GetComponent<Draggable>().SetDragging(false);
                 e.GetComponent<GameEntity>().isNewlyCreated = false;
-                PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
+                PlaySceneManager.instance.gameEntityManager.AddGameEntity(e, e.transform.position);
             }
         }
         this.UngroupDraggingEntities(this.currentEntitiesSelected);
@@ -732,7 +732,7 @@ public class PlayerInputManager : MonoBehaviour
                 {
                     e.GetComponent<Draggable>().SetDragging(false);
                     e.GetComponent<GameEntity>().isNewlyCreated = false;
-                    PlaySceneManager.instance.gameEntityManager.AddGameEntity(e);
+                    PlaySceneManager.instance.gameEntityManager.AddGameEntity(e, e.transform.position);
                     e.transform.SetParent(null);
                 }
             }

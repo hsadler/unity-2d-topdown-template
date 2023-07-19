@@ -79,21 +79,21 @@ public class Mover_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         }
         if (rot != 0)
         {
-            this.transform.Rotate(new Vector3(0, 0, rot));
+            if (this.TryGetComponent<Rotatable>(out Rotatable rotatable))
+            {
+                rotatable.AddRotation(rot);
+            }
         }
     }
 
     private void Move()
     {
         //
-        // moves forward one space
+        // add movement force in current direction
         //
-        Vector3 movePos = Functions.RoundVector(this.transform.position + this.transform.up);
-        if (!this.gem.PositionIsOccupied(movePos))
+        if (this.TryGetComponent<Movable>(out Movable movable))
         {
-            this.gem.RemoveGameEntity(this.gameObject);
-            this.transform.position = movePos;
-            this.gem.AddGameEntity(this.gameObject);
+            movable.AddMovement(this.transform.up, 1);
         }
     }
 
