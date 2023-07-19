@@ -99,7 +99,15 @@ public class PlayerInputManager : MonoBehaviour
 
     public List<GameObject> GetEntitiesSelected()
     {
-        return this.currentEntitiesSelected;
+        List<GameObject> entitiesSelected = new List<GameObject>();
+        foreach (var go in this.currentEntitiesSelected)
+        {
+            if (go != null)
+            {
+                entitiesSelected.Add(go);
+            }
+        }
+        return entitiesSelected;
     }
 
     public int GetEntitiesInOffsetCount()
@@ -124,20 +132,16 @@ public class PlayerInputManager : MonoBehaviour
 
     public void InitEntitySelect()
     {
-        // Debug.Log("initializing entity select for: " + this.currentEntitiesSelected.Count.ToString() + " entities");
         // init selection and dragging on all currently selected entities
-        foreach (GameObject e in this.currentEntitiesSelected)
+        foreach (GameObject e in this.GetEntitiesSelected())
         {
-            if (e != null)
+            if (e.TryGetComponent<Selectable>(out Selectable selectable))
             {
-                if (e.TryGetComponent<Selectable>(out Selectable selectable))
-                {
-                    selectable.SetSelected(false);
-                }
-                if (e.TryGetComponent<Draggable>(out Draggable draggable))
-                {
-                    draggable.SetDragging(false);
-                }
+                selectable.SetSelected(false);
+            }
+            if (e.TryGetComponent<Draggable>(out Draggable draggable))
+            {
+                draggable.SetDragging(false);
             }
         }
         this.currentEntitiesSelected = new List<GameObject>();
@@ -149,14 +153,14 @@ public class PlayerInputManager : MonoBehaviour
     public void SelectSingleEntity(GameObject entity)
     {
         this.TrySelectEntities(new List<GameObject>() { entity });
-        this.SetEntityOffsets(this.quantizedMousePos, this.currentEntitiesSelected);
+        this.SetEntityOffsets(this.quantizedMousePos, this.GetEntitiesSelected());
     }
 
     public void DisplayImpendingDeleteForSelectedEntities(bool status)
     {
-        foreach (GameObject e in this.currentEntitiesSelected)
+        foreach (GameObject e in this.GetEntitiesSelected())
         {
-            if (e != null && e.TryGetComponent<Selectable>(out Selectable selectable))
+            if (e.TryGetComponent<Selectable>(out Selectable selectable))
             {
                 selectable.SetPendingDelete(status);
             }
@@ -165,15 +169,12 @@ public class PlayerInputManager : MonoBehaviour
 
     public void DeleteSelectedEntities(bool forceDelete = false)
     {
-        foreach (GameObject e in this.currentEntitiesSelected)
+        foreach (GameObject e in this.GetEntitiesSelected())
         {
-            if (e != null)
+            if (forceDelete || e.TryGetComponent<Selectable>(out Selectable selectable))
             {
-                if (forceDelete || e.TryGetComponent<Selectable>(out Selectable selectable))
-                {
-                    PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
-                    Destroy(e);
-                }
+                PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
+                Destroy(e);
             }
         }
         this.InitEntitySelect();
@@ -182,9 +183,9 @@ public class PlayerInputManager : MonoBehaviour
     public bool AreCurrentSelectedEntitiesNewlyCreated()
     {
         bool areNewlyCreated = true;
-        foreach (GameObject e in this.currentEntitiesSelected)
+        foreach (GameObject e in this.GetEntitiesSelected())
         {
-            if (e != null && !e.GetComponent<GameEntity>().isNewlyCreated)
+            if (!e.GetComponent<GameEntity>().isNewlyCreated)
             {
                 areNewlyCreated = false;
             }
@@ -280,7 +281,7 @@ public class PlayerInputManager : MonoBehaviour
                 PlaySceneManager.instance.gameEntityManager.AddGameEntity(e, e.transform.position);
             }
         }
-        this.UngroupDraggingEntities(this.currentEntitiesSelected);
+        this.UngroupDraggingEntities(this.GetEntitiesSelected());
         this.isEntityDragging = false;
     }
 
@@ -429,7 +430,7 @@ public class PlayerInputManager : MonoBehaviour
                 {
                     this.isEntityDragging = true;
                     this.HandleEntityClicked(this.hoveredEntity);
-                    this.TryGroupDraggingEntities(this.currentEntitiesSelected);
+                    this.TryGroupDraggingEntities(this.GetEntitiesSelected());
                     this.HandleEntityDrag();
                 }
                 // initialize the selection-box
@@ -508,10 +509,11 @@ public class PlayerInputManager : MonoBehaviour
     private void HandleEntityClicked(GameObject clickedEntity)
     {
         // multi entity start drag
-        if (this.currentEntitiesSelected.Count > 0 && this.currentEntitiesSelected.Contains(clickedEntity))
+        var entitiesSelected = this.GetEntitiesSelected();
+        if (entitiesSelected.Count > 0 && entitiesSelected.Contains(clickedEntity))
         {
             // set selected entity initial offsets from mouse position to prepare for entity drag
-            this.SetEntityOffsets(this.quantizedMousePos, this.currentEntitiesSelected);
+            this.SetEntityOffsets(this.quantizedMousePos, entitiesSelected);
         }
         // single entity selection
         else
@@ -527,9 +529,9 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
         // set pre-drag positions for currently selected entities
-        foreach (GameObject e in this.currentEntitiesSelected)
+        foreach (GameObject e in this.GetEntitiesSelected())
         {
-            if (e != null && e.TryGetComponent<Draggable>(out Draggable draggable))
+            if (e.TryGetComponent<Draggable>(out Draggable draggable))
             {
                 draggable.preDragPosition = draggable.transform.position;
             }
@@ -639,7 +641,8 @@ public class PlayerInputManager : MonoBehaviour
         {
             rot -= 90;
         }
-        if (rot != 0 && this.currentEntitiesSelected.Count > 0)
+        var entitiesSelected = this.GetEntitiesSelected();
+        if (rot != 0 && entitiesSelected.Count > 0)
         {
             if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT || this.isEntityDragging)
             {
@@ -648,12 +651,9 @@ public class PlayerInputManager : MonoBehaviour
             else
             {
                 // rotate selected entities as individuals
-                foreach (GameObject e in this.currentEntitiesSelected)
+                foreach (GameObject e in entitiesSelected)
                 {
-                    if (e != null)
-                    {
-                        e.transform.Rotate(new Vector3(0, 0, rot));
-                    }
+                    e.transform.Rotate(new Vector3(0, 0, rot));
                 }
                 // push history step only if input mode is default and entities are not currently being dragged
                 if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
@@ -668,12 +668,12 @@ public class PlayerInputManager : MonoBehaviour
     {
         // rotate selected entities as a group
         this.entityDragContainer.transform.Rotate(new Vector3(0, 0, rotationAmount));
-        this.SetEntityOffsets(this.quantizedMousePos, this.currentEntitiesSelected);
+        this.SetEntityOffsets(this.quantizedMousePos, this.GetEntitiesSelected());
     }
 
     private void HandleEntityDeleteByKeyDown()
     {
-        if (this.currentEntitiesSelected.Count > 0 && Input.GetKeyDown(GameSettings.DELETE_ENTITIES_KEY))
+        if (this.GetEntitiesSelected().Count > 0 && Input.GetKeyDown(GameSettings.DELETE_ENTITIES_KEY))
         {
             this.DeleteSelectedEntities();
             PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
@@ -700,13 +700,14 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityCopyPaste()
     {
+        var entitiesSelected = this.GetEntitiesSelected();
         if (
             (Input.GetKey(GameSettings.CTL_KEY) || Input.GetKey(GameSettings.CMD_KEY)) &&
             Input.GetKeyDown(GameSettings.COPY_KEY) &&
-            this.currentEntitiesSelected.Count > 0
+            entitiesSelected.Count > 0
         )
         {
-            this.copyPasteEntities = new List<GameObject>(this.currentEntitiesSelected);
+            this.copyPasteEntities = new List<GameObject>(entitiesSelected);
             this.InitEntitySelect();
             this.StartMultiPlacement(this.copyPasteEntities, Quaternion.identity);
         }
@@ -736,7 +737,7 @@ public class PlayerInputManager : MonoBehaviour
                     e.transform.SetParent(null);
                 }
             }
-            this.StartMultiPlacement(this.currentEntitiesSelected, Quaternion.identity);
+            this.StartMultiPlacement(this.GetEntitiesSelected(), Quaternion.identity);
         }
         else
         {
@@ -785,9 +786,9 @@ public class PlayerInputManager : MonoBehaviour
     private List<GameObject> GetCurrentSelectedDraggables()
     {
         var draggables = new List<GameObject>();
-        foreach (GameObject e in this.currentEntitiesSelected)
+        foreach (GameObject e in this.GetEntitiesSelected())
         {
-            if (e != null && e.TryGetComponent<Draggable>(out Draggable draggable))
+            if (e.TryGetComponent<Draggable>(out Draggable draggable))
             {
                 draggables.Add(e);
             }
@@ -799,7 +800,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject e in entities)
         {
-            if (e != null && e.TryGetComponent<Draggable>(out Draggable draggable))
+            if (e.TryGetComponent<Draggable>(out Draggable draggable))
             {
                 draggable.transform.SetParent(this.entityDragContainer.transform);
             }
@@ -810,10 +811,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject e in entities)
         {
-            if (e != null)
-            {
-                e.transform.SetParent(null);
-            }
+            e.transform.SetParent(null);
         }
     }
 
@@ -828,10 +826,7 @@ public class PlayerInputManager : MonoBehaviour
         this.InitEntityOffsets();
         foreach (GameObject e in entities)
         {
-            if (e != null)
-            {
-                this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - referencePos);
-            }
+            this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - referencePos);
         }
     }
 

@@ -144,10 +144,13 @@ public class GameEntityManager : MonoBehaviour
             }
             return true;
         }
-        Debug.LogWarning(
-            "Could NOT remove game entity " + gameEntity.name + " at position " + positionKeyToRemove +
-            " since it was not found in the GameEntityManager"
-        );
+        if (this.useLogging)
+        {
+            Debug.LogWarning(
+                "Could NOT remove game entity " + gameEntity.name + " at position " + positionKeyToRemove +
+                " since it was not found in the GameEntityManager"
+            );
+        }
         return false;
     }
 

@@ -93,7 +93,7 @@ public class Mover_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         //
         if (this.TryGetComponent<Movable>(out Movable movable))
         {
-            movable.AddMovement(this.transform.up, 1);
+            movable.AddMovementForce(this.transform.up, 1);
         }
     }
 

@@ -22,7 +22,7 @@ public class Movable : MonoBehaviour
 
     // INTF METHODS
 
-    public void AddMovement(Vector3 direction, int distance)
+    public void AddMovementForce(Vector3 direction, int distance)
     {
         if (this.useLogging)
         {
@@ -50,7 +50,7 @@ public class Movable : MonoBehaviour
             newPosition += movementForce;
         }
         newPosition = Functions.RoundVector(newPosition);
-        if (this.gem.GetGameEntityAtPosition(newPosition) == null)
+        if (this.gem != null && this.gem.GetGameEntityAtPosition(newPosition) == null)
         {
             this.gem.RemoveGameEntity(this.gameObject);
             this.gem.AddGameEntity(this.gameObject, newPosition);
