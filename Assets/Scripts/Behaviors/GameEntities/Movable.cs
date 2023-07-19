@@ -8,6 +8,7 @@ public class Movable : MonoBehaviour
 
     private GameEntityManager gem;
     private bool useLogging = false;
+    private List<Vector3> movementForces = new List<Vector3>();
 
 
     // UNITY HOOKS
@@ -21,18 +22,33 @@ public class Movable : MonoBehaviour
 
     // INTF METHODS
 
-    public bool TryMove(Vector3 direction, int distance)
+    public void AddMovement(Vector3 direction, int distance)
     {
         if (this.useLogging)
         {
             Debug.Log(
-                "Trying to move game-entity: " + this.gameObject.GetInstanceID().ToString() +
+                "Adding movement to game-entity: " + this.gameObject.GetInstanceID().ToString() +
                 " at current position: " + this.transform.position.ToString() +
                 " with direction: " + direction.ToString() +
                 " and distance: " + distance.ToString()
             );
         }
-        Vector3 newPosition = this.transform.position + (direction * distance);
+        this.movementForces.Add(direction * distance);
+    }
+
+    public void CommitMovement()
+    {
+        // short-circuit if no movement forces
+        if (this.movementForces.Count == 0)
+        {
+            return;
+        }
+        // otherwise, add forces and commit movement to position if unoccupied
+        Vector3 newPosition = this.transform.position;
+        foreach (Vector3 movementForce in this.movementForces)
+        {
+            newPosition += movementForce;
+        }
         if (this.gem.GetGameEntityAtPosition(newPosition) == null)
         {
             this.gem.RemoveGameEntity(this.gameObject);
@@ -45,7 +61,6 @@ public class Movable : MonoBehaviour
                     " to position: " + newPosition.ToString()
                 );
             }
-            return true;
         }
         else
         {
@@ -56,8 +71,8 @@ public class Movable : MonoBehaviour
                     " to position: " + newPosition.ToString() + " because it is occupied."
                 );
             }
-            return false;
         }
+        this.movementForces = new List<Vector3>();
     }
 
     // IMPL METHODS

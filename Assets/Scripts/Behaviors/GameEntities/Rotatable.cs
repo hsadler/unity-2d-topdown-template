@@ -7,6 +7,7 @@ public class Rotatable : MonoBehaviour
 
 
     private bool useLogging = false;
+    private float nextRotation = 0.0f;
 
 
     // UNITY HOOKS
@@ -17,16 +18,29 @@ public class Rotatable : MonoBehaviour
 
     // INTF METHODS
 
-    public void Rotate(float zRotation)
+    public void AddRotation(float zRotation)
     {
         if (this.useLogging)
         {
             Debug.Log(
-                "Rotating game-entity: " + this.gameObject.GetInstanceID().ToString() +
+                "Adding rotation to game-entity: " + this.gameObject.GetInstanceID().ToString() +
                 " with zRotation: " + zRotation.ToString()
             );
         }
-        this.transform.Rotate(0, 0, zRotation);
+        this.nextRotation += zRotation;
+    }
+
+    public void CommitRotations()
+    {
+        if (this.useLogging)
+        {
+            Debug.Log(
+                "Committing rotations to game-entity: " + this.gameObject.GetInstanceID().ToString() +
+                " with nextRotation: " + this.nextRotation.ToString()
+            );
+        }
+        this.transform.Rotate(0, 0, this.nextRotation);
+        this.nextRotation = 0.0f;
     }
 
     // IMPL METHODS

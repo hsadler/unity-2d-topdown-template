@@ -51,7 +51,7 @@ public class Rotator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
                 {
                     Debug.Log("Rotating entity at position: " + rotatePos.ToString());
                 }
-                rotatable.Rotate(90);
+                rotatable.AddRotation(90);
             }
             // special behavior for resource-data game-entities
             if (toRotate.TryGetComponent(out IResourceData resourceData))

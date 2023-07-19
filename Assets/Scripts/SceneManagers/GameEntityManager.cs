@@ -333,12 +333,24 @@ public class GameEntityManager : MonoBehaviour
 
     private void ExecuteAutoBehaviorActions(int value)
     {
-        // NOTE: new list is required in order to not mutate the collection while iterating
+        // do auto-behaviors
         foreach (GameObject entity in new List<GameObject>(this.positionToGameEntity.Values))
         {
-            if (entity.TryGetComponent(out IGameEntityAutoBehavior autoBehavior))
+            if (entity != null && entity.TryGetComponent(out IGameEntityAutoBehavior autoBehavior))
             {
                 autoBehavior.AutoBehavior();
+            }
+        }
+        // commit movements and rotations
+        foreach (GameObject entity in new List<GameObject>(this.positionToGameEntity.Values))
+        {
+            if (entity != null && entity.TryGetComponent(out Rotatable rotatable))
+            {
+                rotatable.CommitRotations();
+            }
+            if (entity != null && entity.TryGetComponent(out Movable movable))
+            {
+                movable.CommitMovement();
             }
         }
         this.TryPushEntityStateHistoryStep();

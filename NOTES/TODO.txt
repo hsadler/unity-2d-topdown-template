@@ -97,7 +97,7 @@ X more entities with behaviors:
     X behavioral (spawner, destroyer, duplicator, pusher, rotator, etc.)
 X cleanup renderer ordering (broken upon game-entity selection)
 X provide move and rotate interfaces for game-entities, migrate to using them
-- collect mutations per game-entity per tick and then perform an application step
+X collect mutations per game-entity per tick and then perform an application step
 - make movement and rotation animated
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
@@ -107,8 +107,8 @@ X provide move and rotate interfaces for game-entities, migrate to using them
 
 
 BUGS:
-    - null ref exception with introduction of rotatable and movable interfaces
-    - other null ref bugs with multi-dragging while scene is playing
+    X null ref exception with introduction of rotatable and movable interfaces
+    X other null ref bugs with multi-dragging while scene is playing
 
 
 REFACTORS:

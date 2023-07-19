@@ -69,7 +69,7 @@ public class Conveyor_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
                 {
                     Debug.Log("Found movable game-entity at beam position: " + beamPos.ToString() + ". Trying to move it.");
                 }
-                movable.TryMove(this.transform.up, 1);
+                movable.AddMovement(this.transform.up, 1);
             }
         }
     }
