@@ -102,7 +102,7 @@ public class GameEntityManager : MonoBehaviour
 
     public bool RemoveGameEntity(GameObject gameEntity)
     {
-        string keyToRemove = null;
+        string positionKeyToRemove = null;
         string eUUID = gameEntity.GetComponent<GameEntity>().uuid;
         Vector3 position = gameEntity.transform.position;
         // check that game entity transform position and tracked position match
@@ -114,37 +114,40 @@ public class GameEntityManager : MonoBehaviour
             GameObject gEntityAtPosition = this.positionToGameEntity[sPos];
             if (gEntityAtPosition == gameEntity)
             {
-                keyToRemove = sPos;
+                positionKeyToRemove = sPos;
             }
         }
         // as a fallback, try to remove by gameobject equality
-        if (keyToRemove == null)
+        if (positionKeyToRemove == null)
         {
             foreach (KeyValuePair<string, GameObject> item in this.positionToGameEntity)
             {
                 if (item.Value == gameEntity)
                 {
-                    keyToRemove = item.Key;
+                    positionKeyToRemove = item.Key;
                 }
             }
         }
-        if (keyToRemove != null)
+        if (positionKeyToRemove != null)
         {
             if (this.useLogging)
             {
-                Debug.Log("Removing game entity " + gameEntity.name + " at position " + keyToRemove);
+                Debug.Log("Removing game entity " + gameEntity.name + " at position " + positionKeyToRemove);
             }
-            this.positionToGameEntity.Remove(keyToRemove);
+            this.positionToGameEntity.Remove(positionKeyToRemove);
             this.gameEntityUUIDToSerializedPosition.Remove(eUUID);
             if (GameSettings.DISPLAY_UI_DEBUG || this.useDebugIndicators)
             {
-                GameObject occupiedIndicator = this.positionToOccupiedIndicator[keyToRemove];
-                this.positionToOccupiedIndicator.Remove(keyToRemove);
+                GameObject occupiedIndicator = this.positionToOccupiedIndicator[positionKeyToRemove];
+                this.positionToOccupiedIndicator.Remove(positionKeyToRemove);
                 Destroy(occupiedIndicator);
             }
             return true;
         }
-        Debug.LogError("Could NOT remove game entity " + gameEntity.name + " from GameEntityManager");
+        Debug.LogWarning(
+            "Could NOT remove game entity " + gameEntity.name + " at position " + positionKeyToRemove +
+            " since it was not found in the GameEntityManager"
+        );
         return false;
     }
 

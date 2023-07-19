@@ -49,6 +49,7 @@ public class Movable : MonoBehaviour
         {
             newPosition += movementForce;
         }
+        newPosition = Functions.RoundVector(newPosition);
         if (this.gem.GetGameEntityAtPosition(newPosition) == null)
         {
             this.gem.RemoveGameEntity(this.gameObject);
