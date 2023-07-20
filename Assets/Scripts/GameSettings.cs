@@ -56,7 +56,7 @@ public class GameSettings
 
     // dev settings
     public const bool DISPLAY_TELEMETRY = true;
-    public const bool DISPLAY_UI_DEBUG = false;
+    public const bool DISPLAY_UI_DEBUG = true;
 
 
 }

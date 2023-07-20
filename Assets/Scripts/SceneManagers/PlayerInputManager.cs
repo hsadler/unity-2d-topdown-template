@@ -52,6 +52,8 @@ public class PlayerInputManager : MonoBehaviour
     // inventory canvas
     public GameObject inventoryCanvas;
 
+    private bool useLogging = true;
+
 
     // UNITY HOOKS
 
@@ -99,7 +101,7 @@ public class PlayerInputManager : MonoBehaviour
 
     public List<GameObject> GetEntitiesSelected()
     {
-        List<GameObject> entitiesSelected = new List<GameObject>();
+        var entitiesSelected = new List<GameObject>();
         foreach (var go in this.currentEntitiesSelected)
         {
             if (go != null)
@@ -133,14 +135,18 @@ public class PlayerInputManager : MonoBehaviour
     public void InitEntitySelect()
     {
         // init selection and dragging on all currently selected entities
-        foreach (GameObject e in this.GetEntitiesSelected())
+        var entitiesSelected = this.GetEntitiesSelected();
+        if (this.useLogging) { Debug.Log("Init entity select for entity count: " + entitiesSelected.Count.ToString()); }
+        foreach (GameObject e in entitiesSelected)
         {
             if (e.TryGetComponent<Selectable>(out Selectable selectable))
             {
+                if (this.useLogging) { Debug.Log("Init entity selectable for entity: " + e.name); }
                 selectable.SetSelected(false);
             }
             if (e.TryGetComponent<Draggable>(out Draggable draggable))
             {
+                if (this.useLogging) { Debug.Log("Init entity draggable for entity: " + e.name); }
                 draggable.SetDragging(false);
             }
         }
@@ -428,11 +434,10 @@ public class PlayerInputManager : MonoBehaviour
                 // entity click and start drag
                 if (this.hoveredEntity != null)
                 {
-                    var selectedEntities = this.GetEntitiesSelected();
                     this.isEntityDragging = true;
                     this.HandleEntityClicked(this.hoveredEntity);
-                    this.FastForwardEntityAnimations(selectedEntities);
-                    this.TryGroupDraggingEntities(selectedEntities);
+                    this.FastForwardEntityAnimations(this.GetEntitiesSelected());
+                    this.TryGroupDraggingEntities(this.GetEntitiesSelected());
                     this.HandleEntityDrag();
                 }
                 // initialize the selection-box
@@ -510,10 +515,12 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityClicked(GameObject clickedEntity)
     {
+        if (this.useLogging) { Debug.Log("Entity clicked: " + clickedEntity.name); }
         // multi entity start drag
         var entitiesSelected = this.GetEntitiesSelected();
         if (entitiesSelected.Count > 0 && entitiesSelected.Contains(clickedEntity))
         {
+            if (this.useLogging) { Debug.Log("Multi entity start drag"); }
             // set selected entity initial offsets from mouse position to prepare for entity drag
             this.SetEntityOffsets(this.quantizedMousePos, entitiesSelected);
         }
@@ -522,10 +529,12 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (Input.GetKey(GameSettings.ADDITIVE_SELECTION_KEY))
             {
+                if (this.useLogging) { Debug.Log("Additive selection"); }
                 this.TrySelectEntities(new List<GameObject>() { clickedEntity });
             }
             else
             {
+                if (this.useLogging) { Debug.Log("Single entity selection"); }
                 this.InitEntitySelect();
                 this.SelectSingleEntity(clickedEntity);
             }
