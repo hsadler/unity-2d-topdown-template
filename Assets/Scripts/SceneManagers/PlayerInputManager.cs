@@ -72,7 +72,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         // set state
         this.currentMousePositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        this.quantizedMousePos = Functions.RoundVector(this.currentMousePositionWorld);
+        this.quantizedMousePos = Functions.QuantizeVector(this.currentMousePositionWorld);
         // move drag group container to match quantized mouse position
         this.entityDragContainer.transform.position = new Vector3(
             this.quantizedMousePos.x,
@@ -428,9 +428,11 @@ public class PlayerInputManager : MonoBehaviour
                 // entity click and start drag
                 if (this.hoveredEntity != null)
                 {
+                    var selectedEntities = this.GetEntitiesSelected();
                     this.isEntityDragging = true;
                     this.HandleEntityClicked(this.hoveredEntity);
-                    this.TryGroupDraggingEntities(this.GetEntitiesSelected());
+                    this.FastForwardEntityAnimations(selectedEntities);
+                    this.TryGroupDraggingEntities(selectedEntities);
                     this.HandleEntityDrag();
                 }
                 // initialize the selection-box
@@ -719,7 +721,7 @@ public class PlayerInputManager : MonoBehaviour
         var draggables = this.GetCurrentSelectedDraggables();
         foreach (GameObject e in draggables)
         {
-            if (e != null && !e.GetComponent<Draggable>().PositionIsValid())
+            if (!e.GetComponent<Draggable>().PositionIsValid())
             {
                 dropIsValid = false;
             }
@@ -729,13 +731,10 @@ public class PlayerInputManager : MonoBehaviour
             // commit placement and re-init multi-placement
             foreach (GameObject e in draggables)
             {
-                if (e != null)
-                {
-                    e.GetComponent<Draggable>().SetDragging(false);
-                    e.GetComponent<GameEntity>().isNewlyCreated = false;
-                    PlaySceneManager.instance.gameEntityManager.AddGameEntity(e, e.transform.position);
-                    e.transform.SetParent(null);
-                }
+                e.GetComponent<Draggable>().SetDragging(false);
+                e.GetComponent<GameEntity>().isNewlyCreated = false;
+                PlaySceneManager.instance.gameEntityManager.AddGameEntity(e, e.transform.position);
+                e.transform.SetParent(null);
             }
             this.StartMultiPlacement(this.GetEntitiesSelected(), Quaternion.identity);
         }
@@ -841,12 +840,27 @@ public class PlayerInputManager : MonoBehaviour
                 if (this.entityIdToMouseOffset.ContainsKey(instanceID))
                 {
                     Vector3 offset = this.entityIdToMouseOffset[instanceID];
-                    e.transform.position = new Vector3(
+                    e.transform.position = Functions.QuantizeVector(new Vector3(
                         referencePos.x + offset.x,
                         referencePos.y + offset.y,
                         e.transform.position.z
-                    );
+                    ));
                 }
+            }
+        }
+    }
+
+    private void FastForwardEntityAnimations(List<GameObject> entities)
+    {
+        foreach (GameObject e in entities)
+        {
+            if (e.TryGetComponent<Movable>(out Movable movable))
+            {
+                movable.FastForwardAnimations();
+            }
+            if (e.TryGetComponent<Rotatable>(out Rotatable rotatable))
+            {
+                rotatable.FastForwardAnimations();
             }
         }
     }

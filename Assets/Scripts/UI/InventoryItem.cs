@@ -71,7 +71,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     private void HandleInventoryItemClick()
     {
         this.playerInputManager.InitEntitySelect();
-        Vector3 quantizedPosition = Functions.RoundVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        Vector3 quantizedPosition = Functions.QuantizeVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         quantizedPosition.z = 0;
         if (this.prefab)
         {

@@ -63,7 +63,7 @@ public class GameEntityManager : MonoBehaviour
 
     public bool AddGameEntity(GameObject gameEntity, Vector3 position)
     {
-        position = Functions.RoundVector(position);
+        position = Functions.QuantizeVector(position);
         string eUUID = gameEntity.GetComponent<GameEntity>().uuid;
         Quaternion rotation = gameEntity.transform.rotation;
         // check for game entity already being in the place space

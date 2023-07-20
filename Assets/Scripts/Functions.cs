@@ -9,13 +9,25 @@ public class Functions
 {
 
 
-    public static Vector3 RoundVector(Vector3 v)
+    public static Vector3 QuantizeVector(Vector3 v)
     {
         return new Vector3(
             (int)Math.Round(v.x, 0),
             (int)Math.Round(v.y, 0),
             (int)Math.Round(v.z, 0)
         );
+    }
+
+    // TODO: delete if not needed
+    // chatgpt impl
+    public static Quaternion QuantizeQuaternion(Quaternion q)
+    {
+        Vector3 eulerAngles = q.eulerAngles;
+        eulerAngles.x = Mathf.Round(eulerAngles.x / 90f) * 90f;
+        eulerAngles.y = Mathf.Round(eulerAngles.y / 90f) * 90f;
+        eulerAngles.z = Mathf.Round(eulerAngles.z / 90f) * 90f;
+        Quaternion quantizedRotation = Quaternion.Euler(eulerAngles);
+        return quantizedRotation;
     }
 
     // borrowed from: https://answers.unity.com/questions/164257/find-the-average-of-10-vectors.html
@@ -29,7 +41,7 @@ public class Functions
     {
         List<Vector3> positions = gameObjects.Select(go => go.transform.position).ToList();
         Vector3 midpoint = VectorMidpoint(positions);
-        return quantized ? RoundVector(midpoint) : midpoint;
+        return quantized ? QuantizeVector(midpoint) : midpoint;
     }
 
     public static GameObject MostCenterGameObject(List<GameObject> gameObjects)

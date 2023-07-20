@@ -42,8 +42,8 @@ public class Duplicator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         // take a game-entity from the input area and duplicated it to the 
         // output area
         //
-        Vector3 inputPos = Functions.RoundVector(this.transform.position + transform.up);
-        Vector3 outputPos = Functions.RoundVector(this.transform.position - transform.up);
+        Vector3 inputPos = Functions.QuantizeVector(this.transform.position + transform.up);
+        Vector3 outputPos = Functions.QuantizeVector(this.transform.position - transform.up);
         GameObject toDuplicate = this.gem.GetGameEntityAtPosition(inputPos);
         GameObject entityAtOutputPos = this.gem.GetGameEntityAtPosition(outputPos);
         if (entityAtOutputPos != null)

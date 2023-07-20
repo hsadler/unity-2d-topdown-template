@@ -8,7 +8,9 @@ public class Movable : MonoBehaviour
 
     private GameEntityManager gem;
     private bool useLogging = false;
+    private Coroutine movementCoroutine = null;
     private List<Vector3> movementForces = new List<Vector3>();
+    private Vector3 nextPosition = Vector3.zero;
 
 
     // UNITY HOOKS
@@ -49,17 +51,19 @@ public class Movable : MonoBehaviour
         {
             newPosition += movementForce;
         }
-        newPosition = Functions.RoundVector(newPosition);
-        if (this.gem != null && this.gem.GetGameEntityAtPosition(newPosition) == null)
+        this.nextPosition = Functions.QuantizeVector(newPosition);
+        if (this.gem != null && this.gem.GetGameEntityAtPosition(this.nextPosition) == null)
         {
             this.gem.RemoveGameEntity(this.gameObject);
-            this.gem.AddGameEntity(this.gameObject, newPosition);
-            StartCoroutine(this.MoveOverTime(this.gameObject, newPosition, GameSettings.DEFAULT_TICK_DURATION / 2));
+            this.gem.AddGameEntity(this.gameObject, this.nextPosition);
+            this.movementCoroutine = StartCoroutine(
+                this.MoveOverTime(this.gameObject, this.nextPosition, GameSettings.DEFAULT_TICK_DURATION / 2)
+            );
             if (this.useLogging)
             {
                 Debug.Log(
                     "Moved game-entity: " + this.gameObject.GetInstanceID().ToString() +
-                    " to position: " + newPosition.ToString()
+                    " to position: " + this.nextPosition.ToString()
                 );
             }
         }
@@ -69,11 +73,21 @@ public class Movable : MonoBehaviour
             {
                 Debug.Log(
                     "Could not move game-entity: " + this.gameObject.GetInstanceID().ToString() +
-                    " to position: " + newPosition.ToString() + " because it is occupied."
+                    " to position: " + this.nextPosition.ToString() + " because it is occupied."
                 );
             }
         }
         this.movementForces = new List<Vector3>();
+    }
+
+    public void FastForwardAnimations()
+    {
+        if (this.movementCoroutine != null)
+        {
+            StopCoroutine(this.movementCoroutine);
+            this.movementCoroutine = null;
+            this.transform.position = this.nextPosition;
+        }
     }
 
     // IMPL METHODS

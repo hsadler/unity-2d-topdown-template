@@ -43,7 +43,7 @@ public class Spawner_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         //
         // spawn a new game-entity within the target area
         //
-        Vector3 spawnPos = Functions.RoundVector(this.transform.position + this.transform.up);
+        Vector3 spawnPos = Functions.QuantizeVector(this.transform.position + this.transform.up);
         if (!this.gem.PositionIsOccupied(spawnPos))
         {
             if (this.useLogging)

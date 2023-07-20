@@ -39,7 +39,7 @@ public class GameEntity : MonoBehaviour
 
     public bool EntityIsPlaying()
     {
-        Vector3 quantizedPos = Functions.RoundVector(this.transform.position);
+        Vector3 quantizedPos = Functions.QuantizeVector(this.transform.position);
         GameObject trackedEntity = this.psm.gameEntityManager.GetGameEntityAtPosition(quantizedPos);
         bool isPlaying = trackedEntity && trackedEntity == this.gameObject;
         return isPlaying;

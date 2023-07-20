@@ -7,7 +7,9 @@ public class Rotatable : MonoBehaviour
 
 
     private bool useLogging = false;
+    private Coroutine rotationCoroutine = null;
     private float rotationForce = 0.0f;
+    private Quaternion nextRotation = Quaternion.identity;
 
 
     // UNITY HOOKS
@@ -45,12 +47,23 @@ public class Rotatable : MonoBehaviour
                 " with rotation force: " + this.rotationForce.ToString()
             );
         }
-        StartCoroutine(this.RotateOverTime(
+        this.nextRotation = Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + this.rotationForce);
+        this.rotationCoroutine = StartCoroutine(this.RotateOverTime(
             this.gameObject,
-            Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + this.rotationForce),
+            this.nextRotation,
             GameSettings.DEFAULT_TICK_DURATION / 2)
         );
         this.rotationForce = 0.0f;
+    }
+
+    public void FastForwardAnimations()
+    {
+        if (this.rotationCoroutine != null)
+        {
+            StopCoroutine(this.rotationCoroutine);
+            this.rotationCoroutine = null;
+            this.transform.rotation = this.nextRotation;
+        }
     }
 
     // IMPL METHODS
