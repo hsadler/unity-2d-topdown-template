@@ -107,8 +107,7 @@ X collect mutations per game-entity per tick and then perform an application ste
 
 
 BUGS:
-    X null ref exception with introduction of rotatable and movable interfaces
-    X other null ref bugs with multi-dragging while scene is playing
+    - selection addition is not working
 
 
 REFACTORS:

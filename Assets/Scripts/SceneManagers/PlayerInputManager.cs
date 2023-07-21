@@ -248,16 +248,13 @@ public class PlayerInputManager : MonoBehaviour
         // delete newly created entities and init select
         // otherwise, roll-back positions to pre-drag positions
         var draggables = this.GetCurrentSelectedDraggables();
-        // Debug.Log("Cancelling entity drag for entity count: " + draggables.Count.ToString());
+        if (this.useLogging) { Debug.Log("Cancelling entity drag for entity count: " + draggables.Count.ToString()); }
         if (this.AreCurrentSelectedEntitiesNewlyCreated())
         {
             foreach (GameObject e in draggables)
             {
-                if (e != null)
-                {
-                    PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
-                    Destroy(e);
-                }
+                PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
+                Destroy(e);
             }
             this.InitEntitySelect();
         }
@@ -265,10 +262,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             foreach (GameObject e in draggables)
             {
-                if (e != null)
-                {
-                    e.transform.position = e.GetComponent<Draggable>().preDragPosition;
-                }
+                e.transform.position = e.GetComponent<Draggable>().preDragPosition;
             }
         }
     }
@@ -280,12 +274,9 @@ public class PlayerInputManager : MonoBehaviour
         // Debug.Log("Committing entity drop for entity count: " + draggables.Count.ToString());
         foreach (GameObject e in draggables)
         {
-            if (e != null)
-            {
-                e.GetComponent<Draggable>().SetDragging(false);
-                e.GetComponent<GameEntity>().isNewlyCreated = false;
-                PlaySceneManager.instance.gameEntityManager.AddGameEntity(e, e.transform.position);
-            }
+            e.GetComponent<Draggable>().SetDragging(false);
+            e.GetComponent<GameEntity>().isNewlyCreated = false;
+            PlaySceneManager.instance.gameEntityManager.AddGameEntity(e, e.transform.position);
         }
         this.UngroupDraggingEntities(this.GetEntitiesSelected());
         this.isEntityDragging = false;
@@ -437,7 +428,7 @@ public class PlayerInputManager : MonoBehaviour
                     this.isEntityDragging = true;
                     this.HandleEntityClicked(this.hoveredEntity);
                     this.FastForwardEntityAnimations(this.GetEntitiesSelected());
-                    this.TryGroupDraggingEntities(this.GetEntitiesSelected());
+                    this.TryGroupingDraggableEntities(this.GetEntitiesSelected());
                     this.HandleEntityDrag();
                 }
                 // initialize the selection-box
@@ -508,6 +499,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
             {
+                if (this.useLogging) { Debug.Log("Multi-placement mouse move"); }
                 this.HandleEntityDrag();
             }
         }
@@ -596,12 +588,12 @@ public class PlayerInputManager : MonoBehaviour
     {
         // get draggables subset from selected entities
         List<GameObject> draggables = this.GetCurrentSelectedDraggables();
+        if (this.useLogging) { Debug.Log("Handle entity drag for " + draggables.Count.ToString() + " entities"); }
         // move draggables with respect to mouse position
         this.ApplySelectedEntityOffsets(this.quantizedMousePos, draggables);
         // set draggable state on entities and remove from game-entity-manager if needed
         foreach (var e in draggables)
         {
-            if (e == null) { continue; }
             Draggable draggable = e.GetComponent<Draggable>();
             // is already dragging
             if (draggable.isDragging)
@@ -622,13 +614,11 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityDrop()
     {
-        // collect draggables subset
-        List<GameObject> draggables = this.GetCurrentSelectedDraggables();
-        // check if there are any invalid drop positions
+        // check if there are any invalid drop positions among the selected draggable entities
         bool invalidDragDetected = false;
-        foreach (GameObject e in draggables)
+        foreach (GameObject e in this.GetCurrentSelectedDraggables())
         {
-            if (e != null && !e.GetComponent<Draggable>().PositionIsValid())
+            if (!e.GetComponent<Draggable>().PositionIsValid())
             {
                 invalidDragDetected = true;
             }
@@ -749,7 +739,7 @@ public class PlayerInputManager : MonoBehaviour
         }
         else
         {
-            // Debug.Log("inventory multi-placement entity drop not valid");
+            if (this.useLogging) { Debug.Log("multi-placement entity drop not valid"); }
         }
     }
 
@@ -779,7 +769,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject entity in entities)
         {
-            if (entity != null && entity.TryGetComponent<Selectable>(out Selectable selectable))
+            if (entity.TryGetComponent<Selectable>(out Selectable selectable))
             {
                 this.currentEntitiesSelected.Add(entity);
                 selectable.SetSelected(true);
@@ -804,7 +794,7 @@ public class PlayerInputManager : MonoBehaviour
         return draggables;
     }
 
-    private void TryGroupDraggingEntities(List<GameObject> entities)
+    private void TryGroupingDraggableEntities(List<GameObject> entities)
     {
         foreach (GameObject e in entities)
         {
@@ -840,21 +830,23 @@ public class PlayerInputManager : MonoBehaviour
 
     private void ApplySelectedEntityOffsets(Vector3 referencePos, List<GameObject> entities)
     {
+        // if (this.useLogging) { Debug.Log("Apply entity offsets for " + entities.Count.ToString() + " entities"); }
         // set entity positions as offsets relative to reference position
         foreach (GameObject e in entities)
         {
-            if (e != null)
+            int instanceID = e.GetInstanceID();
+            if (this.entityIdToMouseOffset.ContainsKey(instanceID))
             {
-                int instanceID = e.GetInstanceID();
-                if (this.entityIdToMouseOffset.ContainsKey(instanceID))
-                {
-                    Vector3 offset = this.entityIdToMouseOffset[instanceID];
-                    e.transform.position = Functions.QuantizeVector(new Vector3(
-                        referencePos.x + offset.x,
-                        referencePos.y + offset.y,
-                        e.transform.position.z
-                    ));
-                }
+                Vector3 offset = this.entityIdToMouseOffset[instanceID];
+                e.transform.position = Functions.QuantizeVector(new Vector3(
+                    referencePos.x + offset.x,
+                    referencePos.y + offset.y,
+                    e.transform.position.z
+                ));
+            }
+            else
+            {
+                if (this.useLogging) { Debug.LogWarning("Entity offset not found for entity: " + e.name); }
             }
         }
     }
