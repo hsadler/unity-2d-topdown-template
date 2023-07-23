@@ -141,12 +141,12 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (e.TryGetComponent<Selectable>(out Selectable selectable))
             {
-                if (this.useLogging) { Debug.Log("Init entity selectable for entity: " + e.name); }
+                // if (this.useLogging) { Debug.Log("Init entity selectable for entity: " + e.name); }
                 selectable.SetSelected(false);
             }
             if (e.TryGetComponent<Draggable>(out Draggable draggable))
             {
-                if (this.useLogging) { Debug.Log("Init entity draggable for entity: " + e.name); }
+                // if (this.useLogging) { Debug.Log("Init entity draggable for entity: " + e.name); }
                 draggable.SetDragging(false);
             }
         }
@@ -201,6 +201,7 @@ public class PlayerInputManager : MonoBehaviour
 
     public void StartMultiPlacement(List<GameObject> entities, Quaternion rotation)
     {
+        if (this.useLogging) { Debug.Log("Starting multi-placement for entity count: " + entities.Count.ToString()); }
         this.multiPlacementEntities = entities;
         this.multiPlacementMemRotation = rotation;
         List<GameObject> spawned = this.CreateMultiPlacementEntities();
@@ -429,9 +430,10 @@ public class PlayerInputManager : MonoBehaviour
                     this.HandleEntityClicked(this.hoveredEntity);
                     this.FastForwardEntityAnimations(this.GetEntitiesSelected());
                     this.TryGroupingDraggableEntities(this.GetEntitiesSelected());
+                    // BUG: with this function call
                     this.HandleEntityDrag();
                 }
-                // initialize the selection-box
+                // initialize the selection box
                 else
                 {
                     this.HandleStartSelectionBox();
@@ -507,6 +509,9 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityClicked(GameObject clickedEntity)
     {
+        //
+        // handles multi-entity drag, single entity selection, and additive selection
+        //
         if (this.useLogging) { Debug.Log("Entity clicked: " + clickedEntity.name); }
         // multi entity start drag
         var entitiesSelected = this.GetEntitiesSelected();
@@ -521,6 +526,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (Input.GetKey(GameSettings.ADDITIVE_SELECTION_KEY))
             {
+                // BUG: with additive selection. May have to do special handling here.
                 if (this.useLogging) { Debug.Log("Additive selection"); }
                 this.TrySelectEntities(new List<GameObject>() { clickedEntity });
             }
@@ -708,6 +714,7 @@ public class PlayerInputManager : MonoBehaviour
             entitiesSelected.Count > 0
         )
         {
+            if (this.useLogging) { Debug.Log("Handling Copy/Paste for entity amount: " + entitiesSelected.Count.ToString()); }
             this.copyPasteEntities = new List<GameObject>(entitiesSelected);
             this.InitEntitySelect();
             this.StartMultiPlacement(this.copyPasteEntities, Quaternion.identity);
@@ -796,6 +803,9 @@ public class PlayerInputManager : MonoBehaviour
 
     private void TryGroupingDraggableEntities(List<GameObject> entities)
     {
+        //
+        // groups draggable entities under a single container
+        //
         foreach (GameObject e in entities)
         {
             if (e.TryGetComponent<Draggable>(out Draggable draggable))
@@ -853,6 +863,9 @@ public class PlayerInputManager : MonoBehaviour
 
     private void FastForwardEntityAnimations(List<GameObject> entities)
     {
+        //
+        // fast-forwards animations to their final state for given entities
+        //
         foreach (GameObject e in entities)
         {
             if (e.TryGetComponent<Movable>(out Movable movable))
