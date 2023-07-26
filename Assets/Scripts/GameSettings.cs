@@ -42,6 +42,7 @@ public class GameSettings
     public const KeyCode CMD_KEY = KeyCode.LeftCommand;
     public const KeyCode COPY_KEY = KeyCode.C;
     public const KeyCode PASTE_KEY = KeyCode.V;
+    public const KeyCode PLAY_PAUSE_KEY = KeyCode.Space;
 
 
     // renderer sorting layers

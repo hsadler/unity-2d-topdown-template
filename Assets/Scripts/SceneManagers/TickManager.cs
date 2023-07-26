@@ -28,7 +28,7 @@ public class TickManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(GameSettings.PLAY_PAUSE_KEY))
         {
             if (this.tickIsRunning)
             {
