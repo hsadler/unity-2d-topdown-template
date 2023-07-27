@@ -52,7 +52,7 @@ public class PlayerInputManager : MonoBehaviour
     // inventory canvas
     public GameObject inventoryCanvas;
 
-    private bool useLogging = true;
+    private bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -141,12 +141,10 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (e.TryGetComponent<Selectable>(out Selectable selectable))
             {
-                // if (this.useLogging) { Debug.Log("Init entity selectable for entity: " + e.name); }
                 selectable.SetSelected(false);
             }
             if (e.TryGetComponent<Draggable>(out Draggable draggable))
             {
-                // if (this.useLogging) { Debug.Log("Init entity draggable for entity: " + e.name); }
                 draggable.SetDragging(false);
             }
         }
@@ -272,7 +270,10 @@ public class PlayerInputManager : MonoBehaviour
     {
         // commit drops and mark any newly created entities as no longer newly created
         var draggables = this.GetCurrentSelectedDraggables();
-        // Debug.Log("Committing entity drop for entity count: " + draggables.Count.ToString());
+        if (this.useLogging)
+        {
+            Debug.Log("Committing entity drop for entity count: " + draggables.Count.ToString());
+        }
         foreach (GameObject e in draggables)
         {
             e.GetComponent<Draggable>().SetDragging(false);
@@ -430,7 +431,6 @@ public class PlayerInputManager : MonoBehaviour
                     this.HandleEntityClicked(this.hoveredEntity);
                     this.FastForwardEntityAnimations(this.GetEntitiesSelected());
                     this.TryGroupingDraggableEntities(this.GetEntitiesSelected());
-                    // BUG: with this function call
                     this.HandleEntityDrag();
                 }
                 // initialize the selection box
@@ -526,9 +526,9 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (Input.GetKey(GameSettings.ADDITIVE_SELECTION_KEY))
             {
-                // BUG: with additive selection. May have to do special handling here.
                 if (this.useLogging) { Debug.Log("Additive selection"); }
                 this.TrySelectEntities(new List<GameObject>() { clickedEntity });
+                this.SetEntityOffsets(this.quantizedMousePos, this.GetEntitiesSelected());
             }
             else
             {
@@ -840,7 +840,6 @@ public class PlayerInputManager : MonoBehaviour
 
     private void ApplySelectedEntityOffsets(Vector3 referencePos, List<GameObject> entities)
     {
-        // if (this.useLogging) { Debug.Log("Apply entity offsets for " + entities.Count.ToString() + " entities"); }
         // set entity positions as offsets relative to reference position
         foreach (GameObject e in entities)
         {

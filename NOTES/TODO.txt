@@ -107,7 +107,6 @@ X collect mutations per game-entity per tick and then perform an application ste
 
 
 BUGS:
-    - selection addition is not working
 
 
 REFACTORS:
