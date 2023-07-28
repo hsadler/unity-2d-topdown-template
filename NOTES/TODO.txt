@@ -98,7 +98,10 @@ X more entities with behaviors:
 X cleanup renderer ordering (broken upon game-entity selection)
 X provide move and rotate interfaces for game-entities, migrate to using them
 X collect mutations per game-entity per tick and then perform an application step
-- make movement and rotation animated
+X make movement and rotation animated when entity actions are playing
+- don't allow entity manipulation when scene is running
+- remove ffing of animations if it makes sense
+- add rotation animations to player->entity manipulations
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
         add to the game.
@@ -107,6 +110,7 @@ X collect mutations per game-entity per tick and then perform an application ste
 
 
 BUGS:
+    - problems with action play and history controls (states are not correct)
 
 
 REFACTORS:
