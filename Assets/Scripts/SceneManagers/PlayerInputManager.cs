@@ -100,10 +100,13 @@ public class PlayerInputManager : MonoBehaviour
             this.HandleCameraZoom();
             // entity interaction
             this.HandleMouseEntityInteraction();
-            this.HandleEntityDeleteByKeyDown();
-            this.HandleEntityRotation();
-            this.HandleEntityCopyPaste();
-            this.HandleEntityStateUndoRedo();
+            if (!this.tickManager.tickIsRunning)
+            {
+                this.HandleEntityDeleteByKeyDown();
+                this.HandleEntityRotation();
+                this.HandleEntityCopyPaste();
+                this.HandleEntityStateUndoRedo();
+            }
         }
     }
 
@@ -321,9 +324,10 @@ public class PlayerInputManager : MonoBehaviour
             {
                 this.InitEntitySelect();
             }
-            // otherwise enter menu mode
+            // otherwise stop tick play if needed and enter menu mode
             else
             {
+                PlaySceneManager.instance.tickManager.SetTickPlayState(false);
                 bool isEnteringMenuMode = !(this.inputMode == GameSettings.INPUT_MODE_MENU);
                 this.MenuGO.SetActive(isEnteringMenuMode);
                 this.inputMode = isEnteringMenuMode ? GameSettings.INPUT_MODE_MENU : GameSettings.INPUT_MODE_DEFAULT;
@@ -422,6 +426,11 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleMouseEntityInteraction()
     {
+        //
+        // Top-level mouse interaction handler. Allows for entity selection,
+        // drag, and placement. Drag and placement are not allowed while the
+        // tick is running.
+        //
         this.mouseIsUIHovered = this.MouseIsUIHovered();
         Collider2D[] mousePointHits = Physics2D.OverlapPointAll(this.currentMousePositionWorld);
         this.hoveredEntity = this.GetHoveredSelectableEntity(mousePointHits);
@@ -437,11 +446,14 @@ public class PlayerInputManager : MonoBehaviour
                 // entity click and start drag
                 if (this.hoveredEntity != null)
                 {
-                    this.isEntityDragging = true;
                     this.HandleEntityClicked(this.hoveredEntity);
-                    this.FastForwardEntityAnimations(this.GetEntitiesSelected());
-                    this.TryGroupingDraggableEntities(this.GetEntitiesSelected());
-                    this.HandleEntityDrag();
+                    if (!this.tickManager.tickIsRunning)
+                    {
+                        // this.FastForwardEntityAnimations(this.GetEntitiesSelected());
+                        this.isEntityDragging = true;
+                        this.TryGroupingDraggableEntities(this.GetEntitiesSelected());
+                        this.HandleEntityDrag();
+                    }
                 }
                 // initialize the selection box
                 else
@@ -450,7 +462,7 @@ public class PlayerInputManager : MonoBehaviour
                 }
             }
             // inventory multi-placement
-            else if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
+            else if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT && !this.tickManager.tickIsRunning)
             {
                 this.HandleMultiEntityPlacement();
             }
@@ -466,14 +478,14 @@ public class PlayerInputManager : MonoBehaviour
                     this.HandleSelectionBoxSizing();
                 }
                 // drag selected entities
-                else
+                else if (!this.tickManager.tickIsRunning)
                 {
                     this.HandleEntityDrag();
                     this.isEntityDragging = true;
                 }
             }
             // continue multi-placement of entities
-            else if (!this.mouseIsUIHovered && this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
+            else if (!this.mouseIsUIHovered && this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT && !this.tickManager.tickIsRunning)
             {
                 this.HandleEntityDrag();
                 this.HandleMultiEntityPlacement();
@@ -494,26 +506,23 @@ public class PlayerInputManager : MonoBehaviour
                     this.HandleBoxSelection();
                 }
                 // end of drag
-                else
+                else if (!this.tickManager.tickIsRunning)
                 {
                     this.HandleEntityDrop();
                 }
             }
             // drop final entity from multi-placement drag
-            else if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
+            else if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT && !this.tickManager.tickIsRunning)
             {
                 this.HandleMultiEntityPlacement();
                 this.gameEntityManager.TryPushEntityStateHistoryStep();
             }
         }
-        // mouse move
-        else
+        // mouse move + multi-placement
+        else if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT && !this.tickManager.tickIsRunning)
         {
-            if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
-            {
-                if (this.useLogging) { Debug.Log("Multi-placement mouse move"); }
-                this.HandleEntityDrag();
-            }
+            if (this.useLogging) { Debug.Log("Multi-placement mouse move"); }
+            this.HandleEntityDrag();
         }
     }
 

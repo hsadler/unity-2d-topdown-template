@@ -8,6 +8,7 @@ public class TickManager : MonoBehaviour
 
     public bool tickIsRunning;
     public TimeTickEvent timeTickEvent;
+    public GameObject tickOnIndicator;
 
     private bool useLogging = false;
 
@@ -24,29 +25,21 @@ public class TickManager : MonoBehaviour
         }
     }
 
-    void Start() { }
+    void Start()
+    {
+        this.tickOnIndicator.SetActive(false);
+    }
 
     void Update()
     {
-        if (Input.GetKeyDown(GameSettings.PLAY_PAUSE_KEY))
+        // allow tick to play only if no entity is being dragged
+        if (
+            Input.GetKeyDown(GameSettings.PLAY_PAUSE_KEY) &&
+            !PlaySceneManager.instance.playerInputManager.isEntityDragging &&
+            PlaySceneManager.instance.playerInputManager.inputMode == GameSettings.INPUT_MODE_DEFAULT
+        )
         {
-            if (this.tickIsRunning)
-            {
-                CancelInvoke();
-                if (this.useLogging)
-                {
-                    Debug.Log("time tick turned OFF");
-                }
-            }
-            else
-            {
-                InvokeRepeating("SendTick", GameSettings.DEFAULT_TICK_DURATION, GameSettings.DEFAULT_TICK_DURATION);
-                if (this.useLogging)
-                {
-                    Debug.Log("time tick turned ON");
-                }
-            }
-            this.tickIsRunning = !this.tickIsRunning;
+            this.SetTickPlayState(!this.tickIsRunning);
         }
     }
 
@@ -54,6 +47,31 @@ public class TickManager : MonoBehaviour
     {
         CancelInvoke();
         this.timeTickEvent.RemoveAllListeners();
+    }
+
+    // INTF METHODS
+
+    public void SetTickPlayState(bool on)
+    {
+        if (on)
+        {
+            InvokeRepeating("SendTick", GameSettings.DEFAULT_TICK_DURATION, GameSettings.DEFAULT_TICK_DURATION);
+            this.tickOnIndicator.SetActive(true);
+            if (this.useLogging)
+            {
+                Debug.Log("time tick turned ON");
+            }
+        }
+        else
+        {
+            CancelInvoke();
+            this.tickOnIndicator.SetActive(false);
+            if (this.useLogging)
+            {
+                Debug.Log("time tick turned OFF");
+            }
+        }
+        this.tickIsRunning = on;
     }
 
     // IMPL METHODS
