@@ -99,12 +99,13 @@ X cleanup renderer ordering (broken upon game-entity selection)
 X provide move and rotate interfaces for game-entities, migrate to using them
 X collect mutations per game-entity per tick and then perform an application step
 X make movement and rotation animated when entity actions are playing
-- don't allow entity manipulation when scene is running
+- don't allow entity manipulation when scene is running (only entity selection)
 - remove ffing of animations if it makes sense
 - add rotation animations to player->entity manipulations
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
         add to the game.
+- save system
 - another pass on telemetry
 - another pass on controls instructions
 
@@ -124,7 +125,6 @@ LATER:
     - toggleable
     - place & move normally unmovable entities
     - workflow for multi-scene creation
-- save system
 - more entities with behaviors:
     - (maybe) zone with effect (road, conveyor, etc.)
     - (maybe) zone without effect (decoration)

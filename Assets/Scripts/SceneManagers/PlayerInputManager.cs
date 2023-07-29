@@ -52,6 +52,12 @@ public class PlayerInputManager : MonoBehaviour
     // inventory canvas
     public GameObject inventoryCanvas;
 
+    // manager references
+    public GameEntityManager gameEntityManager;
+    public PlayerInventoryManager playerInventoryManager;
+    public TickManager tickManager;
+
+    // debug settings
     private bool useLogging = false;
 
 
@@ -68,6 +74,10 @@ public class PlayerInputManager : MonoBehaviour
         this.selectionBoxGO = Instantiate(this.selectionBoxPrefab, Vector3.zero, Quaternion.identity);
         this.selectionBoxGO.SetActive(false);
         this.InitEntityOffsets();
+        // set manager refs
+        this.gameEntityManager = PlaySceneManager.instance.gameEntityManager;
+        this.playerInventoryManager = PlaySceneManager.instance.playerInventoryManager;
+        this.tickManager = PlaySceneManager.instance.tickManager;
     }
 
     void Update()
@@ -177,7 +187,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (forceDelete || e.TryGetComponent<Selectable>(out Selectable selectable))
             {
-                PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
+                this.gameEntityManager.RemoveGameEntity(e);
                 Destroy(e);
             }
         }
@@ -229,7 +239,7 @@ public class PlayerInputManager : MonoBehaviour
         var spawned = new List<GameObject>();
         foreach (var e in this.multiPlacementEntities)
         {
-            GameObject prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(e.GetComponent<GameEntity>().prefabName);
+            GameObject prefab = this.playerInventoryManager.GetInventoryPrefabByName(e.GetComponent<GameEntity>().prefabName);
             GameObject newEntity = Instantiate(prefab, e.transform.position, e.transform.rotation);
             spawned.Add(newEntity);
         }
@@ -252,7 +262,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             foreach (GameObject e in draggables)
             {
-                PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
+                this.gameEntityManager.RemoveGameEntity(e);
                 Destroy(e);
             }
             this.InitEntitySelect();
@@ -278,7 +288,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             e.GetComponent<Draggable>().SetDragging(false);
             e.GetComponent<GameEntity>().isNewlyCreated = false;
-            PlaySceneManager.instance.gameEntityManager.AddGameEntity(e, e.transform.position);
+            this.gameEntityManager.AddGameEntity(e, e.transform.position);
         }
         this.UngroupDraggingEntities(this.GetEntitiesSelected());
         this.isEntityDragging = false;
@@ -493,7 +503,7 @@ public class PlayerInputManager : MonoBehaviour
             else if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
             {
                 this.HandleMultiEntityPlacement();
-                PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
+                this.gameEntityManager.TryPushEntityStateHistoryStep();
             }
         }
         // mouse move
@@ -612,7 +622,7 @@ public class PlayerInputManager : MonoBehaviour
                 draggable.SetDragging(true);
                 if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
                 {
-                    PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(e);
+                    this.gameEntityManager.RemoveGameEntity(e);
                 }
             }
         }
@@ -634,7 +644,7 @@ public class PlayerInputManager : MonoBehaviour
             this.CancelEntityDrag();
         }
         this.CommitEntityDrop();
-        PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
+        this.gameEntityManager.TryPushEntityStateHistoryStep();
     }
 
     private void HandleEntityRotation()
@@ -665,7 +675,7 @@ public class PlayerInputManager : MonoBehaviour
                 // push history step only if input mode is default and entities are not currently being dragged
                 if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
                 {
-                    PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
+                    this.gameEntityManager.TryPushEntityStateHistoryStep();
                 }
             }
         }
@@ -683,7 +693,7 @@ public class PlayerInputManager : MonoBehaviour
         if (this.GetEntitiesSelected().Count > 0 && Input.GetKeyDown(GameSettings.DELETE_ENTITIES_KEY))
         {
             this.DeleteSelectedEntities();
-            PlaySceneManager.instance.gameEntityManager.TryPushEntityStateHistoryStep();
+            this.gameEntityManager.TryPushEntityStateHistoryStep();
         }
     }
 
@@ -701,7 +711,7 @@ public class PlayerInputManager : MonoBehaviour
         if (backOrForward != null)
         {
             this.InitEntitySelect();
-            PlaySceneManager.instance.gameEntityManager.GoStateHistoryStep(backOrForward);
+            this.gameEntityManager.GoStateHistoryStep(backOrForward);
         }
     }
 
@@ -739,7 +749,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 e.GetComponent<Draggable>().SetDragging(false);
                 e.GetComponent<GameEntity>().isNewlyCreated = false;
-                PlaySceneManager.instance.gameEntityManager.AddGameEntity(e, e.transform.position);
+                this.gameEntityManager.AddGameEntity(e, e.transform.position);
                 e.transform.SetParent(null);
             }
             this.StartMultiPlacement(this.GetEntitiesSelected(), Quaternion.identity);
