@@ -880,23 +880,23 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    private void FastForwardEntityAnimations(List<GameObject> entities)
-    {
-        //
-        // fast-forwards animations to their final state for given entities
-        //
-        foreach (GameObject e in entities)
-        {
-            if (e.TryGetComponent<Movable>(out Movable movable))
-            {
-                movable.FastForwardAnimations();
-            }
-            if (e.TryGetComponent<Rotatable>(out Rotatable rotatable))
-            {
-                rotatable.FastForwardAnimations();
-            }
-        }
-    }
+    // private void FastForwardEntityAnimations(List<GameObject> entities)
+    // {
+    //     //
+    //     // fast-forwards animations to their final state for given entities
+    //     //
+    //     foreach (GameObject e in entities)
+    //     {
+    //         if (e.TryGetComponent<Movable>(out Movable movable))
+    //         {
+    //             movable.FastForwardAnimations();
+    //         }
+    //         if (e.TryGetComponent<Rotatable>(out Rotatable rotatable))
+    //         {
+    //             rotatable.FastForwardAnimations();
+    //         }
+    //     }
+    // }
 
 
 }

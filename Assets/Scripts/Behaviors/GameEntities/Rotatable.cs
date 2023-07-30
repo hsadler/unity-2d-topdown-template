@@ -6,10 +6,12 @@ public class Rotatable : MonoBehaviour
 {
 
 
-    private bool useLogging = false;
+    public GameObject renderBody;
+
     private Coroutine rotationCoroutine = null;
     private float rotationForce = 0.0f;
-    private Quaternion nextRotation = Quaternion.identity;
+
+    private bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -47,24 +49,27 @@ public class Rotatable : MonoBehaviour
                 " with rotation force: " + this.rotationForce.ToString()
             );
         }
-        this.nextRotation = Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + this.rotationForce);
+        Quaternion startRotation = this.transform.rotation;
+        Quaternion endRotation = Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + this.rotationForce);
+        this.transform.rotation = endRotation;
+        this.renderBody.transform.rotation = startRotation;
         this.rotationCoroutine = StartCoroutine(this.RotateOverTime(
-            this.gameObject,
-            this.nextRotation,
+            this.renderBody,
+            endRotation,
             GameSettings.DEFAULT_TICK_DURATION / 2)
         );
         this.rotationForce = 0.0f;
     }
 
-    public void FastForwardAnimations()
-    {
-        if (this.rotationCoroutine != null)
-        {
-            StopCoroutine(this.rotationCoroutine);
-            this.rotationCoroutine = null;
-            this.transform.rotation = this.nextRotation;
-        }
-    }
+    // public void FastForwardAnimations()
+    // {
+    //     if (this.rotationCoroutine != null)
+    //     {
+    //         StopCoroutine(this.rotationCoroutine);
+    //         this.rotationCoroutine = null;
+    //         this.transform.rotation = this.nextRotation;
+    //     }
+    // }
 
     // IMPL METHODS
 

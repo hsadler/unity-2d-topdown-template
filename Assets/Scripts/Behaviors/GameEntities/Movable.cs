@@ -6,11 +6,13 @@ public class Movable : MonoBehaviour
 {
 
 
+    public GameObject renderBody;
+
     private GameEntityManager gem;
-    private bool useLogging = false;
     private Coroutine movementCoroutine = null;
     private List<Vector3> movementForces = new List<Vector3>();
-    private Vector3 nextPosition = Vector3.zero;
+
+    private bool useLogging = true;
 
 
     // UNITY HOOKS
@@ -51,19 +53,24 @@ public class Movable : MonoBehaviour
         {
             newPosition += movementForce;
         }
-        this.nextPosition = Functions.QuantizeVector(newPosition);
-        if (this.gem != null && this.gem.GetGameEntityAtPosition(this.nextPosition) == null)
+        newPosition = Functions.QuantizeVector(newPosition);
+        if (this.gem != null && this.gem.GetGameEntityAtPosition(newPosition) == null)
         {
+            Vector3 oldPosition = this.transform.position;
+            // snap position to discrete grid and register on game-entity manager
+            this.transform.position = newPosition;
             this.gem.RemoveGameEntity(this.gameObject);
-            this.gem.AddGameEntity(this.gameObject, this.nextPosition);
+            this.gem.AddGameEntity(this.gameObject, this.transform.position);
+            // animate the movement of the render body (it will lag behind SOT of the transform)
+            this.renderBody.transform.position = oldPosition;
             this.movementCoroutine = StartCoroutine(
-                this.MoveOverTime(this.gameObject, this.nextPosition, GameSettings.DEFAULT_TICK_DURATION / 2)
+                this.MoveOverTime(this.renderBody, newPosition, GameSettings.DEFAULT_TICK_DURATION / 2)
             );
             if (this.useLogging)
             {
                 Debug.Log(
                     "Moved game-entity: " + this.gameObject.GetInstanceID().ToString() +
-                    " to position: " + this.nextPosition.ToString()
+                    " to position: " + newPosition.ToString()
                 );
             }
         }
@@ -73,21 +80,11 @@ public class Movable : MonoBehaviour
             {
                 Debug.Log(
                     "Could not move game-entity: " + this.gameObject.GetInstanceID().ToString() +
-                    " to position: " + this.nextPosition.ToString() + " because it is occupied."
+                    " to position: " + newPosition.ToString() + " because it is occupied."
                 );
             }
         }
         this.movementForces = new List<Vector3>();
-    }
-
-    public void FastForwardAnimations()
-    {
-        if (this.movementCoroutine != null)
-        {
-            StopCoroutine(this.movementCoroutine);
-            this.movementCoroutine = null;
-            this.transform.position = this.nextPosition;
-        }
     }
 
     // IMPL METHODS
