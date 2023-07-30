@@ -6,7 +6,6 @@ TagManager:
   tags:
   - InventoryItem
   - GameEntity
-  - TickOnIndicator
   layers:
   - Default
   - TransparentFX

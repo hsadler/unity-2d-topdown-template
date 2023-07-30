@@ -672,6 +672,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT || this.isEntityDragging)
             {
+                // rotate selected entities as a group
                 this.RotateSelectedEntitiesAsGroup(rotationAmount: rot);
             }
             else

@@ -99,12 +99,18 @@ X cleanup renderer ordering (broken upon game-entity selection)
 X provide move and rotate interfaces for game-entities, migrate to using them
 X collect mutations per game-entity per tick and then perform an application step
 X make movement and rotation animated when entity actions are playing
-- don't allow entity manipulation when scene is running (only entity selection)
-- remove ffing of animations if it makes sense
+X don't allow entity manipulation when scene is running (only entity selection)
+X remove ffing of animations if it makes sense
+- refactor entity position and rotation animations to allow for positions
+    and rotations to always be descrete and for their SOTs to be the Unity
+    transforms
 - add rotation animations to player->entity manipulations
+- create a tick-resolution system where multiple passes are made on all entities
+    until it is determined that no more moves can be made.
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
         add to the game.
+    - Entity invetory bar icons should be generated at runtime if feasible
 - save system
 - another pass on telemetry
 - another pass on controls instructions
@@ -121,6 +127,7 @@ REFACTORS:
 
 
 LATER:
+- (maybe) make position conflict resolution randomized
 - admin system for environment design:
     - toggleable
     - place & move normally unmovable entities
