@@ -59,8 +59,6 @@ public class UITelemetryManager : MonoBehaviour
                 "\n" +
                 "Entities Selected Count: " + this.playerInputManager.GetEntitiesSelected().Count.ToString() +
                 "\n" +
-                "Entities Offset Count: " + this.playerInputManager.GetEntitiesInOffsetCount().ToString() +
-                "\n" +
                 "Entities MultiPlacement Count: " + this.playerInputManager.GetMulitPlacementEntities().Count.ToString() +
                 "\n" +
                 "Drag Container Entities Count: " + dragContainterEntitiesCount.ToString();

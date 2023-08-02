@@ -101,10 +101,11 @@ X collect mutations per game-entity per tick and then perform an application ste
 X make movement and rotation animated when entity actions are playing
 X don't allow entity manipulation when scene is running (only entity selection)
 X remove ffing of animations if it makes sense
-- refactor entity position and rotation animations to allow for positions
+X refactor entity position and rotation animations to allow for positions
     and rotations to always be descrete and for their SOTs to be the Unity
     transforms
-- add rotation animations to player->entity manipulations
+X add rotation animations to player->entity manipulations
+- BUGFIX: problems with action play and history controls (states are not correct)
 - create a tick-resolution system where multiple passes are made on all entities
     until it is determined that no more moves can be made.
 - better inventory bar system:
@@ -117,7 +118,6 @@ X remove ffing of animations if it makes sense
 
 
 BUGS:
-    - problems with action play and history controls (states are not correct)
 
 
 REFACTORS:

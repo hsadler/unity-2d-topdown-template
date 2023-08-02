@@ -12,7 +12,7 @@ public class Movable : MonoBehaviour
     private Coroutine movementCoroutine = null;
     private List<Vector3> movementForces = new List<Vector3>();
 
-    private bool useLogging = true;
+    private bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -64,7 +64,7 @@ public class Movable : MonoBehaviour
             // animate the movement of the render body (it will lag behind SOT of the transform)
             this.renderBody.transform.position = oldPosition;
             this.movementCoroutine = StartCoroutine(
-                this.MoveOverTime(this.renderBody, newPosition, GameSettings.DEFAULT_TICK_DURATION / 2)
+                Functions.MoveOverTime(this.renderBody, newPosition, GameSettings.DEFAULT_TICK_DURATION / 2)
             );
             if (this.useLogging)
             {
@@ -88,21 +88,6 @@ public class Movable : MonoBehaviour
     }
 
     // IMPL METHODS
-
-    private IEnumerator MoveOverTime(GameObject go, Vector3 end, float duration)
-    {
-        // from chatGPT
-        Vector3 start = go.transform.position;
-        float timeElapsed = 0;
-        while (timeElapsed < duration)
-        {
-            float t = timeElapsed / duration;
-            go.transform.position = Vector3.Lerp(start, end, t);
-            yield return null;
-            timeElapsed += Time.deltaTime;
-        }
-        go.transform.position = end;
-    }
 
 
 }

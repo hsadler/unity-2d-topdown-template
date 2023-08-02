@@ -54,5 +54,35 @@ public class Functions
         return gameObjects.OrderBy(go => Vector3.Distance(go.transform.position, midpoint)).First<GameObject>();
     }
 
+    public static IEnumerator MoveOverTime(GameObject go, Vector3 end, float duration)
+    {
+        // from chatGPT
+        Vector3 start = go.transform.position;
+        float timeElapsed = 0;
+        while (timeElapsed < duration)
+        {
+            float t = timeElapsed / duration;
+            go.transform.position = Vector3.Lerp(start, end, t);
+            yield return null;
+            timeElapsed += Time.deltaTime;
+        }
+        go.transform.position = end;
+    }
+
+    public static IEnumerator RotateOverTime(GameObject go, Quaternion endRotation, float duration)
+    {
+        // from chatGPT
+        Quaternion startRotation = go.transform.rotation;
+        float timeElapsed = 0;
+        while (timeElapsed < duration)
+        {
+            float t = timeElapsed / duration;
+            go.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
+            yield return null;
+            timeElapsed += Time.deltaTime;
+        }
+        go.transform.rotation = endRotation;
+    }
+
 
 }

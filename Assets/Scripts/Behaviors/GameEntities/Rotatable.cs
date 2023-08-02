@@ -53,7 +53,7 @@ public class Rotatable : MonoBehaviour
         Quaternion endRotation = Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + this.rotationForce);
         this.transform.rotation = endRotation;
         this.renderBody.transform.rotation = startRotation;
-        this.rotationCoroutine = StartCoroutine(this.RotateOverTime(
+        this.rotationCoroutine = StartCoroutine(Functions.RotateOverTime(
             this.renderBody,
             endRotation,
             GameSettings.DEFAULT_TICK_DURATION / 2)
@@ -61,32 +61,7 @@ public class Rotatable : MonoBehaviour
         this.rotationForce = 0.0f;
     }
 
-    // public void FastForwardAnimations()
-    // {
-    //     if (this.rotationCoroutine != null)
-    //     {
-    //         StopCoroutine(this.rotationCoroutine);
-    //         this.rotationCoroutine = null;
-    //         this.transform.rotation = this.nextRotation;
-    //     }
-    // }
-
     // IMPL METHODS
-
-    IEnumerator RotateOverTime(GameObject go, Quaternion endRotation, float duration)
-    {
-        // from chatGPT
-        Quaternion startRotation = go.transform.rotation;
-        float timeElapsed = 0;
-        while (timeElapsed < duration)
-        {
-            float t = timeElapsed / duration;
-            go.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
-            yield return null;
-            timeElapsed += Time.deltaTime;
-        }
-        go.transform.rotation = endRotation;
-    }
 
 
 }

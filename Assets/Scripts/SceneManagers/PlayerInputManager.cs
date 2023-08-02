@@ -22,7 +22,6 @@ public class PlayerInputManager : MonoBehaviour
     // camera
     private float targetCameraSize;
     private Vector3 targetCameraPositionWorld;
-    private float[] cameraBounds;
 
     // mouse interaction
     private Vector3 currentMousePositionWorld;
@@ -35,11 +34,14 @@ public class PlayerInputManager : MonoBehaviour
     // entity selection
     private GameObject hoveredEntity;
     private List<GameObject> currentEntitiesSelected = new List<GameObject>();
-    private IDictionary<int, Vector3> entityIdToMouseOffset;
 
     // entity drag
     public bool isEntityDragging;
     public GameObject entityDragContainer;
+
+    // entity group rotation
+    private Quaternion entityGroupRotationTarget = Quaternion.identity;
+    private Coroutine entityGroupRotationCoroutine = null;
 
     // entity copy + paste
     private List<GameObject> copyPasteEntities = new List<GameObject>();
@@ -58,7 +60,7 @@ public class PlayerInputManager : MonoBehaviour
     public TickManager tickManager;
 
     // debug settings
-    private bool useLogging = false;
+    private bool useLogging = true;
 
 
     // UNITY HOOKS
@@ -73,7 +75,6 @@ public class PlayerInputManager : MonoBehaviour
         this.targetCameraPositionWorld = Camera.main.transform.position;
         this.selectionBoxGO = Instantiate(this.selectionBoxPrefab, Vector3.zero, Quaternion.identity);
         this.selectionBoxGO.SetActive(false);
-        this.InitEntityOffsets();
         // set manager refs
         this.gameEntityManager = PlaySceneManager.instance.gameEntityManager;
         this.playerInventoryManager = PlaySceneManager.instance.playerInventoryManager;
@@ -125,11 +126,6 @@ public class PlayerInputManager : MonoBehaviour
         return entitiesSelected;
     }
 
-    public int GetEntitiesInOffsetCount()
-    {
-        return this.entityIdToMouseOffset.Count;
-    }
-
     public List<GameObject> GetMulitPlacementEntities()
     {
         return this.multiPlacementEntities;
@@ -162,7 +158,6 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
         this.currentEntitiesSelected = new List<GameObject>();
-        this.InitEntityOffsets();
         // init selection box as well
         this.selectionBoxGO.SetActive(false);
     }
@@ -170,7 +165,6 @@ public class PlayerInputManager : MonoBehaviour
     public void SelectSingleEntity(GameObject entity)
     {
         this.TrySelectEntities(new List<GameObject>() { entity });
-        this.SetEntityOffsets(this.quantizedMousePos, this.GetEntitiesSelected());
     }
 
     public void DisplayImpendingDeleteForSelectedEntities(bool status)
@@ -449,7 +443,6 @@ public class PlayerInputManager : MonoBehaviour
                     this.HandleEntityClicked(this.hoveredEntity);
                     if (!this.tickManager.tickIsRunning)
                     {
-                        // this.FastForwardEntityAnimations(this.GetEntitiesSelected());
                         this.isEntityDragging = true;
                         this.TryGroupingDraggableEntities(this.GetEntitiesSelected());
                         this.HandleEntityDrag();
@@ -537,8 +530,6 @@ public class PlayerInputManager : MonoBehaviour
         if (entitiesSelected.Count > 0 && entitiesSelected.Contains(clickedEntity))
         {
             if (this.useLogging) { Debug.Log("Multi entity start drag"); }
-            // set selected entity initial offsets from mouse position to prepare for entity drag
-            this.SetEntityOffsets(this.quantizedMousePos, entitiesSelected);
         }
         // single entity selection
         else
@@ -547,7 +538,6 @@ public class PlayerInputManager : MonoBehaviour
             {
                 if (this.useLogging) { Debug.Log("Additive selection"); }
                 this.TrySelectEntities(new List<GameObject>() { clickedEntity });
-                this.SetEntityOffsets(this.quantizedMousePos, this.GetEntitiesSelected());
             }
             else
             {
@@ -613,9 +603,6 @@ public class PlayerInputManager : MonoBehaviour
     {
         // get draggables subset from selected entities
         List<GameObject> draggables = this.GetCurrentSelectedDraggables();
-        if (this.useLogging) { Debug.Log("Handle entity drag for " + draggables.Count.ToString() + " entities"); }
-        // move draggables with respect to mouse position
-        this.ApplySelectedEntityOffsets(this.quantizedMousePos, draggables);
         // set draggable state on entities and remove from game-entity-manager if needed
         foreach (var e in draggables)
         {
@@ -677,10 +664,15 @@ public class PlayerInputManager : MonoBehaviour
             }
             else
             {
+                if (this.useLogging) { Debug.Log("Rotating selected entities as individuals"); }
                 // rotate selected entities as individuals
                 foreach (GameObject e in entitiesSelected)
                 {
-                    e.transform.Rotate(new Vector3(0, 0, rot));
+                    if (e.TryGetComponent<Rotatable>(out Rotatable rotatable))
+                    {
+                        rotatable.AddRotation(rot);
+                        rotatable.CommitRotations();
+                    }
                 }
                 // push history step only if input mode is default and entities are not currently being dragged
                 if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
@@ -691,11 +683,28 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    private IEnumerator AnimateEntityGroupRotation(int rotationAmount)
+    {
+        // animate rotation of selected entities as a group
+        if (this.useLogging) { Debug.Log("Animating entity group rotation"); }
+        this.entityGroupRotationTarget = Quaternion.Euler(0, 0, this.entityDragContainer.transform.rotation.eulerAngles.z + rotationAmount);
+        yield return Functions.RotateOverTime(
+            this.entityDragContainer,
+            this.entityGroupRotationTarget,
+            GameSettings.DEFAULT_TICK_DURATION / 2
+        );
+    }
+
     private void RotateSelectedEntitiesAsGroup(int rotationAmount)
     {
         // rotate selected entities as a group
-        this.entityDragContainer.transform.Rotate(new Vector3(0, 0, rotationAmount));
-        this.SetEntityOffsets(this.quantizedMousePos, this.GetEntitiesSelected());
+        if (this.useLogging) { Debug.Log("Rotating selected entities as group"); }
+        if (this.entityGroupRotationCoroutine != null)
+        {
+            StopCoroutine(this.entityGroupRotationCoroutine);
+            this.entityDragContainer.transform.rotation = this.entityGroupRotationTarget;
+        }
+        this.entityGroupRotationCoroutine = StartCoroutine(this.AnimateEntityGroupRotation(rotationAmount));
     }
 
     private void HandleEntityDeleteByKeyDown()
@@ -842,61 +851,6 @@ public class PlayerInputManager : MonoBehaviour
             e.transform.SetParent(null);
         }
     }
-
-    private void InitEntityOffsets()
-    {
-        this.entityIdToMouseOffset = new Dictionary<int, Vector3>();
-    }
-
-    private void SetEntityOffsets(Vector3 referencePos, List<GameObject> entities)
-    {
-        // set entity offsets from reference position
-        this.InitEntityOffsets();
-        foreach (GameObject e in entities)
-        {
-            this.entityIdToMouseOffset.Add(e.GetInstanceID(), e.transform.position - referencePos);
-        }
-    }
-
-    private void ApplySelectedEntityOffsets(Vector3 referencePos, List<GameObject> entities)
-    {
-        // set entity positions as offsets relative to reference position
-        foreach (GameObject e in entities)
-        {
-            int instanceID = e.GetInstanceID();
-            if (this.entityIdToMouseOffset.ContainsKey(instanceID))
-            {
-                Vector3 offset = this.entityIdToMouseOffset[instanceID];
-                e.transform.position = Functions.QuantizeVector(new Vector3(
-                    referencePos.x + offset.x,
-                    referencePos.y + offset.y,
-                    e.transform.position.z
-                ));
-            }
-            else
-            {
-                if (this.useLogging) { Debug.LogWarning("Entity offset not found for entity: " + e.name); }
-            }
-        }
-    }
-
-    // private void FastForwardEntityAnimations(List<GameObject> entities)
-    // {
-    //     //
-    //     // fast-forwards animations to their final state for given entities
-    //     //
-    //     foreach (GameObject e in entities)
-    //     {
-    //         if (e.TryGetComponent<Movable>(out Movable movable))
-    //         {
-    //             movable.FastForwardAnimations();
-    //         }
-    //         if (e.TryGetComponent<Rotatable>(out Rotatable rotatable))
-    //         {
-    //             rotatable.FastForwardAnimations();
-    //         }
-    //     }
-    // }
 
 
 }
