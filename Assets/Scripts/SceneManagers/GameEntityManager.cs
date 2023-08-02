@@ -361,15 +361,16 @@ public class GameEntityManager : MonoBehaviour
             }
         }
         // commit movements and rotations
+        float animationDuration = GameSettings.DEFAULT_TICK_DURATION / 2f;
         foreach (GameObject entity in new List<GameObject>(this.positionToGameEntity.Values))
         {
             if (entity != null && entity.TryGetComponent(out Rotatable rotatable))
             {
-                rotatable.CommitRotations();
+                rotatable.CommitRotations(animationDuration);
             }
             if (entity != null && entity.TryGetComponent(out Movable movable))
             {
-                movable.CommitMovement();
+                movable.CommitMovement(animationDuration);
             }
         }
         this.TryPushEntityStateHistoryStep();

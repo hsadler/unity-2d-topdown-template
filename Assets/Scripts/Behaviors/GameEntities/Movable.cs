@@ -40,7 +40,7 @@ public class Movable : MonoBehaviour
         this.movementForces.Add(direction * distance);
     }
 
-    public void CommitMovement()
+    public void CommitMovement(float animationDuration)
     {
         // short-circuit if no movement forces
         if (this.movementForces.Count == 0)
@@ -64,7 +64,7 @@ public class Movable : MonoBehaviour
             // animate the movement of the render body (it will lag behind SOT of the transform)
             this.renderBody.transform.position = oldPosition;
             this.movementCoroutine = StartCoroutine(
-                Functions.MoveOverTime(this.renderBody, newPosition, GameSettings.DEFAULT_TICK_DURATION / 2)
+                Functions.MoveOverTime(this.renderBody, newPosition, animationDuration)
             );
             if (this.useLogging)
             {

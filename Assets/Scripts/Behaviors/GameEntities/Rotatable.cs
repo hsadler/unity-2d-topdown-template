@@ -34,7 +34,7 @@ public class Rotatable : MonoBehaviour
         this.rotationForce += zRotation;
     }
 
-    public void CommitRotations()
+    public void CommitRotations(float animationDuration)
     {
         // short-circuit if no rotations
         if (this.rotationForce == 0.0f)
@@ -56,8 +56,8 @@ public class Rotatable : MonoBehaviour
         this.rotationCoroutine = StartCoroutine(Functions.RotateOverTime(
             this.renderBody,
             endRotation,
-            GameSettings.DEFAULT_TICK_DURATION / 2)
-        );
+            animationDuration
+        ));
         this.rotationForce = 0.0f;
     }
 

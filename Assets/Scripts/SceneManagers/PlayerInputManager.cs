@@ -60,7 +60,7 @@ public class PlayerInputManager : MonoBehaviour
     public TickManager tickManager;
 
     // debug settings
-    private bool useLogging = true;
+    private bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -671,7 +671,7 @@ public class PlayerInputManager : MonoBehaviour
                     if (e.TryGetComponent<Rotatable>(out Rotatable rotatable))
                     {
                         rotatable.AddRotation(rot);
-                        rotatable.CommitRotations();
+                        rotatable.CommitRotations(animationDuration: GameSettings.DEFAULT_TICK_DURATION / 4);
                     }
                 }
                 // push history step only if input mode is default and entities are not currently being dragged
@@ -691,7 +691,7 @@ public class PlayerInputManager : MonoBehaviour
         yield return Functions.RotateOverTime(
             this.entityDragContainer,
             this.entityGroupRotationTarget,
-            GameSettings.DEFAULT_TICK_DURATION / 2
+            GameSettings.DEFAULT_TICK_DURATION / 4
         );
     }
 
