@@ -21,7 +21,7 @@ public class PlaySceneManager : MonoBehaviour
     // the static reference to the singleton instance
     public static PlaySceneManager instance;
 
-    private bool useLogging = false;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -45,6 +45,7 @@ public class PlaySceneManager : MonoBehaviour
     void Start()
     {
         this.proceduralEnvironmentManager.GenerateGrid();
+        this.proceduralEnvironmentManager.SetGridColor(this.proceduralEnvironmentManager.defaultGridColor);
     }
 
     void Update() { }

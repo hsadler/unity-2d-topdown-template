@@ -8,9 +8,8 @@ public class TickManager : MonoBehaviour
 
     public bool tickIsRunning;
     public TimeTickEvent timeTickEvent;
-    public GameObject tickOnIndicator;
 
-    private bool useLogging = false;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -25,10 +24,7 @@ public class TickManager : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        this.tickOnIndicator.SetActive(false);
-    }
+    void Start() { }
 
     void Update()
     {
@@ -53,10 +49,11 @@ public class TickManager : MonoBehaviour
 
     public void SetTickPlayState(bool on)
     {
+        var pem = PlaySceneManager.instance.proceduralEnvironmentManager;
         if (on)
         {
-            InvokeRepeating("SendTick", GameSettings.DEFAULT_TICK_DURATION, GameSettings.DEFAULT_TICK_DURATION);
-            this.tickOnIndicator.SetActive(true);
+            InvokeRepeating(nameof(SendTick), GameSettings.DEFAULT_TICK_DURATION, GameSettings.DEFAULT_TICK_DURATION);
+            pem.SetGridColor(pem.tickOnGridColor);
             if (this.useLogging)
             {
                 Debug.Log("time tick turned ON");
@@ -65,7 +62,7 @@ public class TickManager : MonoBehaviour
         else
         {
             CancelInvoke();
-            this.tickOnIndicator.SetActive(false);
+            pem.SetGridColor(pem.defaultGridColor);
             if (this.useLogging)
             {
                 Debug.Log("time tick turned OFF");
