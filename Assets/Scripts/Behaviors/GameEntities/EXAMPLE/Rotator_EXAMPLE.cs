@@ -53,15 +53,6 @@ public class Rotator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
                 }
                 rotatable.AddRotation(90);
             }
-            // special behavior for resource-data game-entities
-            if (toRotate.TryGetComponent(out IResourceData resourceData))
-            {
-                if (this.useLogging)
-                {
-                    Debug.Log("Rotator found resource data. Toggling data.");
-                }
-                resourceData.ToggleData();
-            }
         }
     }
 

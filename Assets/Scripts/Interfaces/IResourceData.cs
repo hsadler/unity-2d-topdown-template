@@ -1,5 +1,5 @@
 
 public interface IResourceData
 {
-    public void ToggleData();
+    public int ReadData();
 }

@@ -8,8 +8,6 @@ public class ResourceData_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior, IRes
 
     public SpriteRenderer bodySpriteRenderer;
 
-    private bool dataIsOn = false;
-
     private readonly bool useLogging = false;
 
 
@@ -17,7 +15,10 @@ public class ResourceData_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior, IRes
 
     void Start() { }
 
-    void Update() { }
+    void Update()
+    {
+        this.SetDataOnIndicator();
+    }
 
     // INTF METHODS
 
@@ -33,27 +34,31 @@ public class ResourceData_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior, IRes
         }
     }
 
-    public void ToggleData()
+    public int ReadData()
     {
         //
-        // toggles data state on/off
+        // returns the 1 or 0 data value
         //
-        if (this.useLogging)
+        Vector2 facingDirection = transform.up;
+        if (facingDirection == Vector2.up || facingDirection == Vector2.down)
         {
-            Debug.Log("Data toggled for ResourceData: " + this.gameObject.GetInstanceID().ToString());
-        }
-        this.dataIsOn = !this.dataIsOn;
-        if (this.dataIsOn)
-        {
-            this.bodySpriteRenderer.color = Color.white;
+            return 0;
         }
         else
         {
-            this.bodySpriteRenderer.color = Color.black;
+            return 1;
         }
     }
 
     // IMPL METHODS
+
+    public void SetDataOnIndicator()
+    {
+        //
+        // sets the data on indicator
+        //
+        this.bodySpriteRenderer.color = this.ReadData() == 1 ? Color.white : Color.black;
+    }
 
 
 }
