@@ -8,17 +8,14 @@ public class ResourceData_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior, IRes
 
     public SpriteRenderer bodySpriteRenderer;
 
-    private GameEntityManager gem;
-    private bool useLogging = false;
     private bool dataIsOn = false;
+
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
 
-    void Start()
-    {
-        this.gem = PlaySceneManager.instance.gameEntityManager;
-    }
+    void Start() { }
 
     void Update() { }
 

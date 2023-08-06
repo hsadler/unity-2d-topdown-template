@@ -14,7 +14,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     private GameObject prefab;
     private bool isInventoryKeyActive = false;
 
-    private IDictionary<string, string> keycodeToHumanReadable = new Dictionary<string, string>()
+    private readonly IDictionary<string, string> keycodeToHumanReadable = new Dictionary<string, string>()
     {
         {KeyCode.Alpha1.ToString(), "1"},
         {KeyCode.Alpha2.ToString(), "2"},
@@ -28,7 +28,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
     private PlayerInputManager playerInputManager;
 
     // debug
-    private bool useLogging = false;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -133,7 +133,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler
             // toggle on
             else
             {
-                this.playerInputManager.StartMultiPlacement(new List<GameObject>() { this.prefab }, Quaternion.identity);
+                this.playerInputManager.StartMultiPlacement(new List<GameObject>() { this.prefab });
                 this.isInventoryKeyActive = true;
             }
         }

@@ -7,10 +7,9 @@ public class Selectable : MonoBehaviour
 
 
     public GameObject selectionIndicator;
-    private bool isSelected = false;
 
-    private Color32 selectedColor = new Color32(255, 255, 255, 255);
-    private Color32 pendingDeleteColor = new Color32(0, 0, 0, 255);
+    private Color32 selectedColor = new(255, 255, 255, 255);
+    private Color32 pendingDeleteColor = new(0, 0, 0, 255);
 
 
     // UNITY HOOKS
@@ -28,7 +27,6 @@ public class Selectable : MonoBehaviour
 
     public void SetSelected(bool isSelected)
     {
-        this.isSelected = isSelected;
         this.selectionIndicator.SetActive(isSelected);
         string sortingLayer = isSelected ? GameSettings.SORTING_LAYER_ENTITY_SELECTED : GameSettings.SORTING_LAYER_DEFAULT;
         this.GetComponent<GameEntity>().SetRenderersSortingLayer(sortingLayer);

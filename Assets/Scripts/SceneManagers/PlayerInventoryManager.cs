@@ -14,15 +14,9 @@ public class PlayerInventoryManager : MonoBehaviour
 
     // UNITY HOOKS
 
-    void Start()
-    {
+    void Start() { }
 
-    }
-
-    void Update()
-    {
-
-    }
+    void Update() { }
 
     // INTF METHODS
 

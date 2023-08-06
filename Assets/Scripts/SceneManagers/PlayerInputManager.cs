@@ -33,7 +33,7 @@ public class PlayerInputManager : MonoBehaviour
 
     // entity selection
     private GameObject hoveredEntity;
-    private List<GameObject> currentEntitiesSelected = new List<GameObject>();
+    private List<GameObject> currentEntitiesSelected = new();
 
     // entity drag
     public bool isEntityDragging;
@@ -44,12 +44,11 @@ public class PlayerInputManager : MonoBehaviour
     private Coroutine entityGroupRotationCoroutine = null;
 
     // entity copy + paste
-    private List<GameObject> copyPasteEntities = new List<GameObject>();
+    private List<GameObject> copyPasteEntities = new();
 
     // multi-placement
-    private List<GameObject> multiPlacementEntities = new List<GameObject>();
-    private Quaternion multiPlacementMemRotation = Quaternion.identity;
-    public List<InventoryItem> inventoryItemScripts = new List<InventoryItem>();
+    private List<GameObject> multiPlacementEntities = new();
+    public List<InventoryItem> inventoryItemScripts = new();
 
     // inventory canvas
     public GameObject inventoryCanvas;
@@ -60,7 +59,7 @@ public class PlayerInputManager : MonoBehaviour
     public TickManager tickManager;
 
     // debug settings
-    private bool useLogging = false;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -182,7 +181,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject e in this.GetEntitiesSelected())
         {
-            if (forceDelete || e.TryGetComponent<Selectable>(out Selectable selectable))
+            if (forceDelete || e.TryGetComponent<Selectable>(out Selectable _))
             {
                 this.gameEntityManager.RemoveGameEntity(e);
                 Destroy(e);
@@ -204,17 +203,19 @@ public class PlayerInputManager : MonoBehaviour
         return areNewlyCreated;
     }
 
-    public void StartMultiPlacement(List<GameObject> entities, Quaternion rotation)
+    public void StartMultiPlacement(List<GameObject> entities)
     {
         if (this.useLogging) { Debug.Log("Starting multi-placement for entity count: " + entities.Count.ToString()); }
         this.multiPlacementEntities = entities;
-        this.multiPlacementMemRotation = rotation;
         List<GameObject> spawned = this.CreateMultiPlacementEntities();
         // reposition using most center entity position
         this.entityDragContainer.transform.position = Functions.MostCenterGameObject(spawned).transform.position;
         foreach (var e in spawned)
         {
-            e?.transform.SetParent(this.entityDragContainer.transform);
+            if (e != null)
+            {
+                e.transform.SetParent(this.entityDragContainer.transform);
+            }
         }
         // subsequently reposition to mouse cursor
         this.entityDragContainer.transform.position = this.quantizedMousePos;
@@ -226,7 +227,6 @@ public class PlayerInputManager : MonoBehaviour
     public void ExitMultiPlacement()
     {
         this.multiPlacementEntities = new List<GameObject>();
-        this.multiPlacementMemRotation = Quaternion.identity;
         this.DeleteSelectedEntities(forceDelete: true);
         this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
     }
@@ -237,7 +237,11 @@ public class PlayerInputManager : MonoBehaviour
         foreach (var e in this.multiPlacementEntities)
         {
             GameObject prefab = this.playerInventoryManager.GetInventoryPrefabByName(e.GetComponent<GameEntity>().prefabName);
-            GameObject newEntity = Instantiate(prefab, e.transform.position, e.transform.rotation);
+            GameObject newEntity = Instantiate(
+                prefab,
+                Functions.QuantizeVector(e.transform.position),
+                Functions.QuantizeQuaternion(e.transform.rotation)
+            );
             spawned.Add(newEntity);
         }
         return spawned;
@@ -365,7 +369,7 @@ public class PlayerInputManager : MonoBehaviour
             }
             if (cameraMoveDirection != Vector3.zero)
             {
-                Camera.main.transform.Translate(cameraMoveDirection * Time.deltaTime * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED * 0.6f);
+                Camera.main.transform.Translate(0.6f * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED * Time.deltaTime * cameraMoveDirection);
             }
         }
         this.ClampCameraToPlayzone();
@@ -589,7 +593,7 @@ public class PlayerInputManager : MonoBehaviour
             Collider2D[] selectionBoxHits = Physics2D.OverlapAreaAll(mPos1, mPos2);
             foreach (Collider2D col in selectionBoxHits)
             {
-                if (col.gameObject.TryGetComponent<Selectable>(out Selectable selectable))
+                if (col.gameObject.TryGetComponent<Selectable>(out Selectable _))
                 {
                     entitiesToSelect.Add(col.gameObject);
                 }
@@ -671,7 +675,7 @@ public class PlayerInputManager : MonoBehaviour
                     if (e.TryGetComponent<Rotatable>(out Rotatable rotatable))
                     {
                         rotatable.AddRotation(rot);
-                        rotatable.CommitRotations(animationDuration: GameSettings.DEFAULT_TICK_DURATION / 4);
+                        rotatable.CommitRotations(animationDuration: 0.05f);
                     }
                 }
                 // push history step only if input mode is default and entities are not currently being dragged
@@ -691,19 +695,26 @@ public class PlayerInputManager : MonoBehaviour
         yield return Functions.RotateOverTime(
             this.entityDragContainer,
             this.entityGroupRotationTarget,
-            GameSettings.DEFAULT_TICK_DURATION / 4
+            0.05f
         );
+    }
+
+    private void TryFastForwardEntityGroupRotation()
+    {
+        // fast-forward rotation of selected entities as a group
+        if (this.useLogging) { Debug.Log("Trying to fast-forwarding entity group rotation"); }
+        if (this.entityGroupRotationCoroutine != null)
+        {
+            StopCoroutine(this.entityGroupRotationCoroutine);
+            this.entityDragContainer.transform.rotation = this.entityGroupRotationTarget;
+        }
     }
 
     private void RotateSelectedEntitiesAsGroup(int rotationAmount)
     {
         // rotate selected entities as a group
         if (this.useLogging) { Debug.Log("Rotating selected entities as group"); }
-        if (this.entityGroupRotationCoroutine != null)
-        {
-            StopCoroutine(this.entityGroupRotationCoroutine);
-            this.entityDragContainer.transform.rotation = this.entityGroupRotationTarget;
-        }
+        this.TryFastForwardEntityGroupRotation();
         this.entityGroupRotationCoroutine = StartCoroutine(this.AnimateEntityGroupRotation(rotationAmount));
     }
 
@@ -736,7 +747,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleEntityCopyPaste()
     {
-        var entitiesSelected = this.GetEntitiesSelected();
+        List<GameObject> entitiesSelected = this.GetEntitiesSelected();
         if (
             (Input.GetKey(GameSettings.CTL_KEY) || Input.GetKey(GameSettings.CMD_KEY)) &&
             Input.GetKeyDown(GameSettings.COPY_KEY) &&
@@ -746,7 +757,7 @@ public class PlayerInputManager : MonoBehaviour
             if (this.useLogging) { Debug.Log("Handling Copy/Paste for entity amount: " + entitiesSelected.Count.ToString()); }
             this.copyPasteEntities = new List<GameObject>(entitiesSelected);
             this.InitEntitySelect();
-            this.StartMultiPlacement(this.copyPasteEntities, Quaternion.identity);
+            this.StartMultiPlacement(this.copyPasteEntities);
         }
     }
 
@@ -766,12 +777,13 @@ public class PlayerInputManager : MonoBehaviour
             // commit placement and re-init multi-placement
             foreach (GameObject e in draggables)
             {
+                this.TryFastForwardEntityGroupRotation();
                 e.GetComponent<Draggable>().SetDragging(false);
                 e.GetComponent<GameEntity>().isNewlyCreated = false;
                 this.gameEntityManager.AddGameEntity(e, e.transform.position);
                 e.transform.SetParent(null);
             }
-            this.StartMultiPlacement(this.GetEntitiesSelected(), Quaternion.identity);
+            this.StartMultiPlacement(this.GetEntitiesSelected());
         }
         else
         {
@@ -781,10 +793,12 @@ public class PlayerInputManager : MonoBehaviour
 
     private bool MouseIsUIHovered()
     {
-        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        List<RaycastResult> raycastResults = new();
         EventSystem es = this.inventoryCanvas.GetComponent<EventSystem>();
-        PointerEventData ped = new PointerEventData(es);
-        ped.position = Input.mousePosition;
+        PointerEventData ped = new(es)
+        {
+            position = Input.mousePosition
+        };
         this.inventoryCanvas.GetComponent<GraphicRaycaster>().Raycast(ped, raycastResults);
         return raycastResults.Count > 0;
     }
@@ -793,7 +807,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (Collider2D hit in hits)
         {
-            if (hit != null && hit.gameObject.TryGetComponent<Selectable>(out Selectable selectable))
+            if (hit != null && hit.gameObject.TryGetComponent<Selectable>(out Selectable _))
             {
                 return hit.gameObject;
             }
@@ -822,7 +836,7 @@ public class PlayerInputManager : MonoBehaviour
         var draggables = new List<GameObject>();
         foreach (GameObject e in this.GetEntitiesSelected())
         {
-            if (e.TryGetComponent<Draggable>(out Draggable draggable))
+            if (e.TryGetComponent<Draggable>(out Draggable _))
             {
                 draggables.Add(e);
             }

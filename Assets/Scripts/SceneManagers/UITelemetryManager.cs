@@ -10,11 +10,10 @@ public class UITelemetryManager : MonoBehaviour
 
 
     public int gameEntityCount = 0;
-    private Rect guiRect = new Rect(Screen.width - 810, 10, 800, 2000);
+    private Rect guiRect = new(Screen.width - 810, 10, 800, 2000);
 
     // refs
     private PlayerInputManager playerInputManager;
-    private GameEntityManager gameEntityManager;
 
 
     // UNITY HOOKS
@@ -24,7 +23,6 @@ public class UITelemetryManager : MonoBehaviour
     void Start()
     {
         this.playerInputManager = PlaySceneManager.instance.playerInputManager;
-        this.gameEntityManager = PlaySceneManager.instance.gameEntityManager;
     }
 
     void Update() { }
@@ -62,10 +60,12 @@ public class UITelemetryManager : MonoBehaviour
                 "Entities MultiPlacement Count: " + this.playerInputManager.GetMulitPlacementEntities().Count.ToString() +
                 "\n" +
                 "Drag Container Entities Count: " + dragContainterEntitiesCount.ToString();
-            var style = new GUIStyle();
-            style.alignment = TextAnchor.UpperRight;
-            style.normal.textColor = Color.green;
-            style.fontSize = GameSettings.GUI_FONT_SIZE;
+            GUIStyle style = new()
+            {
+                alignment = TextAnchor.UpperRight,
+                normal = { textColor = Color.green },
+                fontSize = GameSettings.GUI_FONT_SIZE
+            };
             GUI.Label(
                 this.guiRect,
                 displayText,

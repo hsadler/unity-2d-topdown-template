@@ -7,12 +7,12 @@ class HistoryStack<T>
     // Inspired by: https://stackoverflow.com/questions/384042/can-i-limit-the-depth-of-a-generic-stack
 
 
-    private T[] items;
+    private readonly T[] items;
     private int top;
     private int bottom;
     private int cursor;
 
-    private bool useLogging = false;
+    private readonly bool useLogging = false;
 
 
     public HistoryStack(int capacity)
@@ -29,7 +29,7 @@ class HistoryStack<T>
         {
             return this.items[this.cursor];
         }
-        return default(T);
+        return default;
     }
 
     public void Push(T item)
@@ -62,13 +62,13 @@ class HistoryStack<T>
         // OR
         // cursor is at the bottom if the stack, return default, cursor position 
         // remains unchanged
-        if (this.cursor == -1 || this.isBottom())
+        if (this.cursor == -1 || this.IsBottom())
         {
             if (this.useLogging)
             {
                 Debug.Log("Cannot get HistoryStack Previous item. Returning default.");
             }
-            return default(T);
+            return default;
         }
         // move cursor postion backward, return item, top of stack position 
         // remains unchanged
@@ -89,7 +89,7 @@ class HistoryStack<T>
             {
                 Debug.Log("Cannot get HistoryStack Next since Cursor is already at Top with shared value: " + this.cursor.ToString() + ". Returning default.");
             }
-            return default(T);
+            return default;
         }
         // otherwise move cursor forward one position and return item, top of 
         // stack position remains unchanged
@@ -101,7 +101,7 @@ class HistoryStack<T>
         return this.items[this.cursor];
     }
 
-    private bool isBottom()
+    private bool IsBottom()
     {
         return this.cursor == this.bottom;
     }

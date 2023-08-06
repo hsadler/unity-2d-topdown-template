@@ -9,10 +9,9 @@ public class Movable : MonoBehaviour
     public GameObject renderBody;
 
     private GameEntityManager gem;
-    private Coroutine movementCoroutine = null;
-    private List<Vector3> movementForces = new List<Vector3>();
+    private List<Vector3> movementForces = new();
 
-    private bool useLogging = false;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -63,7 +62,7 @@ public class Movable : MonoBehaviour
             this.gem.AddGameEntity(this.gameObject, this.transform.position);
             // animate the movement of the render body (it will lag behind SOT of the transform)
             this.renderBody.transform.position = oldPosition;
-            this.movementCoroutine = StartCoroutine(
+            StartCoroutine(
                 Functions.MoveOverTime(this.renderBody, newPosition, animationDuration)
             );
             if (this.useLogging)

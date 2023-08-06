@@ -8,7 +8,7 @@ public class Destroyer_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
 
     private GameEntityManager gem;
 
-    private bool useLogging = false;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS

@@ -7,12 +7,9 @@ public class Mover_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
 {
 
 
-    private GameEntityManager gem;
-    private GameEntity ge;
-
-    private bool useLogging = false;
-
     private System.Random random;
+
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -22,11 +19,7 @@ public class Mover_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         this.random = new System.Random();
     }
 
-    void Start()
-    {
-        this.gem = PlaySceneManager.instance.gameEntityManager;
-        this.ge = this.GetComponent<GameEntity>();
-    }
+    void Start() { }
 
     void Update() { }
 

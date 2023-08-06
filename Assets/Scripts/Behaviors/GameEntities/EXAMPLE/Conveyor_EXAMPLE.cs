@@ -9,8 +9,9 @@ public class Conveyor_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     public LineRenderer beamLineRenderer;
 
     private GameEntityManager gem;
-    private bool useLogging = false;
-    private int beamLength = 10;
+    private readonly int beamLength = 10;
+
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS

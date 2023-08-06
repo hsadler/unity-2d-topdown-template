@@ -8,10 +8,9 @@ public class Rotatable : MonoBehaviour
 
     public GameObject renderBody;
 
-    private Coroutine rotationCoroutine = null;
     private float rotationForce = 0.0f;
 
-    private bool useLogging = false;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -53,7 +52,7 @@ public class Rotatable : MonoBehaviour
         Quaternion endRotation = Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + this.rotationForce);
         this.transform.rotation = endRotation;
         this.renderBody.transform.rotation = startRotation;
-        this.rotationCoroutine = StartCoroutine(Functions.RotateOverTime(
+        StartCoroutine(Functions.RotateOverTime(
             this.renderBody,
             endRotation,
             animationDuration
