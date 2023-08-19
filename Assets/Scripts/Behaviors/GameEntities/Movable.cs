@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Movable : MonoBehaviour
@@ -10,6 +11,7 @@ public class Movable : MonoBehaviour
 
     private GameEntityManager gem;
     private List<Vector3> movementForces = new();
+    private Coroutine movementCoroutine = null;
 
     private readonly bool useLogging = false;
 
@@ -47,43 +49,43 @@ public class Movable : MonoBehaviour
             return;
         }
         // otherwise, add forces and commit movement to position if unoccupied
-        Vector3 newPosition = this.transform.position;
+        Vector3 endPos = this.transform.position;
         foreach (Vector3 movementForce in this.movementForces)
         {
-            newPosition += movementForce;
+            endPos += movementForce;
         }
-        newPosition = Functions.QuantizeVector(newPosition);
-        if (this.gem != null && this.gem.GetGameEntityAtPosition(newPosition) == null)
-        {
-            Vector3 oldPosition = this.transform.position;
-            // snap position to discrete grid and register on game-entity manager
-            this.transform.position = newPosition;
-            this.gem.RemoveGameEntity(this.gameObject);
-            this.gem.AddGameEntity(this.gameObject, this.transform.position);
-            // animate the movement of the render body (it will lag behind SOT of the transform)
-            this.renderBody.transform.position = oldPosition;
-            StartCoroutine(
-                Functions.MoveOverTime(this.renderBody, newPosition, animationDuration)
-            );
-            if (this.useLogging)
-            {
-                Debug.Log(
-                    "Moved game-entity: " + this.gameObject.GetInstanceID().ToString() +
-                    " to position: " + newPosition.ToString()
-                );
-            }
-        }
-        else
-        {
-            if (this.useLogging)
-            {
-                Debug.Log(
-                    "Could not move game-entity: " + this.gameObject.GetInstanceID().ToString() +
-                    " to position: " + newPosition.ToString() + " because it is occupied."
-                );
-            }
-        }
+        endPos = Functions.QuantizeVector(endPos);
+        this.AnimateMovement(this.transform.position, endPos, animationDuration);
         this.movementForces = new List<Vector3>();
+    }
+
+    public void AnimateMovement(Vector3 startPosition, Vector3 endPosition, float animationDuration)
+    {
+        if (this.useLogging)
+        {
+            Debug.Log("Animating to position from: " + startPosition.ToString() + " to: " + endPosition.ToString());
+        }
+        if (this.gem != null && this.gem.GetGameEntityAtPosition(endPosition) == null)
+        {
+            this.gem.RemoveGameEntity(this.gameObject);
+            this.gem.AddGameEntity(this.gameObject, endPosition);
+            if (this.movementCoroutine != null)
+            {
+                StopCoroutine(this.movementCoroutine);
+            }
+            // snap position to discrete grid and register on game-entity manager
+            this.transform.position = endPosition;
+            // animate the movement of the render body (it will lag behind SOT of the transform)
+            this.renderBody.transform.position = startPosition;
+            this.movementCoroutine = StartCoroutine(
+                    Functions.MoveOverTime(
+                        go: this.renderBody,
+                        startPos: renderBody.transform.position,
+                        endPos: endPosition,
+                        duration: animationDuration
+                    )
+            );
+        }
     }
 
     // IMPL METHODS

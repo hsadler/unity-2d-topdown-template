@@ -109,7 +109,7 @@ X better tick-playing indication
 X BUGFIX: placement while rotating causes non discrete placements
 X make data block on/off state dictated by rotation so that history steps work
     correctly with it
-- make history stepping animate
+X make history stepping animate
 - create a tick-resolution system where multiple passes are made on all entities
     until it is determined that no more moves can be made.
 - better inventory bar system:

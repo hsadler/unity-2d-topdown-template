@@ -191,10 +191,11 @@ public class GameEntityManager : MonoBehaviour
         {
             Debug.Log("doing undo/redo by applying state in direction: " + direction);
         }
-        List<GameEntityState> states = direction == "back" ? this.entityStateHistoryStack.Previous() : this.entityStateHistoryStack.Next();
-        if (states != null)
+        List<GameEntityState> entityStates = direction == "back" ? this.entityStateHistoryStack.Previous() : this.entityStateHistoryStack.Next();
+        if (entityStates != null)
         {
             var entities = new List<GameObject>(this.positionToGameEntity.Values);
+
             // 1. initialize all to non-active for clean slate
             foreach (GameObject e in entities)
             {
@@ -203,7 +204,7 @@ public class GameEntityManager : MonoBehaviour
 
             // 2. gather game entity game objects to be processed and remove from board tracking
             var uuidToGameEntity = new Dictionary<string, GameObject>();
-            foreach (GameEntityState s in states)
+            foreach (GameEntityState s in entityStates)
             {
                 GameObject gameEntity = this.GetEntityByInstanceUUID(s.uuid);
                 if (gameEntity != null)
@@ -213,13 +214,14 @@ public class GameEntityManager : MonoBehaviour
                 }
             }
 
-            // 3. set entities to previous states and add to board tracking
-            foreach (GameEntityState s in states)
+            // 3. set entities to history entity states and add to board tracking
+            foreach (GameEntityState s in entityStates)
             {
                 if (this.useLogging)
                 {
                     Debug.Log("Procesing game-entity-state with UUID: " + s.uuid);
                 }
+                // for existing game entities, restore state
                 if (uuidToGameEntity.ContainsKey(s.uuid))
                 {
                     GameObject gameEntity = uuidToGameEntity[s.uuid];
@@ -228,9 +230,25 @@ public class GameEntityManager : MonoBehaviour
                         Debug.Log("Restoring game entity: " + gameEntity.name + " from state with position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
                     }
                     gameEntity.SetActive(true);
-                    gameEntity.transform.SetPositionAndRotation(s.position, s.rotation);
+                    if (gameEntity.TryGetComponent<Movable>(out var movable))
+                    {
+                        movable.AnimateMovement(movable.transform.position, s.position, GameSettings.FAST_ANIMATION_DURATION);
+                    }
+                    else
+                    {
+                        gameEntity.transform.position = s.position;
+                    }
+                    if (gameEntity.TryGetComponent<Rotatable>(out var rotatable))
+                    {
+                        rotatable.AnimateRotation(rotatable.transform.rotation, s.rotation, GameSettings.FAST_ANIMATION_DURATION);
+                    }
+                    else
+                    {
+                        gameEntity.transform.rotation = s.rotation;
+                    }
                     this.AddGameEntity(gameEntity, gameEntity.transform.position);
                 }
+                // for game entities that don't exist, instantiate and restore state
                 else
                 {
                     GameObject prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(s.prefabName);

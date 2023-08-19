@@ -51,28 +51,24 @@ public class Functions
             return null;
         }
         Vector3 midpoint = VectorMidpointFromGameObjects(gameObjects);
-        return gameObjects.OrderBy(go => Vector3.Distance(go.transform.position, midpoint)).First<GameObject>();
+        return gameObjects.OrderBy(go => Vector3.Distance(go.transform.position, midpoint)).First();
     }
 
-    public static IEnumerator MoveOverTime(GameObject go, Vector3 end, float duration)
+    public static IEnumerator MoveOverTime(GameObject go, Vector3 startPos, Vector3 endPos, float duration)
     {
-        // from chatGPT
-        Vector3 start = go.transform.position;
         float timeElapsed = 0;
         while (timeElapsed < duration)
         {
             float t = timeElapsed / duration;
-            go.transform.position = Vector3.Lerp(start, end, t);
+            go.transform.position = Vector3.Lerp(startPos, endPos, t);
             yield return null;
             timeElapsed += Time.deltaTime;
         }
-        go.transform.position = end;
+        go.transform.position = endPos;
     }
 
-    public static IEnumerator RotateOverTime(GameObject go, Quaternion endRotation, float duration)
+    public static IEnumerator RotateOverTime(GameObject go, Quaternion startRotation, Quaternion endRotation, float duration)
     {
-        // from chatGPT
-        Quaternion startRotation = go.transform.rotation;
         float timeElapsed = 0;
         while (timeElapsed < duration)
         {

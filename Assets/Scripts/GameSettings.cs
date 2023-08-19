@@ -13,6 +13,7 @@ public class GameSettings
     // public const float DEFAULT_TICK_DURATION = 3f;
     public const float DEFAULT_TICK_DURATION = 0.4f;
     // public const float DEFAULT_TICK_DURATION = 0.1f;
+    public const float FAST_ANIMATION_DURATION = 0.05f;
 
 
     // camera settings

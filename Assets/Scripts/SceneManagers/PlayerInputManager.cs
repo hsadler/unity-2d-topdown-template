@@ -675,7 +675,7 @@ public class PlayerInputManager : MonoBehaviour
                     if (e.TryGetComponent<Rotatable>(out Rotatable rotatable))
                     {
                         rotatable.AddRotation(rot);
-                        rotatable.CommitRotations(animationDuration: 0.05f);
+                        rotatable.CommitRotations(animationDuration: GameSettings.FAST_ANIMATION_DURATION);
                     }
                 }
                 // push history step only if input mode is default and entities are not currently being dragged
@@ -693,9 +693,10 @@ public class PlayerInputManager : MonoBehaviour
         if (this.useLogging) { Debug.Log("Animating entity group rotation"); }
         this.entityGroupRotationTarget = Quaternion.Euler(0, 0, this.entityDragContainer.transform.rotation.eulerAngles.z + rotationAmount);
         yield return Functions.RotateOverTime(
-            this.entityDragContainer,
-            this.entityGroupRotationTarget,
-            0.05f
+            go: this.entityDragContainer,
+            startRotation: this.entityDragContainer.transform.rotation,
+            endRotation: this.entityGroupRotationTarget,
+            duration: GameSettings.FAST_ANIMATION_DURATION
         );
     }
 
