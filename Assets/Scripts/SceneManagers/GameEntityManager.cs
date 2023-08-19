@@ -20,8 +20,8 @@ public class GameEntityManager : MonoBehaviour
     private HistoryStack<List<GameEntityState>> entityStateHistoryStack;
 
     // debug
-    private bool useLogging = false;
-    private bool useDebugIndicators = false;
+    private readonly bool useLogging = false;
+    private readonly bool useDebugIndicators = false;
     public GameObject occupiedIndicatorPrefab;
     private IDictionary<string, GameObject> positionToOccupiedIndicator;
 
@@ -65,7 +65,6 @@ public class GameEntityManager : MonoBehaviour
     {
         position = Functions.QuantizeVector(position);
         string eUUID = gameEntity.GetComponent<GameEntity>().uuid;
-        Quaternion rotation = gameEntity.transform.rotation;
         // check for game entity already being in the place space
         if (this.gameEntityUUIDToSerializedPosition.ContainsKey(eUUID))
         {
@@ -229,8 +228,7 @@ public class GameEntityManager : MonoBehaviour
                         Debug.Log("Restoring game entity: " + gameEntity.name + " from state with position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
                     }
                     gameEntity.SetActive(true);
-                    gameEntity.transform.position = s.position;
-                    gameEntity.transform.rotation = s.rotation;
+                    gameEntity.transform.SetPositionAndRotation(s.position, s.rotation);
                     this.AddGameEntity(gameEntity, gameEntity.transform.position);
                 }
                 else
@@ -306,7 +304,7 @@ public class GameEntityManager : MonoBehaviour
                 }
                 return true;
             }
-            Dictionary<string, GameEntityState> uuidToGameEntityState = new Dictionary<string, GameEntityState>();
+            Dictionary<string, GameEntityState> uuidToGameEntityState = new();
             foreach (var s in historyStep1)
             {
                 uuidToGameEntityState.Add(s.uuid, s);
