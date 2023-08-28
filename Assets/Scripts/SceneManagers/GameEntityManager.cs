@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameEntityManager : MonoBehaviour
@@ -376,7 +377,7 @@ public class GameEntityManager : MonoBehaviour
                 autoBehavior.AutoBehavior();
             }
         }
-        // commit movements and rotations
+        // commit rotations
         float animationDuration = GameSettings.DEFAULT_TICK_DURATION / 2f;
         foreach (GameObject entity in new List<GameObject>(this.positionToGameEntity.Values))
         {
@@ -384,9 +385,48 @@ public class GameEntityManager : MonoBehaviour
             {
                 rotatable.CommitRotations(animationDuration);
             }
+        }
+        // commit movements
+        List<Movable> movables = new();
+        foreach (GameObject entity in new List<GameObject>(this.positionToGameEntity.Values))
+        {
             if (entity != null && entity.TryGetComponent(out Movable movable))
             {
-                movable.CommitMovement(animationDuration);
+                movables.Add(movable);
+            }
+        }
+        if (movables.Count > 0)
+        {
+            // do multiple resolution passes until no more can be done
+            int lastMovementCount = -1;
+            int resolutionPasses = 0;
+            while (lastMovementCount < 0 || (movables.Count > 0 && movables.Count != lastMovementCount))
+            {
+                resolutionPasses += 1;
+                List<Movable> recheckMovables = new();
+                foreach (Movable movable in movables)
+                {
+                    bool movementStatus = movable.CommitMovement(animationDuration);
+                    if (!movementStatus)
+                    {
+                        recheckMovables.Add(movable);
+                    }
+                }
+                lastMovementCount = movables.Count;
+                movables = recheckMovables;
+            }
+            bool logResolutionPasses = true;
+            if (logResolutionPasses)
+            {
+                Debug.Log("Auto-behavior resolution passes: " + resolutionPasses.ToString());
+            }
+        }
+        // reset all movables movement forces
+        foreach (GameObject entity in new List<GameObject>(this.positionToGameEntity.Values))
+        {
+            if (entity != null && entity.TryGetComponent(out Movable movable))
+            {
+                movable.ClearMovementForces();
             }
         }
         this.TryPushEntityStateHistoryStep();

@@ -41,12 +41,17 @@ public class Movable : MonoBehaviour
         this.movementForces.Add(direction * distance);
     }
 
-    public void CommitMovement(float animationDuration)
+    public void ClearMovementForces()
+    {
+        this.movementForces = new List<Vector3>();
+    }
+
+    public bool CommitMovement(float animationDuration)
     {
         // short-circuit if no movement forces
         if (this.movementForces.Count == 0)
         {
-            return;
+            return true;
         }
         // otherwise, add forces and commit movement to position if unoccupied
         Vector3 endPos = this.transform.position;
@@ -55,8 +60,12 @@ public class Movable : MonoBehaviour
             endPos += movementForce;
         }
         endPos = Functions.QuantizeVector(endPos);
-        this.AnimateMovement(this.transform.position, endPos, animationDuration);
-        this.movementForces = new List<Vector3>();
+        if (this.gem != null && this.gem.GetGameEntityAtPosition(endPos) == null)
+        {
+            this.AnimateMovement(this.transform.position, endPos, animationDuration);
+            return true;
+        }
+        return false;
     }
 
     public void AnimateMovement(Vector3 startPosition, Vector3 endPosition, float animationDuration)
@@ -65,27 +74,24 @@ public class Movable : MonoBehaviour
         {
             Debug.Log("Animating to position from: " + startPosition.ToString() + " to: " + endPosition.ToString());
         }
-        if (this.gem != null && this.gem.GetGameEntityAtPosition(endPosition) == null)
+        this.gem.RemoveGameEntity(this.gameObject);
+        this.gem.AddGameEntity(this.gameObject, endPosition);
+        if (this.movementCoroutine != null)
         {
-            this.gem.RemoveGameEntity(this.gameObject);
-            this.gem.AddGameEntity(this.gameObject, endPosition);
-            if (this.movementCoroutine != null)
-            {
-                StopCoroutine(this.movementCoroutine);
-            }
-            // snap position to discrete grid and register on game-entity manager
-            this.transform.position = endPosition;
-            // animate the movement of the render body (it will lag behind SOT of the transform)
-            this.renderBody.transform.position = startPosition;
-            this.movementCoroutine = StartCoroutine(
-                    Functions.MoveOverTime(
-                        go: this.renderBody,
-                        startPos: renderBody.transform.position,
-                        endPos: endPosition,
-                        duration: animationDuration
-                    )
-            );
+            StopCoroutine(this.movementCoroutine);
         }
+        // snap position to discrete grid and register on game-entity manager
+        this.transform.position = endPosition;
+        // animate the movement of the render body (it will lag behind SOT of the transform)
+        this.renderBody.transform.position = startPosition;
+        this.movementCoroutine = StartCoroutine(
+                Functions.MoveOverTime(
+                    go: this.renderBody,
+                    startPos: renderBody.transform.position,
+                    endPos: endPosition,
+                    duration: animationDuration
+                )
+        );
     }
 
     // IMPL METHODS
