@@ -415,7 +415,7 @@ public class GameEntityManager : MonoBehaviour
                 lastMovementCount = movables.Count;
                 movables = recheckMovables;
             }
-            bool logResolutionPasses = true;
+            bool logResolutionPasses = false;
             if (logResolutionPasses)
             {
                 Debug.Log("Auto-behavior resolution passes: " + resolutionPasses.ToString());

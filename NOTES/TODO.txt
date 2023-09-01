@@ -110,13 +110,13 @@ X BUGFIX: placement while rotating causes non discrete placements
 X make data block on/off state dictated by rotation so that history steps work
     correctly with it
 X make history stepping animate
-- create a tick-resolution system where multiple passes are made on all entities
+X create a tick-resolution system where multiple passes are made on all entities
     until it is determined that no more moves can be made.
+- save system
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
         add to the game.
     - Entity invetory bar icons should be generated at runtime if feasible
-- save system
 - another pass on telemetry
 - another pass on controls instructions
 

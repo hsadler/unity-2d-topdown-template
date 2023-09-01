@@ -11,8 +11,8 @@ public class GameSettings
     public const bool ENTITY_POSITIONS_DISCRETE = true;
     public const int ENTITY_STATE_MAX_HISTORY = 100;
     // public const float DEFAULT_TICK_DURATION = 3f;
-    public const float DEFAULT_TICK_DURATION = 0.4f;
-    // public const float DEFAULT_TICK_DURATION = 0.1f;
+    // public const float DEFAULT_TICK_DURATION = 0.4f;
+    public const float DEFAULT_TICK_DURATION = 0.1f;
     public const float FAST_ANIMATION_DURATION = 0.05f;
 
 
