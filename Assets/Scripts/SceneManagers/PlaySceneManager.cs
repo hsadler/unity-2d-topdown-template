@@ -59,7 +59,7 @@ public class PlaySceneManager : MonoBehaviour
 
     public void QuitGame()
     {
-        Application.Quit();
+        SceneManager.LoadScene("GameStartScene");
     }
 
     // IMPL METHODS
