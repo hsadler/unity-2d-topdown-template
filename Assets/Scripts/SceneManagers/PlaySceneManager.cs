@@ -52,14 +52,19 @@ public class PlaySceneManager : MonoBehaviour
 
     // INTF METHODS
 
-    public void RestartGame()
+    public void OnClickRestartGame()
     {
         SceneManager.LoadScene("PlayScene");
     }
 
-    public void QuitGame()
+    public void OnClickSaveGame()
     {
-        SceneManager.LoadScene("GameStartScene");
+        Debug.Log("OnClickSaveGame");
+    }
+
+    public void OnClickExitPlayScene()
+    {
+        SceneManager.LoadScene("GameStart");
     }
 
     // IMPL METHODS
