@@ -112,8 +112,27 @@ X make data block on/off state dictated by rotation so that history steps work
 X make history stepping animate
 X create a tick-resolution system where multiple passes are made on all entities
     until it is determined that no more moves can be made.
-- create game-start scene with save select buttons
-- save system
+X create game-start scene with load game button
+- save POC:
+    - PlayScene:
+        - save click should save value to default save file
+    - LoadGame:
+        - single button click should load from save file and log
+    - follow-ups:
+        - save player camera position and zoom states and log load
+        - save all block states and log load
+- save system requirements:
+    - GameStart:
+        - "new" should prompt player to name the new game via modal with text input
+    - PlayScene:
+        - display game save name
+        - Remove "restart"
+        - Add "load" which should nav to LoadGame
+        - "save" should save play state to associated save file
+    - LoadGame:
+        - all saved games should be diplayed as buttons
+        - click of button loads play state and navs to PlayScene
+        - saves should be deletable via "X" button next to saved game buttons
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
         add to the game.

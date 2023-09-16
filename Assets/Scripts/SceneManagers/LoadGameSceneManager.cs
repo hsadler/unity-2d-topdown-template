@@ -7,15 +7,9 @@ public class LoadGameSceneManager : MonoBehaviour
 {
 
 
-    void Start()
-    {
-        Debug.Log("LoadGameSceneManager Start");
-    }
+    void Start() { }
 
-    void Update()
-    {
-
-    }
+    void Update() { }
 
     // INTF METHODS
 
@@ -26,7 +20,6 @@ public class LoadGameSceneManager : MonoBehaviour
 
     public void OnClickExitLoadGameScene()
     {
-        Debug.Log("OnClickExitLoadGameScene");
         SceneManager.LoadScene("GameStart");
     }
 
