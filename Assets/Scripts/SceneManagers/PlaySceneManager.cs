@@ -10,6 +10,7 @@ public class PlaySceneManager : MonoBehaviour
 
 
     // MonoBehaviour manager components
+    public GameSaveLoadManager gameSaveLoadManager;
     public ProceduralEnvironmentManager proceduralEnvironmentManager;
     public GameEntityManager gameEntityManager;
     public PlayerInputManager playerInputManager;
@@ -46,6 +47,7 @@ public class PlaySceneManager : MonoBehaviour
     {
         this.proceduralEnvironmentManager.GenerateGrid();
         this.proceduralEnvironmentManager.SetGridColor(this.proceduralEnvironmentManager.defaultGridColor);
+        this.gameSaveLoadManager.CheckLoadGame();
     }
 
     void Update() { }
@@ -59,7 +61,11 @@ public class PlaySceneManager : MonoBehaviour
 
     public void OnClickSaveGame()
     {
-        Debug.Log("OnClickSaveGame");
+        if (this.useLogging)
+        {
+            Debug.Log("OnClickSaveGame");
+        }
+        this.gameSaveLoadManager.SaveGame();
     }
 
     public void OnClickExitPlayScene()

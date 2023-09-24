@@ -18,6 +18,12 @@ public class LoadGameSceneManager : MonoBehaviour
         Debug.Log("OnClickTest");
     }
 
+    public void OnClickLoadPlayScene()
+    {
+        LoadGameSignal.shouldLoadFromFile = true;
+        SceneManager.LoadScene("PlayScene");
+    }
+
     public void OnClickExitLoadGameScene()
     {
         SceneManager.LoadScene("GameStart");

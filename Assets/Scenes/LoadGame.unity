@@ -344,7 +344,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1742115931}
         m_TargetAssemblyTypeName: LoadGameSceneManager, Assembly-CSharp
-        m_MethodName: OnClickTest
+        m_MethodName: OnClickLoadPlayScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -989,7 +989,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1742115931}
         m_TargetAssemblyTypeName: LoadGameSceneManager, Assembly-CSharp
-        m_MethodName: OnClickTest
+        m_MethodName: OnClickLoadPlayScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1128,7 +1128,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1742115931}
         m_TargetAssemblyTypeName: LoadGameSceneManager, Assembly-CSharp
-        m_MethodName: OnClickTest
+        m_MethodName: OnClickLoadPlayScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
