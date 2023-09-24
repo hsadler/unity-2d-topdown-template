@@ -47,7 +47,9 @@ public class PlaySceneManager : MonoBehaviour
     {
         this.proceduralEnvironmentManager.GenerateGrid();
         this.proceduralEnvironmentManager.SetGridColor(this.proceduralEnvironmentManager.defaultGridColor);
-        this.gameSaveLoadManager.CheckLoadGame();
+        this.gameEntityManager.Initialize();
+        this.CheckLoadGame();
+        this.gameEntityManager.RegisterInitialGameEntities();
     }
 
     void Update() { }
@@ -74,6 +76,23 @@ public class PlaySceneManager : MonoBehaviour
     }
 
     // IMPL METHODS
+
+    public void CheckLoadGame()
+    {
+        if (LoadGameSignal.shouldLoadFromFile)
+        {
+            LoadGameSignal.shouldLoadFromFile = false;
+            var gameData = this.gameSaveLoadManager.LoadGame();
+            if (gameData != null)
+            {
+                foreach (var ge in this.gameEntityManager.FindAllGameEntitiesInScene())
+                {
+                    Destroy(ge.gameObject);
+                }
+                // TODO implement: create game entities from game data
+            }
+        }
+    }
 
 
 }

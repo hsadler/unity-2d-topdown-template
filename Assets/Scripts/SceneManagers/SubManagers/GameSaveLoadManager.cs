@@ -18,10 +18,7 @@ public class GameSaveLoadManager : MonoBehaviour
 
     void Awake()
     {
-        if (!Directory.Exists(Application.persistentDataPath + SAVE_DIR))
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + SAVE_DIR);
-        }
+        this.Initialize();
     }
 
     void Start() { }
@@ -29,29 +26,6 @@ public class GameSaveLoadManager : MonoBehaviour
     void Update() { }
 
     // INTF METHODS
-
-    public void CheckLoadGame()
-    {
-        if (LoadGameSignal.shouldLoadFromFile)
-        {
-            LoadGameSignal.shouldLoadFromFile = false;
-            // Load from file
-            if (this.useLogging)
-            {
-
-                Debug.Log("Loading from file");
-            }
-            this.LoadGame();
-        }
-        else
-        {
-            // Load from new game
-            if (this.useLogging)
-            {
-                Debug.Log("Loading new game");
-            }
-        }
-    }
 
     public void SaveGame()
     {
@@ -87,7 +61,7 @@ public class GameSaveLoadManager : MonoBehaviour
 
     // IMPLEMENTATION METHODS
 
-    private void Init()
+    private void Initialize()
     {
         if (!Directory.Exists(this.GetSaveDir()))
         {

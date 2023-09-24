@@ -29,7 +29,18 @@ public class GameEntityManager : MonoBehaviour
 
     // UNITY HOOKS
 
-    void Awake()
+    void Awake() { }
+
+    void Start()
+    {
+        PlaySceneManager.instance.tickManager.timeTickEvent.AddListener(this.ExecuteAutoBehaviorActions);
+    }
+
+    void Update() { }
+
+    // INTF METHODS
+
+    public void Initialize()
     {
         this.positionToGameEntity = new Dictionary<string, GameObject>();
         this.gameEntityUUIDToSerializedPosition = new Dictionary<string, string>();
@@ -37,15 +48,19 @@ public class GameEntityManager : MonoBehaviour
         this.entityStateHistoryStack = new HistoryStack<List<GameEntityState>>(capacity: GameSettings.ENTITY_STATE_MAX_HISTORY);
     }
 
-    void Start()
+    public GameObject[] FindAllGameEntitiesInScene()
     {
-        this.RegisterInitialGameEntities();
-        PlaySceneManager.instance.tickManager.timeTickEvent.AddListener(this.ExecuteAutoBehaviorActions);
+        return GameObject.FindGameObjectsWithTag("GameEntity");
     }
 
-    void Update() { }
-
-    // INTF METHODS
+    public void RegisterInitialGameEntities()
+    {
+        foreach (GameObject e in this.FindAllGameEntitiesInScene())
+        {
+            this.AddGameEntity(e, e.transform.position);
+        }
+        this.TryPushEntityStateHistoryStep();
+    }
 
     public bool PositionIsOccupied(Vector3 position)
     {
@@ -276,16 +291,6 @@ public class GameEntityManager : MonoBehaviour
     }
 
     // IMPL METHODS
-
-    private void RegisterInitialGameEntities()
-    {
-        var gameEntities = GameObject.FindGameObjectsWithTag("GameEntity");
-        foreach (GameObject e in gameEntities)
-        {
-            this.AddGameEntity(e, e.transform.position);
-        }
-        this.TryPushEntityStateHistoryStep();
-    }
 
     private string GetSerializedGameEntityPosition(GameObject gameEntity)
     {
