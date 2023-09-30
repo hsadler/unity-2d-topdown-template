@@ -49,7 +49,6 @@ public class PlaySceneManager : MonoBehaviour
         this.proceduralEnvironmentManager.SetGridColor(this.proceduralEnvironmentManager.defaultGridColor);
         this.gameEntityManager.Initialize();
         this.CheckLoadGame();
-        this.gameEntityManager.RegisterInitialGameEntities();
     }
 
     void Update() { }
@@ -67,7 +66,11 @@ public class PlaySceneManager : MonoBehaviour
         {
             Debug.Log("OnClickSaveGame");
         }
-        this.gameSaveLoadManager.SaveGame();
+        this.gameSaveLoadManager.SaveGame(
+            cameraPosition: PlaySceneManager.instance.playerInputManager.GetCameraPosition(),
+            cameraSize: PlaySceneManager.instance.playerInputManager.GetCameraZoom(),
+            gameEntityStates: this.gameEntityManager.GetAllGameEntityStates()
+        );
     }
 
     public void OnClickExitPlayScene()
@@ -87,11 +90,27 @@ public class PlaySceneManager : MonoBehaviour
             {
                 this.playerInputManager.SetCameraPosition(gameData.cameraPosition.ToVector3());
                 this.playerInputManager.SetCameraZoom(gameData.cameraSize);
-                // foreach (var ge in this.gameEntityManager.FindAllGameEntitiesInScene())
-                // {
-                //     Destroy(ge);
-                // }
-                // TODO implement: create game entities from game data
+                // clear all game entities from scene
+                foreach (var ge in this.gameEntityManager.FindAllGameEntitiesInScene())
+                {
+                    Destroy(ge);
+                }
+                // create game entities from game data
+                foreach (var gameEntityState in gameData.gameEntityStates)
+                {
+                    GameObject prefab = this.playerInventoryManager.GetInventoryPrefabByName(gameEntityState.prefabName);
+                    GameObject newEntity = Instantiate(
+                        prefab,
+                        Functions.QuantizeVector(gameEntityState.position.ToVector3()),
+                        Functions.QuantizeQuaternion(gameEntityState.rotation.ToQuaternion())
+                    );
+                    this.gameEntityManager.AddGameEntity(newEntity, newEntity.transform.position);
+                }
+            }
+            else
+            {
+                // register initial game entities
+                this.gameEntityManager.RegisterInitialGameEntities();
             }
         }
     }

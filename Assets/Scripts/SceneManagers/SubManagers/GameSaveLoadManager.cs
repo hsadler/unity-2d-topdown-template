@@ -11,7 +11,7 @@ public class GameSaveLoadManager : MonoBehaviour
     private const string SAVE_DIR = "/saves/";
     private const string SAVE_FILENAME = "test_save.dat";
 
-    private readonly bool useLogging = true;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS 
@@ -27,19 +27,22 @@ public class GameSaveLoadManager : MonoBehaviour
 
     // INTF METHODS
 
-    public void SaveGame()
+    public void SaveGame(Vector3 cameraPosition, float cameraSize, List<GameEntityState> gameEntityStates)
     {
         if (this.useLogging)
         {
             Debug.Log("Saving game to file: " + this.GetSavePath());
         }
-        // TODO: Replace this with actual game data
-        var cameraPosition = new SerializableVector3(PlaySceneManager.instance.playerInputManager.GetCameraPosition());
-        float cameraSize = PlaySceneManager.instance.playerInputManager.GetCameraZoom();
+        List<SerializableGameEntityState> serializableGameEntityStates = new();
+        foreach (var gameEntity in gameEntityStates)
+        {
+            serializableGameEntityStates.Add(gameEntity.ToSerializable());
+        }
         var gameData = new GameData(
             score: 100,
-            cameraPosition: cameraPosition,
-            cameraSize: cameraSize
+            cameraPosition: new SerializableVector3(cameraPosition),
+            cameraSize: cameraSize,
+            gameEntityStates: serializableGameEntityStates
         );
         using (FileStream stream = new(this.GetSavePath(), FileMode.OpenOrCreate))
         {

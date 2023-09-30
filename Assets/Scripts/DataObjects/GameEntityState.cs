@@ -4,8 +4,7 @@ public class GameEntityState
 {
 
 
-    // Responsible for holding a game entities state for the sake of keeping 
-    // state history.
+    // Internal representation of a game entity state.
 
 
     public string uuid;
@@ -21,6 +20,26 @@ public class GameEntityState
         this.position = position;
         this.rotation = rotation;
     }
+
+    // INTERFACE METHODS
+
+    public SerializableGameEntityState ToSerializable()
+    {
+        return new SerializableGameEntityState(this);
+    }
+
+    public static GameEntityState FromSerializable(SerializableGameEntityState state)
+    {
+        return new GameEntityState(
+            state.uuid,
+            state.prefabName,
+            state.position.ToVector3(),
+            state.rotation.ToQuaternion()
+        );
+    }
+
+
+    // IMPLEMENTATION METHODS
 
 
 }

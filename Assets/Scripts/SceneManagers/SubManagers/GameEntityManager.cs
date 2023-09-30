@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class GameEntityManager : MonoBehaviour
@@ -75,6 +74,23 @@ public class GameEntityManager : MonoBehaviour
             return this.positionToGameEntity[sPos];
         }
         return null;
+    }
+
+    public List<GameEntityState> GetAllGameEntityStates()
+    {
+        List<GameEntityState> entityStates = new();
+        foreach (GameObject entity in this.positionToGameEntity.Values)
+        {
+            var geScript = entity.GetComponent<GameEntity>();
+            var entityState = new GameEntityState(
+                uuid: geScript.uuid,
+                prefabName: geScript.prefabName,
+                position: entity.transform.position,
+                rotation: entity.transform.rotation
+            );
+            entityStates.Add(entityState);
+        }
+        return entityStates;
     }
 
     public bool AddGameEntity(GameObject gameEntity, Vector3 position)
@@ -230,7 +246,7 @@ public class GameEntityManager : MonoBehaviour
                 }
             }
 
-            // 3. set entities to history entity states and add to board tracking
+            // 3. set entity states to history states and add to board tracking
             foreach (GameEntityState s in entityStates)
             {
                 if (this.useLogging)
