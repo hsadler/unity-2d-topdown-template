@@ -295,6 +295,30 @@ public class PlayerInputManager : MonoBehaviour
         this.isEntityDragging = false;
     }
 
+    // Camera position and zoom
+
+    public void SetCameraPosition(Vector3 position)
+    {
+        Camera.main.transform.position = position;
+        this.targetCameraPositionWorld = position;
+    }
+
+    public Vector3 GetCameraPosition()
+    {
+        return Camera.main.transform.position;
+    }
+
+    public void SetCameraZoom(float zoom)
+    {
+        Camera.main.orthographicSize = zoom;
+        this.targetCameraSize = zoom;
+    }
+
+    public float GetCameraZoom()
+    {
+        return Camera.main.orthographicSize;
+    }
+
     // IMPL METHODS
 
     private void CheckEscPress()

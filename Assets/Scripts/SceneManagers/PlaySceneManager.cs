@@ -85,10 +85,12 @@ public class PlaySceneManager : MonoBehaviour
             var gameData = this.gameSaveLoadManager.LoadGame();
             if (gameData != null)
             {
-                foreach (var ge in this.gameEntityManager.FindAllGameEntitiesInScene())
-                {
-                    Destroy(ge.gameObject);
-                }
+                this.playerInputManager.SetCameraPosition(gameData.cameraPosition.ToVector3());
+                this.playerInputManager.SetCameraZoom(gameData.cameraSize);
+                // foreach (var ge in this.gameEntityManager.FindAllGameEntitiesInScene())
+                // {
+                //     Destroy(ge);
+                // }
                 // TODO implement: create game entities from game data
             }
         }

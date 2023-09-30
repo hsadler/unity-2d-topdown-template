@@ -11,7 +11,7 @@ public class GameSaveLoadManager : MonoBehaviour
     private const string SAVE_DIR = "/saves/";
     private const string SAVE_FILENAME = "test_save.dat";
 
-    private readonly bool useLogging = false;
+    private readonly bool useLogging = true;
 
 
     // UNITY HOOKS 
@@ -33,7 +33,14 @@ public class GameSaveLoadManager : MonoBehaviour
         {
             Debug.Log("Saving game to file: " + this.GetSavePath());
         }
-        var gameData = new GameData(score: 100);
+        // TODO: Replace this with actual game data
+        var cameraPosition = new SerializableVector3(PlaySceneManager.instance.playerInputManager.GetCameraPosition());
+        float cameraSize = PlaySceneManager.instance.playerInputManager.GetCameraZoom();
+        var gameData = new GameData(
+            score: 100,
+            cameraPosition: cameraPosition,
+            cameraSize: cameraSize
+        );
         using (FileStream stream = new(this.GetSavePath(), FileMode.OpenOrCreate))
         {
             BinaryFormatter formatter = new();
@@ -53,7 +60,7 @@ public class GameSaveLoadManager : MonoBehaviour
             var gameData = formatter.Deserialize(stream) as GameData;
             if (this.useLogging)
             {
-                Debug.Log("Loaded score from saved game data: " + gameData.score.ToString());
+                Debug.Log("Loaded from saved game data: " + gameData.GetStringFormattedData());
             }
             return gameData;
         }
