@@ -11,7 +11,7 @@ public class GameSaveLoadManager : MonoBehaviour
     private const string SAVE_DIR = "/saves/";
     private const string SAVE_FILENAME = "test_save.dat";
 
-    private readonly bool useLogging = false;
+    private readonly bool useLogging = true;
 
 
     // UNITY HOOKS 
@@ -39,7 +39,6 @@ public class GameSaveLoadManager : MonoBehaviour
             serializableGameEntityStates.Add(gameEntity.ToSerializable());
         }
         var gameData = new GameData(
-            score: 100,
             cameraPosition: new SerializableVector3(cameraPosition),
             cameraSize: cameraSize,
             gameEntityStates: serializableGameEntityStates
@@ -53,6 +52,10 @@ public class GameSaveLoadManager : MonoBehaviour
 
     public GameData LoadGame()
     {
+        if (!this.SaveFileExists(SAVE_FILENAME))
+        {
+            return null;
+        }
         if (this.useLogging)
         {
             Debug.Log("Loading game from file: " + this.GetSavePath());
@@ -66,6 +69,18 @@ public class GameSaveLoadManager : MonoBehaviour
                 Debug.Log("Loaded from saved game data: " + gameData.GetStringFormattedData());
             }
             return gameData;
+        }
+    }
+
+    public void DeleteAllSaves()
+    {
+        if (this.useLogging)
+        {
+            Debug.Log("Deleting save files from directory: " + this.GetSaveDir());
+        }
+        if (Directory.Exists(this.GetSaveDir()))
+        {
+            Directory.Delete(this.GetSaveDir(), true);
         }
     }
 
@@ -87,6 +102,22 @@ public class GameSaveLoadManager : MonoBehaviour
     private string GetSavePath()
     {
         return Application.persistentDataPath + SAVE_DIR + SAVE_FILENAME;
+    }
+
+    private bool SaveFileExists(string saveFilename)
+    {
+        string saveDir = this.GetSaveDir();
+        if (!Directory.Exists(Path.GetDirectoryName(saveDir)))
+        {
+            Debug.LogWarning("Save directory does not exist.");
+            return false;
+        }
+        if (!File.Exists(saveDir + saveFilename))
+        {
+            Debug.LogWarning("Save file does not exist.");
+            return false;
+        }
+        return true;
     }
 
 

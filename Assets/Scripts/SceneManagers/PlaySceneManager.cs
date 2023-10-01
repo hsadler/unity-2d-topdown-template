@@ -67,8 +67,8 @@ public class PlaySceneManager : MonoBehaviour
             Debug.Log("OnClickSaveGame");
         }
         this.gameSaveLoadManager.SaveGame(
-            cameraPosition: PlaySceneManager.instance.playerInputManager.GetCameraPosition(),
-            cameraSize: PlaySceneManager.instance.playerInputManager.GetCameraZoom(),
+            cameraPosition: this.playerInputManager.GetCameraPosition(),
+            cameraSize: this.playerInputManager.GetCameraZoom(),
             gameEntityStates: this.gameEntityManager.GetAllGameEntityStates()
         );
     }

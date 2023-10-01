@@ -118,9 +118,10 @@ X create game-start scene with load game button
         X save click should save value to default save file
     X LoadGame:
         X single button click should load from save file and log
-    - follow-ups:
+    X follow-ups:
         X save player camera position and zoom states and log load
-        - save all block states and log load
+        X save all block states and log load
+        X debug button to delete all saves
 - save system requirements:
     - GameStart:
         - "new" should prompt player to name the new game via modal with text input

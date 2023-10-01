@@ -7,6 +7,11 @@ public class GameStartSceneManager : MonoBehaviour
 {
 
 
+    public GameSaveLoadManager gameSaveLoadManager;
+
+
+    // UNITY HOOKS
+
     void Start() { }
 
     void Update() { }
@@ -21,6 +26,11 @@ public class GameStartSceneManager : MonoBehaviour
     public void OnClickLoadGame()
     {
         SceneManager.LoadScene("LoadGame");
+    }
+
+    public void OnClickDeleteSaves()
+    {
+        this.gameSaveLoadManager.DeleteAllSaves();
     }
 
     public void OnClickQuitGame()
