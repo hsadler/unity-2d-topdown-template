@@ -9,9 +9,8 @@ public class GameSaveLoadManager : MonoBehaviour
 
 
     private const string SAVE_DIR = "/saves/";
-    private const string SAVE_FILENAME = "test_save.dat";
 
-    private readonly bool useLogging = true;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS 
@@ -27,11 +26,11 @@ public class GameSaveLoadManager : MonoBehaviour
 
     // INTF METHODS
 
-    public void SaveGame(Vector3 cameraPosition, float cameraSize, List<GameEntityState> gameEntityStates)
+    public void SaveGame(string saveName, Vector3 cameraPosition, float cameraSize, List<GameEntityState> gameEntityStates)
     {
         if (this.useLogging)
         {
-            Debug.Log("Saving game to file: " + this.GetSavePath());
+            Debug.Log("Saving game to file: " + this.GetSavePath(saveName));
         }
         List<SerializableGameEntityState> serializableGameEntityStates = new();
         foreach (var gameEntity in gameEntityStates)
@@ -43,24 +42,24 @@ public class GameSaveLoadManager : MonoBehaviour
             cameraSize: cameraSize,
             gameEntityStates: serializableGameEntityStates
         );
-        using (FileStream stream = new(this.GetSavePath(), FileMode.OpenOrCreate))
+        using (FileStream stream = new(this.GetSavePath(saveName), FileMode.OpenOrCreate))
         {
             BinaryFormatter formatter = new();
             formatter.Serialize(stream, gameData);
         }
     }
 
-    public GameData LoadGame()
+    public GameData LoadGame(string saveName)
     {
-        if (!this.SaveFileExists(SAVE_FILENAME))
+        if (!this.SaveFileExists(saveName + ".dat"))
         {
             return null;
         }
         if (this.useLogging)
         {
-            Debug.Log("Loading game from file: " + this.GetSavePath());
+            Debug.Log("Loading game from file: " + this.GetSavePath(saveName));
         }
-        using (FileStream stream = new(this.GetSavePath(), FileMode.Open))
+        using (FileStream stream = new(this.GetSavePath(saveName), FileMode.Open))
         {
             BinaryFormatter formatter = new();
             var gameData = formatter.Deserialize(stream) as GameData;
@@ -84,6 +83,19 @@ public class GameSaveLoadManager : MonoBehaviour
         }
     }
 
+    public List<string> GetAllSaveNames()
+    {
+        List<string> saveNames = new();
+        if (Directory.Exists(this.GetSaveDir()))
+        {
+            foreach (var saveFilename in Directory.GetFiles(this.GetSaveDir()))
+            {
+                saveNames.Add(Path.GetFileNameWithoutExtension(saveFilename));
+            }
+        }
+        return saveNames;
+    }
+
     // IMPLEMENTATION METHODS
 
     private void Initialize()
@@ -99,9 +111,9 @@ public class GameSaveLoadManager : MonoBehaviour
         return Application.persistentDataPath + SAVE_DIR;
     }
 
-    private string GetSavePath()
+    private string GetSavePath(string saveName)
     {
-        return Application.persistentDataPath + SAVE_DIR + SAVE_FILENAME;
+        return Application.persistentDataPath + SAVE_DIR + saveName + ".dat";
     }
 
     private bool SaveFileExists(string saveFilename)

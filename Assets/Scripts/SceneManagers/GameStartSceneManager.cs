@@ -13,15 +13,23 @@ public class GameStartSceneManager : MonoBehaviour
     public GameObject newGameModal;
     public TMP_InputField newGameNameInputField;
 
+    private readonly bool useLogging = false;
+
 
     // UNITY HOOKS
 
     void Start()
     {
         this.newGameModal.SetActive(false);
-        this.newGameNameInputField.onSubmit.AddListener((string s) =>
+        this.newGameNameInputField.onSubmit.AddListener((string newGameName) =>
         {
-            Debug.Log("New game name: " + s);
+            if (this.useLogging)
+            {
+                Debug.Log("Starting new game name: " + newGameName);
+            }
+            SaveGameSignal.shouldLoadFromFile = false;
+            SaveGameSignal.fileName = newGameName;
+            SceneManager.LoadScene("PlayScene");
         });
     }
 
@@ -35,7 +43,6 @@ public class GameStartSceneManager : MonoBehaviour
 
     public void OnClickNewGame()
     {
-        // SceneManager.LoadScene("PlayScene");
         this.newGameModal.SetActive(true);
     }
 

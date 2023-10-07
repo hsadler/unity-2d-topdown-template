@@ -7,7 +7,21 @@ public class LoadGameSceneManager : MonoBehaviour
 {
 
 
-    void Start() { }
+    // MonoBehaviour manager components
+    public GameSaveLoadManager gameSaveLoadManager;
+
+    public GameObject buttonGrid;
+    public GameObject buttonPrefab;
+
+    private readonly bool useLogging = false;
+
+
+    // UNITY HOOKS
+
+    void Start()
+    {
+        this.DisplaySavedGames();
+    }
 
     void Update() { }
 
@@ -20,7 +34,7 @@ public class LoadGameSceneManager : MonoBehaviour
 
     public void OnClickLoadPlayScene()
     {
-        LoadGameSignal.shouldLoadFromFile = true;
+        SaveGameSignal.shouldLoadFromFile = true;
         SceneManager.LoadScene("PlayScene");
     }
 
@@ -30,6 +44,26 @@ public class LoadGameSceneManager : MonoBehaviour
     }
 
     // IMPLEMENTATION METHODS
+
+    private void DisplaySavedGames()
+    {
+        List<string> saveNames = this.gameSaveLoadManager.GetAllSaveNames();
+        if (this.useLogging)
+        {
+            Debug.Log("Loaded save names: " + string.Join(", ", saveNames));
+        }
+        foreach (var saveName in saveNames)
+        {
+            var button = Instantiate(this.buttonPrefab, this.buttonGrid.transform);
+            button.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = saveName;
+            button.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+            {
+                SaveGameSignal.shouldLoadFromFile = true;
+                SaveGameSignal.fileName = saveName;
+                SceneManager.LoadScene("PlayScene");
+            });
+        }
+    }
 
 
 }

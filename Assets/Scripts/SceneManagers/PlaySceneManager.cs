@@ -48,7 +48,14 @@ public class PlaySceneManager : MonoBehaviour
         this.proceduralEnvironmentManager.GenerateGrid();
         this.proceduralEnvironmentManager.SetGridColor(this.proceduralEnvironmentManager.defaultGridColor);
         this.gameEntityManager.Initialize();
-        this.CheckLoadGame();
+        bool loadGameStatus = this.CheckLoadGame();
+        if (!loadGameStatus)
+        {
+            this.gameEntityManager.RegisterInitialGameEntities();
+            // register initial game entities
+            this.gameEntityManager.RegisterInitialGameEntities();
+            this.SaveGame();
+        }
     }
 
     void Update() { }
@@ -67,6 +74,7 @@ public class PlaySceneManager : MonoBehaviour
             Debug.Log("OnClickSaveGame");
         }
         this.gameSaveLoadManager.SaveGame(
+            SaveGameSignal.fileName,
             cameraPosition: this.playerInputManager.GetCameraPosition(),
             cameraSize: this.playerInputManager.GetCameraZoom(),
             gameEntityStates: this.gameEntityManager.GetAllGameEntityStates()
@@ -80,12 +88,12 @@ public class PlaySceneManager : MonoBehaviour
 
     // IMPL METHODS
 
-    public void CheckLoadGame()
+    private bool CheckLoadGame()
     {
-        if (LoadGameSignal.shouldLoadFromFile)
+        if (SaveGameSignal.shouldLoadFromFile)
         {
-            LoadGameSignal.shouldLoadFromFile = false;
-            var gameData = this.gameSaveLoadManager.LoadGame();
+            SaveGameSignal.shouldLoadFromFile = false;
+            var gameData = this.gameSaveLoadManager.LoadGame(SaveGameSignal.fileName);
             if (gameData != null)
             {
                 this.playerInputManager.SetCameraPosition(gameData.cameraPosition.ToVector3());
@@ -106,13 +114,20 @@ public class PlaySceneManager : MonoBehaviour
                     );
                     this.gameEntityManager.AddGameEntity(newEntity, newEntity.transform.position);
                 }
-            }
-            else
-            {
-                // register initial game entities
-                this.gameEntityManager.RegisterInitialGameEntities();
+                return true;
             }
         }
+        return false;
+    }
+
+    private void SaveGame()
+    {
+        this.gameSaveLoadManager.SaveGame(
+            SaveGameSignal.fileName,
+            cameraPosition: this.playerInputManager.GetCameraPosition(),
+            cameraSize: this.playerInputManager.GetCameraZoom(),
+            gameEntityStates: this.gameEntityManager.GetAllGameEntityStates()
+        );
     }
 
 
