@@ -71,6 +71,18 @@ public class GameSaveLoadManager : MonoBehaviour
         }
     }
 
+    public void DeleteSave(string saveName)
+    {
+        if (this.useLogging)
+        {
+            Debug.Log("Deleting save file: " + this.GetSavePath(saveName));
+        }
+        if (File.Exists(this.GetSavePath(saveName)))
+        {
+            File.Delete(this.GetSavePath(saveName));
+        }
+    }
+
     public void DeleteAllSaves()
     {
         if (this.useLogging)

@@ -122,7 +122,7 @@ X save POC:
         X save player camera position and zoom states and log load
         X save all block states and log load
         X debug button to delete all saves
-- save system requirements:
+X save system requirements:
     X GameStart:
         X "new" should prompt player to name the new game via modal with text input
     X PlayScene:
@@ -130,11 +130,10 @@ X save POC:
         X Remove "restart"
         X Add "load" which should nav to LoadGame
         X "save" should save play state to associated save file
-    - LoadGame:
+    X LoadGame:
         X all saved games should be diplayed as buttons
         X click of button loads play state and navs to PlayScene
-        - saves should be deletable via "X" button next to saved game buttons
-- ensure works well for multiple screen sizes
+        X saves should be deletable via "X" button next to saved game buttons
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
         add to the game.

@@ -593,7 +593,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameSaveLoadManager: {fileID: 969140758}
   buttonGrid: {fileID: 3059723384837296742}
-  buttonPrefab: {fileID: 1589564178479454736, guid: 30e542bd3a304354eb3db3842d47f656, type: 3}
+  loadGameButtonPrefab: {fileID: 6083532675269801625, guid: 8f3021ab6f524cb488629a33b64d6090, type: 3}
 --- !u!224 &1912927845 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5488027087769068898, guid: a556356f760e3ed42a03b4e06e339f3e, type: 3}
@@ -845,6 +845,10 @@ PrefabInstance:
     - target: {fileID: 3059723385126624245, guid: 9c983215f0518ab49a2bb05ea7bd2443, type: 3}
       propertyPath: m_Name
       value: ItemGrid
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059723385126624247, guid: 9c983215f0518ab49a2bb05ea7bd2443, type: 3}
+      propertyPath: m_CellSize.x
+      value: 200
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c983215f0518ab49a2bb05ea7bd2443, type: 3}
