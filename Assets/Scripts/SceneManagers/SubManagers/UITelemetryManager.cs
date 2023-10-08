@@ -47,6 +47,8 @@ public class UITelemetryManager : MonoBehaviour
                 }
             }
             string displayText =
+                "Game Name: " + SaveGameSignal.fileName +
+                "\n" +
                 "FPS: " + fps.ToString() +
                 "\n" +
                 "Input Mode: " + this.playerInputManager.inputMode.ToString() +
@@ -59,7 +61,11 @@ public class UITelemetryManager : MonoBehaviour
                 "\n" +
                 "Entities MultiPlacement Count: " + this.playerInputManager.GetMulitPlacementEntities().Count.ToString() +
                 "\n" +
-                "Drag Container Entities Count: " + dragContainterEntitiesCount.ToString();
+                "Drag Container Entities Count: " + dragContainterEntitiesCount.ToString() +
+                "\n" +
+                "Camera Position: " + this.playerInputManager.GetCameraPosition() +
+                "\n" +
+                "Camera Zoom: " + this.playerInputManager.GetCameraZoom().ToString();
             GUIStyle style = new()
             {
                 alignment = TextAnchor.UpperRight,

@@ -62,11 +62,6 @@ public class PlaySceneManager : MonoBehaviour
 
     // INTF METHODS
 
-    public void OnClickRestartGame()
-    {
-        SceneManager.LoadScene("PlayScene");
-    }
-
     public void OnClickSaveGame()
     {
         if (this.useLogging)
@@ -79,6 +74,11 @@ public class PlaySceneManager : MonoBehaviour
             cameraSize: this.playerInputManager.GetCameraZoom(),
             gameEntityStates: this.gameEntityManager.GetAllGameEntityStates()
         );
+    }
+
+    public void OnClickLoadGame()
+    {
+        SceneManager.LoadScene("LoadGame");
     }
 
     public void OnClickExitPlayScene()
