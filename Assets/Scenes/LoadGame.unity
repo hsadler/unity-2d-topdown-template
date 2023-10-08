@@ -181,7 +181,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Exit
+  m_text: 'back
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -374,7 +376,7 @@ GameObject:
   - component: {fileID: 567366547}
   - component: {fileID: 567366546}
   m_Layer: 5
-  m_Name: ExitButton
+  m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -858,6 +860,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 412851908}
     m_Modifications:
+    - target: {fileID: 5488027087769068897, guid: a556356f760e3ed42a03b4e06e339f3e, type: 3}
+      propertyPath: m_text
+      value: 'Load Game
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 5488027087769068898, guid: a556356f760e3ed42a03b4e06e339f3e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

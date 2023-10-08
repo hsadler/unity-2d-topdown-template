@@ -134,6 +134,7 @@ X save POC:
         X all saved games should be diplayed as buttons
         X click of button loads play state and navs to PlayScene
         - saves should be deletable via "X" button next to saved game buttons
+- ensure works well for multiple screen sizes
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
         add to the game.
