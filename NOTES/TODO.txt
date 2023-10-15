@@ -134,12 +134,12 @@ X save system requirements:
         X all saved games should be diplayed as buttons
         X click of button loads play state and navs to PlayScene
         X saves should be deletable via "X" button next to saved game buttons
+- another pass on telemetry
+- another pass on controls instructions
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
         add to the game.
-    - Entity invetory bar icons should be generated at runtime if feasible
-- another pass on telemetry
-- another pass on controls instructions
+    - Entity inventory bar icons should be generated at runtime if feasible
 
 
 BUGS:
