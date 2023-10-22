@@ -136,6 +136,8 @@ X save system requirements:
         X saves should be deletable via "X" button next to saved game buttons
 - refinements:
     X allow camera center to reach edge of gameplay bounds
+    - don't let entities leave or be created outside of the gameplay bounds
+    - optimizations to reduce jitter at tick evaluations
     - another pass on telemetry
     - another pass on controls instructions
 - better inventory bar system:

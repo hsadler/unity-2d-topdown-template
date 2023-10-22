@@ -22,6 +22,7 @@ public class PlayerInputManager : MonoBehaviour
     // camera
     private float targetCameraSize;
     private Vector3 targetCameraPositionWorld;
+    // private Vector3 cameraVelocity = Vector3.zero;
 
     // mouse interaction
     private Vector3 currentMousePositionWorld;
@@ -368,6 +369,10 @@ public class PlayerInputManager : MonoBehaviour
             float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED;
             float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED;
             Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
+            // NOTE: TRIED CAMERA PAN SMOOTHING BUT DIDN'T HELP WITH JITTERING AT TICK EVALUATION
+            // float smoothFactor = 0.1f;
+            // Vector3 targetPosition = Camera.main.transform.position + new Vector3(-horiz, -vert, 0);
+            // Camera.main.transform.position = Vector3.SmoothDamp(Camera.main.transform.position, targetPosition, ref cameraVelocity, smoothFactor);
         }
         // detect mouse at edge of viewport
         else
