@@ -134,8 +134,10 @@ X save system requirements:
         X all saved games should be diplayed as buttons
         X click of button loads play state and navs to PlayScene
         X saves should be deletable via "X" button next to saved game buttons
-- another pass on telemetry
-- another pass on controls instructions
+- refinements:
+    X allow camera center to reach edge of gameplay bounds
+    - another pass on telemetry
+    - another pass on controls instructions
 - better inventory bar system:
     - Additional player-interactable game-entities should be simple and easy to
         add to the game.
@@ -143,6 +145,7 @@ X save system requirements:
 
 
 BUGS:
+    - extreme zoom out causes visual duplication bug
     - entering new game causes dupe registration of game entities (throws warnings)
     - (Potential) problems with action play and history controls, states are not
         correct

@@ -402,10 +402,17 @@ public class PlayerInputManager : MonoBehaviour
     private void ClampCameraToPlayzone()
     {
         // set camera bounds
-        float camOffsetX = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).x - Camera.main.transform.position.x;
-        float camOffsetY = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).y - Camera.main.transform.position.y;
-        float xBound = (GameSettings.GRID_SIZE / 2) + camOffsetX;
-        float yBound = (GameSettings.GRID_SIZE / 2) + camOffsetY;
+
+        // if you only want the camera to see the play area
+        // float camOffsetX = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).x - Camera.main.transform.position.x;
+        // float camOffsetY = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).y - Camera.main.transform.position.y;
+        // float xBound = (GameSettings.GRID_SIZE / 2) + camOffsetX;
+        // float yBound = (GameSettings.GRID_SIZE / 2) + camOffsetY;
+
+        // camera center cannot go beyond the play area
+        float xBound = GameSettings.GRID_SIZE / 2;
+        float yBound = GameSettings.GRID_SIZE / 2;
+
         // clamp cam position
         var camPos = Camera.main.transform.position;
         Camera.main.transform.position = new Vector3(

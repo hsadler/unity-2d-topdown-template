@@ -7,7 +7,7 @@ public class GameSettings
 
 
     // general settings
-    public const int GRID_SIZE = 200;
+    public const int GRID_SIZE = 400;
     public const bool ENTITY_POSITIONS_DISCRETE = true;
     public const int ENTITY_STATE_MAX_HISTORY = 100;
     public const float DEFAULT_TICK_DURATION = 0.4f;
@@ -15,8 +15,8 @@ public class GameSettings
 
 
     // camera settings
-    public const float CAMERA_SIZE_MIN = 4f;
-    public const float CAMERA_SIZE_MAX = 40f;
+    public const float CAMERA_SIZE_MIN = 2f;
+    public const float CAMERA_SIZE_MAX = 100f;
     public const float CAMERA_ZOOM_AMOUNT = 10f;
     public const float CAMERA_ZOOM_SPEED = 8f;
     public const float CAMERA_MOVE_SPEED = 4f;
