@@ -25,7 +25,7 @@ public class ProceduralEnvironmentManager : MonoBehaviour
 
     void Update() { }
 
-    // INTF METHODS
+    // INTERFACE METHODS
 
     public void GenerateGrid()
     {
@@ -54,6 +54,14 @@ public class ProceduralEnvironmentManager : MonoBehaviour
         }
     }
 
+    public bool IsPositionValid(Vector3 position)
+    {
+        int playAreaLowerBound = -(GameSettings.GRID_SIZE / 2);
+        int playAreaUpperBound = GameSettings.GRID_SIZE / 2;
+        return position.x >= playAreaLowerBound && position.x <= playAreaUpperBound
+            && position.y >= playAreaLowerBound && position.y <= playAreaUpperBound;
+    }
+
     // IMPL METHODS
 
     private void CreateYGridLine(float lowerBound, float upperBound, float xAxisPos)
@@ -66,6 +74,7 @@ public class ProceduralEnvironmentManager : MonoBehaviour
         yPoints[1] = new Vector3(xAxisPos, upperBound, 0);
         yLr.SetPositions(yPoints);
     }
+
     private void CreateXGridLine(float lowerBound, float upperBound, float yAxisPos)
     {
         GameObject xGridLine = Instantiate(this.gridLinePrefab, Vector3.zero, Quaternion.identity);

@@ -66,6 +66,12 @@ public class GameEntityManager : MonoBehaviour
         return this.positionToGameEntity.ContainsKey(position.ToString());
     }
 
+    public bool PositionIsFree(Vector3 position)
+    {
+        return PlaySceneManager.instance.proceduralEnvironmentManager.IsPositionValid(position)
+            && !this.positionToGameEntity.ContainsKey(position.ToString());
+    }
+
     public GameObject GetGameEntityAtPosition(Vector3 position)
     {
         string sPos = position.ToString();
@@ -108,7 +114,7 @@ public class GameEntityManager : MonoBehaviour
             return false;
         }
         // check if requested position is occupied
-        if (!this.PositionIsOccupied(position))
+        if (this.PositionIsFree(position))
         {
             if (this.useLogging)
             {

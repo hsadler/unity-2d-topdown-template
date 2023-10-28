@@ -65,7 +65,9 @@ public class UITelemetryManager : MonoBehaviour
                 "\n" +
                 "Camera Position: " + this.playerInputManager.GetCameraPosition() +
                 "\n" +
-                "Camera Zoom: " + this.playerInputManager.GetCameraZoom().ToString();
+                "Camera Zoom: " + this.playerInputManager.GetCameraZoom().ToString() +
+                "\n" +
+                "Mouse Position: " + Functions.QuantizeVector(Camera.main.ScreenToWorldPoint(Input.mousePosition)).ToString();
             GUIStyle style = new()
             {
                 alignment = TextAnchor.UpperRight,
