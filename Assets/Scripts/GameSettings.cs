@@ -26,6 +26,7 @@ public class GameSettings
     public const string INPUT_MODE_DEFAULT = "INPUT_MODE_DEFAULT";
     public const string INPUT_MODE_MULTIPLACEMENT = "INPUT_MODE_MULTIPLACEMENT";
     public const string INPUT_MODE_MENU = "INPUT_MODE_MENU";
+    public const string INPUT_MODE_PLAYER_CHARACTER_CONTROL = "INPUT_MODE_PLAYER_CHARACTER_CONTROL";
 
 
     // player input mappings
@@ -43,6 +44,11 @@ public class GameSettings
     public const KeyCode COPY_KEY = KeyCode.C;
     public const KeyCode PASTE_KEY = KeyCode.V;
     public const KeyCode PLAY_PAUSE_KEY = KeyCode.Space;
+    public const KeyCode PLAYER_CHARACTER_CONTROL_TOGGLE_KEY = KeyCode.P;
+    public const KeyCode PLAYER_CHARACTER_CONTROL_MOVE_UP_KEY = KeyCode.W;
+    public const KeyCode PLAYER_CHARACTER_CONTROL_MOVE_DOWN_KEY = KeyCode.S;
+    public const KeyCode PLAYER_CHARACTER_CONTROL_MOVE_LEFT_KEY = KeyCode.A;
+    public const KeyCode PLAYER_CHARACTER_CONTROL_MOVE_RIGHT_KEY = KeyCode.D;
 
 
     // renderer sorting layers

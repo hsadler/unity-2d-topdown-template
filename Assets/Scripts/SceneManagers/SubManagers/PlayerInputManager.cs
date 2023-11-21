@@ -93,8 +93,9 @@ public class PlayerInputManager : MonoBehaviour
             0
         );
         // player input
+        this.CheckPlayerCharacterModeToggle();
         this.CheckEscPress();
-        if (this.inputMode != GameSettings.INPUT_MODE_MENU)
+        if (this.inputMode != GameSettings.INPUT_MODE_MENU && this.inputMode != GameSettings.INPUT_MODE_PLAYER_CHARACTER_CONTROL)
         {
             // camera interaction
             this.HandleCameraMovement();
@@ -336,6 +337,11 @@ public class PlayerInputManager : MonoBehaviour
                     inventoryItem.GetComponent<InventoryItem>().DeactivateInventoryKey();
                 }
             }
+            // exit player character control mode
+            else if (this.inputMode == GameSettings.INPUT_MODE_PLAYER_CHARACTER_CONTROL)
+            {
+                this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
+            }
             else if (this.isEntityDragging)
             {
                 this.CancelEntityDrag();
@@ -355,6 +361,28 @@ public class PlayerInputManager : MonoBehaviour
                 this.MenuGO.SetActive(isEnteringMenuMode);
                 this.inputMode = isEnteringMenuMode ? GameSettings.INPUT_MODE_MENU : GameSettings.INPUT_MODE_DEFAULT;
                 this.InitEntitySelect();
+            }
+        }
+    }
+
+    // player character controls
+    private void CheckPlayerCharacterModeToggle()
+    {
+        if (this.useLogging)
+        {
+            Debug.Log("Checking player character mode toggle");
+        }
+        if (Input.GetKeyDown(GameSettings.PLAYER_CHARACTER_CONTROL_TOGGLE_KEY))
+        {
+            if (this.inputMode == GameSettings.INPUT_MODE_PLAYER_CHARACTER_CONTROL)
+            {
+                this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
+                this.MouseActive(true);
+            }
+            else
+            {
+                this.inputMode = GameSettings.INPUT_MODE_PLAYER_CHARACTER_CONTROL;
+                this.MouseActive(false);
             }
         }
     }
@@ -458,6 +486,22 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    // mouse activate and deactivate
+    public void MouseActive(bool active)
+    {
+        if (active)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+    // mouse interaction
     private void HandleMouseEntityInteraction()
     {
         //
