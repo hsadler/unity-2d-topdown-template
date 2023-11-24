@@ -13,6 +13,7 @@ public class Draggable : MonoBehaviour
     private const float IS_NOT_DRAGGING_ALPHA = 1f;
 
     public Vector3 preDragPosition;
+    public Quaternion preDragRotation;
 
 
     // UNITY HOOKS

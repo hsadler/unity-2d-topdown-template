@@ -12,8 +12,6 @@ public class GameEntity : MonoBehaviour
     public bool isNewlyCreated = false;
     public List<GameObject> renders;
 
-    private PlaySceneManager psm;
-
 
     // UNITY HOOKS
 
@@ -24,15 +22,14 @@ public class GameEntity : MonoBehaviour
 
     void Start()
     {
-        this.psm = PlaySceneManager.instance;
-        this.psm.uiTelemetryManager.gameEntityCount += 1;
+        PlaySceneManager.instance.uiTelemetryManager.gameEntityCount += 1;
     }
 
     void Update() { }
 
     void OnDestroy()
     {
-        this.psm.uiTelemetryManager.gameEntityCount -= 1;
+        PlaySceneManager.instance.uiTelemetryManager.gameEntityCount -= 1;
     }
 
     // INTF METHODS
@@ -40,7 +37,7 @@ public class GameEntity : MonoBehaviour
     public bool EntityIsPlaying()
     {
         Vector3 quantizedPos = Functions.QuantizeVector(this.transform.position);
-        GameObject trackedEntity = this.psm.gameEntityManager.GetGameEntityAtPosition(quantizedPos);
+        GameObject trackedEntity = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(quantizedPos);
         bool isPlaying = trackedEntity && trackedEntity == this.gameObject;
         return isPlaying;
     }

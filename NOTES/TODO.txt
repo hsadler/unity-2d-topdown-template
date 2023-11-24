@@ -146,7 +146,7 @@ X refinements:
 
 
 BUGS:
-    - invalid move + replace doesn't replace with original rotation
+    X invalid move + replace doesn't replace with original rotation
     - entering new game causes dupe registration of game entities (throws warnings)
     - (Potential) problems with action play and history controls, states are not
         correct

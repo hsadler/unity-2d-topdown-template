@@ -259,7 +259,10 @@ public class PlayerInputManager : MonoBehaviour
         // delete newly created entities and init select
         // otherwise, roll-back positions to pre-drag positions
         var draggables = this.GetCurrentSelectedDraggables();
-        if (this.useLogging) { Debug.Log("Cancelling entity drag for entity count: " + draggables.Count.ToString()); }
+        if (this.useLogging)
+        {
+            Debug.Log("Cancelling entity drag for entity count: " + draggables.Count.ToString());
+        }
         if (this.AreCurrentSelectedEntitiesNewlyCreated())
         {
             foreach (GameObject e in draggables)
@@ -273,7 +276,10 @@ public class PlayerInputManager : MonoBehaviour
         {
             foreach (GameObject e in draggables)
             {
-                e.transform.position = e.GetComponent<Draggable>().preDragPosition;
+                e.transform.SetPositionAndRotation(
+                    e.GetComponent<Draggable>().preDragPosition,
+                    e.GetComponent<Draggable>().preDragRotation
+                );
             }
         }
     }
@@ -586,12 +592,13 @@ public class PlayerInputManager : MonoBehaviour
                 this.SelectSingleEntity(clickedEntity);
             }
         }
-        // set pre-drag positions for currently selected entities
+        // set pre-drag positions and rotations for currently selected entities
         foreach (GameObject e in this.GetEntitiesSelected())
         {
             if (e.TryGetComponent<Draggable>(out Draggable draggable))
             {
                 draggable.preDragPosition = draggable.transform.position;
+                draggable.preDragRotation = draggable.transform.rotation;
             }
         }
     }
@@ -863,6 +870,7 @@ public class PlayerInputManager : MonoBehaviour
                 if (selectable.gameObject.TryGetComponent<Draggable>(out Draggable draggable))
                 {
                     draggable.preDragPosition = draggable.transform.position;
+                    draggable.preDragRotation = draggable.transform.rotation;
                 }
             }
         }
