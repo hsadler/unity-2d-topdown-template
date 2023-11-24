@@ -58,8 +58,8 @@ public class ProceduralEnvironmentManager : MonoBehaviour
     {
         int playAreaLowerBound = -(GameSettings.GRID_SIZE / 2);
         int playAreaUpperBound = GameSettings.GRID_SIZE / 2;
-        return position.x >= playAreaLowerBound && position.x <= playAreaUpperBound
-            && position.y >= playAreaLowerBound && position.y <= playAreaUpperBound;
+        return position.x >= playAreaLowerBound && position.x < playAreaUpperBound
+            && position.y >= playAreaLowerBound && position.y < playAreaUpperBound;
     }
 
     // IMPL METHODS

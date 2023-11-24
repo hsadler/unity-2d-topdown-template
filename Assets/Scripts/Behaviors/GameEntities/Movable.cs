@@ -60,7 +60,7 @@ public class Movable : MonoBehaviour
             endPos += movementForce;
         }
         endPos = Functions.QuantizeVector(endPos);
-        if (this.gem != null && this.gem.GetGameEntityAtPosition(endPos) == null)
+        if (this.gem != null && this.gem.PositionIsFree(endPos))
         {
             this.AnimateMovement(this.transform.position, endPos, animationDuration);
             return true;

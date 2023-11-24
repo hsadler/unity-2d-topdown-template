@@ -7,7 +7,7 @@ public class GameSettings
 
 
     // general settings
-    public const int GRID_SIZE = 500;
+    public const int GRID_SIZE = 30;
     public const bool ENTITY_POSITIONS_DISCRETE = true;
     public const int ENTITY_STATE_MAX_HISTORY = 100;
     public const float DEFAULT_TICK_DURATION = 0.4f;

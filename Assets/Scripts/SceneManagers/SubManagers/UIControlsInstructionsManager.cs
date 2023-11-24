@@ -28,7 +28,11 @@ public class UIControlsInstructionsManager : MonoBehaviour
             "\n" +
             "Rotate: 'Q' / 'E'" +
             "\n" +
+            "Copy: Ctrl + 'C'" +
+            "\n" +
             "Delete: Backspace" +
+            "\n" +
+            "Play/Pause: Space" +
             "\n" +
             "Undo/Redo: '<' / '>'" +
             "\n" +
