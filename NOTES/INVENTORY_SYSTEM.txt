@@ -1,0 +1,18 @@
+
+
+=== PLAYER UX ===
+
+Drag/drop placement of entity
+
+Hotkey selection for entity mass-placement mode
+
+Change inventory bar entities by dragging entity from full inventory to inventory bar
+
+
+=== DEVX ===
+
+Create new entity prefab
+
+Register prefab and name to PlayerInventoryManager
+
+Reference PlayerInventoryManager for gameplay 
