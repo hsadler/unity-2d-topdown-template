@@ -26,6 +26,7 @@ public class GameSettings
     public const string INPUT_MODE_DEFAULT = "INPUT_MODE_DEFAULT";
     public const string INPUT_MODE_MULTIPLACEMENT = "INPUT_MODE_MULTIPLACEMENT";
     public const string INPUT_MODE_MENU = "INPUT_MODE_MENU";
+    public const string INPUT_MODE_INVENTORY = "INPUT_MODE_INVENTORY";
 
 
     // player input mappings
@@ -43,6 +44,7 @@ public class GameSettings
     public const KeyCode COPY_KEY = KeyCode.C;
     public const KeyCode PASTE_KEY = KeyCode.V;
     public const KeyCode PLAY_PAUSE_KEY = KeyCode.Space;
+    public const KeyCode INVENTORY_KEY = KeyCode.I;
 
 
     // renderer sorting layers

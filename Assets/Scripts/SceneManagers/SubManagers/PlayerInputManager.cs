@@ -16,13 +16,13 @@ public class PlayerInputManager : MonoBehaviour
     // input mode
     public string inputMode;
 
-    // menu
-    public GameObject MenuGO;
+    // modals
+    public GameObject MenuModalGO;
+    public GameObject InventoryModalGO;
 
     // camera
     private float targetCameraSize;
     private Vector3 targetCameraPositionWorld;
-    // private Vector3 cameraVelocity = Vector3.zero;
 
     // mouse interaction
     private Vector3 currentMousePositionWorld;
@@ -70,7 +70,8 @@ public class PlayerInputManager : MonoBehaviour
         this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
         this.mouseIsUIHovered = false;
         this.isEntityDragging = false;
-        this.MenuGO.SetActive(false);
+        this.MenuModalGO.SetActive(false);
+        this.InventoryModalGO.SetActive(false);
         this.targetCameraSize = Camera.main.orthographicSize;
         this.targetCameraPositionWorld = Camera.main.transform.position;
         this.selectionBoxGO = Instantiate(this.selectionBoxPrefab, Vector3.zero, Quaternion.identity);
@@ -93,8 +94,9 @@ public class PlayerInputManager : MonoBehaviour
             0
         );
         // player input
-        this.CheckEscPress();
-        if (this.inputMode != GameSettings.INPUT_MODE_MENU)
+        this.CheckEscKeyPress();
+        this.CheckInventoryKeyPress();
+        if (this.inputMode != GameSettings.INPUT_MODE_MENU && this.inputMode != GameSettings.INPUT_MODE_INVENTORY)
         {
             // camera interaction
             this.HandleCameraMovement();
@@ -328,7 +330,7 @@ public class PlayerInputManager : MonoBehaviour
 
     // IMPL METHODS
 
-    private void CheckEscPress()
+    private void CheckEscKeyPress()
     {
         if (Input.GetKeyDown(GameSettings.ESC_KEY))
         {
@@ -353,14 +355,36 @@ public class PlayerInputManager : MonoBehaviour
             {
                 this.InitEntitySelect();
             }
+            else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY)
+            {
+                this.InventoryModalGO.SetActive(false);
+                this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
+            }
             // otherwise stop tick play if needed and enter menu mode
             else
             {
                 PlaySceneManager.instance.tickManager.SetTickPlayState(false);
                 bool isEnteringMenuMode = !(this.inputMode == GameSettings.INPUT_MODE_MENU);
-                this.MenuGO.SetActive(isEnteringMenuMode);
+                this.MenuModalGO.SetActive(isEnteringMenuMode);
                 this.inputMode = isEnteringMenuMode ? GameSettings.INPUT_MODE_MENU : GameSettings.INPUT_MODE_DEFAULT;
                 this.InitEntitySelect();
+            }
+        }
+    }
+
+    private void CheckInventoryKeyPress()
+    {
+        if (Input.GetKeyDown(GameSettings.INVENTORY_KEY))
+        {
+            if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY)
+            {
+                this.InventoryModalGO.SetActive(false);
+                this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
+            }
+            else
+            {
+                this.InventoryModalGO.SetActive(true);
+                this.inputMode = GameSettings.INPUT_MODE_INVENTORY;
             }
         }
     }
@@ -375,10 +399,6 @@ public class PlayerInputManager : MonoBehaviour
             float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED;
             float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED;
             Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
-            // NOTE: TRIED CAMERA PAN SMOOTHING BUT DIDN'T HELP WITH JITTERING AT TICK EVALUATION
-            // float smoothFactor = 0.1f;
-            // Vector3 targetPosition = Camera.main.transform.position + new Vector3(-horiz, -vert, 0);
-            // Camera.main.transform.position = Vector3.SmoothDamp(Camera.main.transform.position, targetPosition, ref cameraVelocity, smoothFactor);
         }
         // detect mouse at edge of viewport
         else
