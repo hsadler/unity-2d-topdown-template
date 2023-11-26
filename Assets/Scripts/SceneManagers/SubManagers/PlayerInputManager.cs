@@ -49,7 +49,7 @@ public class PlayerInputManager : MonoBehaviour
 
     // multi-placement
     private List<GameObject> multiPlacementEntities = new();
-    public List<InventoryItem> inventoryItemScripts = new();
+    public List<InventoryItem_OLD> inventoryItemScripts = new();
 
     // inventory canvas
     public GameObject inventoryCanvas;
@@ -95,7 +95,10 @@ public class PlayerInputManager : MonoBehaviour
         );
         // player input
         this.CheckEscKeyPress();
-        this.CheckInventoryKeyPress();
+        if (this.inputMode != GameSettings.INPUT_MODE_MENU)
+        {
+            this.CheckInventoryKeyPress();
+        }
         if (this.inputMode != GameSettings.INPUT_MODE_MENU && this.inputMode != GameSettings.INPUT_MODE_INVENTORY)
         {
             // camera interaction
@@ -334,33 +337,35 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (Input.GetKeyDown(GameSettings.ESC_KEY))
         {
-            // exit inventory multi-placement mode
+            // exit inventory multi-placement mode (must be first if check)
             if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
             {
                 this.ExitMultiPlacement();
                 // manually deactivate all inventory item flags
                 foreach (GameObject inventoryItem in GameObject.FindGameObjectsWithTag("InventoryItem"))
                 {
-                    inventoryItem.GetComponent<InventoryItem>().DeactivateInventoryKey();
+                    inventoryItem.GetComponent<InventoryItem_OLD>().DeactivateInventoryKey();
                 }
             }
+            // cancel entity drag if any entities are currently being dragged
             else if (this.isEntityDragging)
             {
                 this.CancelEntityDrag();
                 this.CommitEntityDrop();
                 this.InitEntitySelect();
             }
-            // deselect entities
+            // deselect entities if any are selected
             else if (this.currentEntitiesSelected.Count > 0)
             {
                 this.InitEntitySelect();
             }
+            // exit inventory mode
             else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY)
             {
                 this.InventoryModalGO.SetActive(false);
                 this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
             }
-            // otherwise stop tick play if needed and enter menu mode
+            // otherwise try stop tick play and enter menu mode
             else
             {
                 PlaySceneManager.instance.tickManager.SetTickPlayState(false);

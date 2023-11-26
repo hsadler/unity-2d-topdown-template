@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class InventoryItem : MonoBehaviour, IPointerDownHandler
+public class InventoryItem_OLD : MonoBehaviour, IPointerDownHandler
 {
 
     public KeyCode keyCode;
