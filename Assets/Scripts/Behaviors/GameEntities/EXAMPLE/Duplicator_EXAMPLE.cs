@@ -59,7 +59,7 @@ public class Duplicator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
             {
                 Debug.Log("Duplicating entity at " + inputPos.ToString() + " to " + outputPos.ToString());
             }
-            GameObject spawnPrefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(toDuplicate.GetComponent<GameEntity>().prefabName);
+            GameObject spawnPrefab = PlaySceneManager.instance.gameEntityRepoManager.GetGameEntityPrefabByName(toDuplicate.GetComponent<GameEntity>().prefabName);
             GameObject newEntity = Instantiate(spawnPrefab, outputPos, toDuplicate.transform.rotation);
             this.gem.AddGameEntity(newEntity, newEntity.transform.position);
         }

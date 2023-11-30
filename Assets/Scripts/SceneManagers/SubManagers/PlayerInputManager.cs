@@ -55,8 +55,8 @@ public class PlayerInputManager : MonoBehaviour
     public GameObject inventoryCanvas;
 
     // manager references
+    public GameEntityRepoManager gameEntityRepoManager;
     public GameEntityManager gameEntityManager;
-    public PlayerInventoryManager playerInventoryManager;
     public TickManager tickManager;
 
     // debug settings
@@ -77,8 +77,8 @@ public class PlayerInputManager : MonoBehaviour
         this.selectionBoxGO = Instantiate(this.selectionBoxPrefab, Vector3.zero, Quaternion.identity);
         this.selectionBoxGO.SetActive(false);
         // set manager refs
+        this.gameEntityRepoManager = PlaySceneManager.instance.gameEntityRepoManager;
         this.gameEntityManager = PlaySceneManager.instance.gameEntityManager;
-        this.playerInventoryManager = PlaySceneManager.instance.playerInventoryManager;
         this.tickManager = PlaySceneManager.instance.tickManager;
     }
 
@@ -242,7 +242,7 @@ public class PlayerInputManager : MonoBehaviour
         var spawned = new List<GameObject>();
         foreach (var e in this.multiPlacementEntities)
         {
-            GameObject prefab = this.playerInventoryManager.GetInventoryPrefabByName(e.GetComponent<GameEntity>().prefabName);
+            GameObject prefab = this.gameEntityRepoManager.GetGameEntityPrefabByName(e.GetComponent<GameEntity>().prefabName);
             GameObject newEntity = Instantiate(
                 prefab,
                 Functions.QuantizeVector(e.transform.position),

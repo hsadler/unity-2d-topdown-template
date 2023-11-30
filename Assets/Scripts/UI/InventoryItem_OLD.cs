@@ -35,17 +35,17 @@ public class InventoryItem_OLD : MonoBehaviour, IPointerDownHandler
 
     void Start()
     {
-        this.playerInputManager = PlaySceneManager.instance.playerInputManager;
-        this.playerInputManager.inventoryItemScripts.Add(this);
-        if (this.keyCode != KeyCode.None && this.entityName.Length > 0)
-        {
-            this.prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(this.entityName);
-            this.inventoryKeyDisplay.GetComponent<TextMeshProUGUI>().text = this.keycodeToHumanReadable[this.keyCode.ToString()];
-        }
-        else
-        {
-            this.inventoryKeyDisplay.GetComponent<TextMeshProUGUI>().text = "";
-        }
+        // this.playerInputManager = PlaySceneManager.instance.playerInputManager;
+        // this.playerInputManager.inventoryItemScripts.Add(this);
+        // if (this.keyCode != KeyCode.None && this.entityName.Length > 0)
+        // {
+        //     this.prefab = PlaySceneManager.instance.gameEntityRepoManager.GetGameEntityPrefabByName(this.entityName);
+        //     this.inventoryKeyDisplay.GetComponent<TextMeshProUGUI>().text = this.keycodeToHumanReadable[this.keyCode.ToString()];
+        // }
+        // else
+        // {
+        //     this.inventoryKeyDisplay.GetComponent<TextMeshProUGUI>().text = "";
+        // }
     }
 
     void Update()

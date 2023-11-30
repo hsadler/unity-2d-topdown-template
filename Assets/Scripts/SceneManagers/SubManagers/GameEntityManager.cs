@@ -289,7 +289,7 @@ public class GameEntityManager : MonoBehaviour
                 // for game entities that don't exist, instantiate and restore state
                 else
                 {
-                    GameObject prefab = PlaySceneManager.instance.playerInventoryManager.GetInventoryPrefabByName(s.prefabName);
+                    GameObject prefab = PlaySceneManager.instance.gameEntityRepoManager.GetGameEntityPrefabByName(s.prefabName);
                     GameObject spawned = Instantiate(prefab, s.position, s.rotation);
                     if (this.useLogging)
                     {

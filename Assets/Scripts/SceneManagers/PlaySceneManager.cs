@@ -12,9 +12,9 @@ public class PlaySceneManager : MonoBehaviour
     // MonoBehaviour manager components
     public GameSaveLoadManager gameSaveLoadManager;
     public ProceduralEnvironmentManager proceduralEnvironmentManager;
+    public GameEntityRepoManager gameEntityRepoManager;
     public GameEntityManager gameEntityManager;
     public PlayerInputManager playerInputManager;
-    public PlayerInventoryManager playerInventoryManager;
     public TickManager tickManager;
     public UIControlsInstructionsManager uiControlsInstructionsManager;
     public UITelemetryManager uiTelemetryManager;
@@ -106,7 +106,7 @@ public class PlaySceneManager : MonoBehaviour
                 // create game entities from game data
                 foreach (var gameEntityState in gameData.gameEntityStates)
                 {
-                    GameObject prefab = this.playerInventoryManager.GetInventoryPrefabByName(gameEntityState.prefabName);
+                    GameObject prefab = this.gameEntityRepoManager.GetGameEntityPrefabByName(gameEntityState.prefabName);
                     GameObject newEntity = Instantiate(
                         prefab,
                         Functions.QuantizeVector(gameEntityState.position.ToVector3()),
