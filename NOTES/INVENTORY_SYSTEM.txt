@@ -13,6 +13,6 @@ Change inventory bar entities by dragging entity from full inventory to inventor
 
 Create new entity prefab
 
-Register prefab and name to PlayerInventoryManager
+Register prefab and name to GameEntityRepoManager
 
-Reference PlayerInventoryManager for gameplay 
+Reference GameEntityRepoManager for gameplay

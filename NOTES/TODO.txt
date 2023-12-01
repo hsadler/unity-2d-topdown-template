@@ -144,7 +144,7 @@ X refinements:
     - Entity inventory bar icons should be generated at runtime if feasible
     - plan:
         X create inventory modal with mode when opened
-        - all game enities should be listed when inventory modal is opened
+        X all game enities should be listed when inventory modal is opened
         - drag and drop from inventory to hotbar should result in item being
             assigned to hotbar position
         - inventory hotbar should work as it already has

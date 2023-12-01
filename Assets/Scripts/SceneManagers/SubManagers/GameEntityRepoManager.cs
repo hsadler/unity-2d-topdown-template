@@ -13,7 +13,7 @@ public class GameEntityRepoManager : MonoBehaviour
     public GameEntityRepoItem[] items;
 
     // debug
-    private readonly bool useLogging = true;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS

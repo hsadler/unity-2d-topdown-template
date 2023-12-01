@@ -12,7 +12,7 @@ public class InventoryModalUI : MonoBehaviour
 
 
     // debug
-    private readonly bool useLogging = true;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
