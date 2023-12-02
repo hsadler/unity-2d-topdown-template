@@ -25,16 +25,7 @@ public class InventoryModalUI : MonoBehaviour
 
     void Update() { }
 
-
     // INTF METHODS
-
-    public void HandleInventoryItemClick(GameObject prefab)
-    {
-        if (this.useLogging)
-        {
-            Debug.Log("Inventory item clicked: " + prefab.name);
-        }
-    }
 
     // IMPL METHODS
 
@@ -44,17 +35,17 @@ public class InventoryModalUI : MonoBehaviour
         {
             Debug.Log("Populating inventory items...");
         }
-        foreach (var gameEntityInventoryItem in PlaySceneManager.instance.gameEntityRepoManager.items)
+        foreach (GameEntityRepoItem item in PlaySceneManager.instance.gameEntityRepoManager.items)
         {
-            if (gameEntityInventoryItem.isInventoryAvailable)
+            if (item.isInventoryAvailable)
             {
                 if (this.useLogging)
                 {
-                    Debug.Log("Adding inventory item: " + gameEntityInventoryItem.prefab.name);
+                    Debug.Log("Adding inventory item: " + item.prefab.name);
                 }
                 GameObject inventoryItem = Instantiate(this.inventoryItemUIPrefab);
                 inventoryItem.transform.SetParent(this.panelContainer.transform, false);
-                inventoryItem.GetComponent<InventoryItemUI>().SetEntityPrefabAndIcon(gameEntityInventoryItem.prefab, gameEntityInventoryItem.icon);
+                inventoryItem.GetComponent<InventoryItemUI>().SetGameEntityRepoItem(item);
             }
         }
     }

@@ -19,6 +19,10 @@ public class PlaySceneManager : MonoBehaviour
     public UIControlsInstructionsManager uiControlsInstructionsManager;
     public UITelemetryManager uiTelemetryManager;
 
+    // events
+    public InventoryItemClickedEvent inventoryItemClickedEvent;
+    public InventoryItemHotbarAssignmentEvent inventoryItemHotbarAssignmentEvent;
+
     // the static reference to the singleton instance
     public static PlaySceneManager instance;
 
@@ -45,6 +49,8 @@ public class PlaySceneManager : MonoBehaviour
 
     void Start()
     {
+        this.inventoryItemClickedEvent = new InventoryItemClickedEvent();
+        this.inventoryItemHotbarAssignmentEvent = new InventoryItemHotbarAssignmentEvent();
         this.proceduralEnvironmentManager.GenerateGrid();
         this.proceduralEnvironmentManager.SetGridColor(this.proceduralEnvironmentManager.defaultGridColor);
         this.gameEntityManager.Initialize();

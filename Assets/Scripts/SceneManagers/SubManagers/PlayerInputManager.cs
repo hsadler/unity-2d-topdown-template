@@ -49,7 +49,7 @@ public class PlayerInputManager : MonoBehaviour
 
     // multi-placement
     private List<GameObject> multiPlacementEntities = new();
-    public List<InventoryItem_OLD> inventoryItemScripts = new();
+    public List<HotbarItemUI> inventoryItemScripts = new();
 
     // inventory canvas
     public GameObject inventoryCanvas;
@@ -59,7 +59,7 @@ public class PlayerInputManager : MonoBehaviour
     public GameEntityManager gameEntityManager;
     public TickManager tickManager;
 
-    // debug settings
+    // debug
     private readonly bool useLogging = false;
 
 
@@ -344,7 +344,7 @@ public class PlayerInputManager : MonoBehaviour
                 // manually deactivate all inventory item flags
                 foreach (GameObject inventoryItem in GameObject.FindGameObjectsWithTag("InventoryItem"))
                 {
-                    inventoryItem.GetComponent<InventoryItem_OLD>().DeactivateInventoryKey();
+                    inventoryItem.GetComponent<HotbarItemUI>().DeactivateHotbarItem();
                 }
             }
             // cancel entity drag if any entities are currently being dragged

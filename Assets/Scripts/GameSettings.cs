@@ -44,7 +44,7 @@ public class GameSettings
     public const KeyCode COPY_KEY = KeyCode.C;
     public const KeyCode PASTE_KEY = KeyCode.V;
     public const KeyCode PLAY_PAUSE_KEY = KeyCode.Space;
-    public const KeyCode INVENTORY_KEY = KeyCode.I;
+    public const KeyCode INVENTORY_KEY = KeyCode.Tab;
 
 
     // renderer sorting layers
@@ -59,7 +59,7 @@ public class GameSettings
 
     // dev settings
     public const bool DISPLAY_TELEMETRY = true;
-    public const bool DISPLAY_UI_DEBUG = false;
+    public const bool DISPLAY_UI_DEBUG = true;
 
 
 }
