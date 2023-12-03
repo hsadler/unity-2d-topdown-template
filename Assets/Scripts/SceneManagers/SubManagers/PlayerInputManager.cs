@@ -49,10 +49,9 @@ public class PlayerInputManager : MonoBehaviour
 
     // multi-placement
     private List<GameObject> multiPlacementEntities = new();
-    public List<HotbarItemUI> inventoryItemScripts = new();
 
     // inventory canvas
-    public GameObject inventoryCanvas;
+    public GameObject hotbarCanvas;
 
     // manager references
     public GameEntityRepoManager gameEntityRepoManager;
@@ -863,12 +862,12 @@ public class PlayerInputManager : MonoBehaviour
     private bool MouseIsUIHovered()
     {
         List<RaycastResult> raycastResults = new();
-        EventSystem es = this.inventoryCanvas.GetComponent<EventSystem>();
+        EventSystem es = this.hotbarCanvas.GetComponent<EventSystem>();
         PointerEventData ped = new(es)
         {
             position = Input.mousePosition
         };
-        this.inventoryCanvas.GetComponent<GraphicRaycaster>().Raycast(ped, raycastResults);
+        this.hotbarCanvas.GetComponent<GraphicRaycaster>().Raycast(ped, raycastResults);
         return raycastResults.Count > 0;
     }
 

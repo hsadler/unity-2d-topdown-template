@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +16,7 @@ public class InventoryItemUI : MonoBehaviour, IPointerDownHandler
     private bool isSelected;
 
     // debug
-    private readonly bool useLogging = false;
+    private readonly bool useLogging = true;
 
 
     // UNITY HOOKS
@@ -26,12 +25,23 @@ public class InventoryItemUI : MonoBehaviour, IPointerDownHandler
     {
         this.isSelected = false;
         this.selectionIndicator.SetActive(this.isSelected);
-        PlaySceneManager.instance.inventoryItemClickedEvent.AddListener(this.SetSelected);
+        PlaySceneManager.instance.inventoryItemClickedEvent.AddListener(this.SetSelectedOrToggleEntityRepoItem);
+        PlaySceneManager.instance.inventoryClosedEvent.AddListener(this.Deselect);
+        PlaySceneManager.instance.inventoryItemHotbarAssignmentEvent.Invoke(
+            this.gameEntityRepoItem,
+            this.gameEntityRepoItem.defaultHotbarAssignment
+        );
     }
 
     void Update()
     {
         this.HandleHotbarAssignmentKeyDown();
+    }
+
+    void OnDestroy()
+    {
+        PlaySceneManager.instance.inventoryItemClickedEvent.RemoveListener(this.SetSelectedOrToggleEntityRepoItem);
+        PlaySceneManager.instance.inventoryClosedEvent.RemoveListener(this.Deselect);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -59,7 +69,7 @@ public class InventoryItemUI : MonoBehaviour, IPointerDownHandler
 
     // IMPL METHODS
 
-    private void SetSelected(GameEntityRepoItem item)
+    private void SetSelectedOrToggleEntityRepoItem(GameEntityRepoItem item)
     {
         if (item.prefab == this.entityPrefab && item.icon == this.entityIcon.sprite)
         {
@@ -72,10 +82,16 @@ public class InventoryItemUI : MonoBehaviour, IPointerDownHandler
         this.selectionIndicator.SetActive(this.isSelected);
     }
 
+    private void Deselect()
+    {
+        this.isSelected = false;
+        this.selectionIndicator.SetActive(this.isSelected);
+    }
+
     private void HandleHotbarAssignmentKeyDown()
     {
         // Check if any numeric key is pressed
-        if (this.isSelected && Input.anyKeyDown && this.IsNumericKey())
+        if (this.isSelected && Input.anyKeyDown && Functions.IsNumericKey(Input.inputString))
         {
             if (this.useLogging)
             {
@@ -83,22 +99,9 @@ public class InventoryItemUI : MonoBehaviour, IPointerDownHandler
             }
             PlaySceneManager.instance.inventoryItemHotbarAssignmentEvent.Invoke(
                 this.gameEntityRepoItem,
-                int.Parse(Input.inputString)
+                Input.inputString
             );
         }
-    }
-
-    private bool IsNumericKey()
-    {
-        // Check if the pressed key is a numeric key (0-9)
-        for (KeyCode keyCode = KeyCode.Alpha0; keyCode <= KeyCode.Alpha9; keyCode++)
-        {
-            if (Input.GetKeyDown(keyCode))
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
 

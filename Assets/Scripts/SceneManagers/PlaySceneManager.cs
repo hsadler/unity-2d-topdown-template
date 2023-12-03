@@ -21,6 +21,7 @@ public class PlaySceneManager : MonoBehaviour
 
     // events
     public InventoryItemClickedEvent inventoryItemClickedEvent;
+    public InventoryClosedEvent inventoryClosedEvent;
     public InventoryItemHotbarAssignmentEvent inventoryItemHotbarAssignmentEvent;
 
     // the static reference to the singleton instance
@@ -45,12 +46,14 @@ public class PlaySceneManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+        // instantiate events
+        this.inventoryItemClickedEvent = new InventoryItemClickedEvent();
+        this.inventoryClosedEvent = new InventoryClosedEvent();
+        this.inventoryItemHotbarAssignmentEvent = new InventoryItemHotbarAssignmentEvent();
     }
 
     void Start()
     {
-        this.inventoryItemClickedEvent = new InventoryItemClickedEvent();
-        this.inventoryItemHotbarAssignmentEvent = new InventoryItemHotbarAssignmentEvent();
         this.proceduralEnvironmentManager.GenerateGrid();
         this.proceduralEnvironmentManager.SetGridColor(this.proceduralEnvironmentManager.defaultGridColor);
         this.gameEntityManager.Initialize();

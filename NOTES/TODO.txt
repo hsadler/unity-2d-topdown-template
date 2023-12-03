@@ -145,8 +145,9 @@ X refinements:
     - plan:
         X create inventory modal with mode when opened
         X all game enities should be listed when inventory modal is opened
-        - click and number press of inventory item should assign it to the hotbar
+        X click and number press of inventory item should assign it to the hotbar
         - inventory hotbar selection should initiate multiplacement
+        - add hotbar to game save data
 
 
 BUGS:

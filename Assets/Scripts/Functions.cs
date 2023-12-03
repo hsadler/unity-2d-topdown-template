@@ -80,5 +80,10 @@ public class Functions
         go.transform.rotation = endRotation;
     }
 
+    public static bool IsNumericKey(string keyString)
+    {
+        return keyString.Length == 1 && Char.IsDigit(keyString[0]);
+    }
+
 
 }

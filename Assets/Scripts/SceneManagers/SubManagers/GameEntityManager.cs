@@ -37,6 +37,11 @@ public class GameEntityManager : MonoBehaviour
 
     void Update() { }
 
+    void OnDestroy()
+    {
+        PlaySceneManager.instance.tickManager.timeTickEvent.RemoveListener(this.ExecuteAutoBehaviorActions);
+    }
+
     // INTF METHODS
 
     public void Initialize()

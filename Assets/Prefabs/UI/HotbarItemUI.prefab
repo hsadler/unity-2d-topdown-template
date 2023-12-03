@@ -62,11 +62,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f597f8fc3f42f644b43a7c29e62aa85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyCode: 0
-  selectionIndicator: {fileID: 7095921339980446847}
-  itemIcon: {fileID: 4374667086191512817}
+  keyCodeString: 
+  itemIcon: {fileID: 9217031479587940437}
   emptyIcon: {fileID: 8837451769212385547}
   inventoryKeyDisplay: {fileID: 2894330712128494788}
+  selectionIndicator: {fileID: 7095921339980446847}
 --- !u!1 &2894330712128494788
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,7 +681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

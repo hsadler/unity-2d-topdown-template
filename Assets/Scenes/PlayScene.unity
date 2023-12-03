@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
+  m_Color: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -548,8 +548,7 @@ MonoBehaviour:
   selectionBoxGO: {fileID: 0}
   isEntityDragging: 0
   entityDragContainer: {fileID: 160235323}
-  inventoryItemScripts: []
-  inventoryCanvas: {fileID: 1007808885}
+  hotbarCanvas: {fileID: 1007808885}
   gameEntityRepoManager: {fileID: 0}
   gameEntityManager: {fileID: 0}
   tickManager: {fileID: 0}
@@ -761,7 +760,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_AnchorMax.x
@@ -839,6 +838,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarItemUI (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 6479862937652077993, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCodeString
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
 --- !u!224 &225113851 stripped
@@ -863,7 +866,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_AnchorMax.x
@@ -940,6 +943,10 @@ PrefabInstance:
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
       value: HotbarItemUI (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6479862937652077993, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCodeString
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
@@ -1220,7 +1227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1297,6 +1304,10 @@ PrefabInstance:
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
       value: HotbarItemUI (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6479862937652077993, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCodeString
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
@@ -1468,7 +1479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1545,6 +1556,14 @@ PrefabInstance:
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
       value: HotbarItemUI (0)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6479862937652077993, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCode
+      value: 270
+      objectReference: {fileID: 0}
+    - target: {fileID: 6479862937652077993, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCodeString
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
@@ -1813,7 +1832,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1891,6 +1910,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarItemUI (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6479862937652077993, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCodeString
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
 --- !u!224 &970929880 stripped
@@ -1911,7 +1934,7 @@ GameObject:
   - component: {fileID: 1007808887}
   - component: {fileID: 1007808886}
   m_Layer: 5
-  m_Name: InventoryCanvas
+  m_Name: HotbarCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2110,7 +2133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2187,6 +2210,10 @@ PrefabInstance:
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
       value: HotbarItemUI (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6479862937652077993, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCodeString
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
@@ -2455,7 +2482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2532,6 +2559,10 @@ PrefabInstance:
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
       value: HotbarItemUI (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6479862937652077993, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCodeString
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
@@ -2757,7 +2788,7 @@ GameObject:
   - component: {fileID: 1473334574}
   - component: {fileID: 1473334575}
   m_Layer: 5
-  m_Name: InventoryPanel
+  m_Name: HotbarPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2775,7 +2806,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 710508877}
   - {fileID: 1675151921}
   - {fileID: 970929880}
   - {fileID: 1134181646}
@@ -2785,6 +2815,7 @@ RectTransform:
   - {fileID: 1909439791}
   - {fileID: 417028208}
   - {fileID: 2059021329}
+  - {fileID: 710508877}
   m_Father: {fileID: 1007808889}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2806,7 +2837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
+  m_Color: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2916,27 +2947,35 @@ MonoBehaviour:
   items:
   - prefab: {fileID: 1609427600843478509, guid: 1bcc171794675324c86d2ce0b604b585, type: 3}
     icon: {fileID: 21300000, guid: c7e4a8ccc8ffe49418fc07d87a243098, type: 3}
+    defaultHotbarAssignment: 1
     isInventoryAvailable: 1
   - prefab: {fileID: 1609427600843478509, guid: 1b3d78bf0cd4a2a438a744e5a1bd424d, type: 3}
     icon: {fileID: 21300000, guid: d8a60a562a52cc14596f45f5025ac46f, type: 3}
+    defaultHotbarAssignment: 2
     isInventoryAvailable: 1
   - prefab: {fileID: 1609427600843478509, guid: fcf6ac6946e416240a739c7f5ef35641, type: 3}
     icon: {fileID: 21300000, guid: 4b98512686083aa4293a3ccfeffeda27, type: 3}
+    defaultHotbarAssignment: 3
     isInventoryAvailable: 1
   - prefab: {fileID: 2403585086607018275, guid: d5f2545e82e5edf429913564e590f4b4, type: 3}
     icon: {fileID: 21300000, guid: ced86fb4c9741ce4ea8ad7944851c68b, type: 3}
+    defaultHotbarAssignment: 4
     isInventoryAvailable: 1
   - prefab: {fileID: 1609427600843478509, guid: fb35b373c10871b4ebf015a80c18cdcd, type: 3}
     icon: {fileID: 21300000, guid: 5041880ec6fcc954e9dacf3829959482, type: 3}
+    defaultHotbarAssignment: 5
     isInventoryAvailable: 1
   - prefab: {fileID: 1609427600843478509, guid: 4659cc967650d20499496e5858b4c648, type: 3}
     icon: {fileID: 21300000, guid: e69c0f525cccd21458fcfd1bf12eeb42, type: 3}
+    defaultHotbarAssignment: 6
     isInventoryAvailable: 1
   - prefab: {fileID: 1609427600843478509, guid: 3d96a52bb4ae35d499aac90d397d0e45, type: 3}
     icon: {fileID: 21300000, guid: eb8ba0b8df497074f9470bae7255d7ea, type: 3}
+    defaultHotbarAssignment: 7
     isInventoryAvailable: 1
   - prefab: {fileID: 2403585086607018275, guid: 532cebb4e65c36047bbf40635c529786, type: 3}
     icon: {fileID: 0}
+    defaultHotbarAssignment: 
     isInventoryAvailable: 0
 --- !u!1 &1620279480
 GameObject:
@@ -3090,7 +3129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3167,6 +3206,10 @@ PrefabInstance:
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
       value: HotbarItemUI (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6479862937652077993, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCodeString
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
@@ -3249,7 +3292,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3326,6 +3369,10 @@ PrefabInstance:
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
       value: HotbarItemUI (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6479862937652077993, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCodeString
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
@@ -3465,7 +3512,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1774243820076830316, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3542,6 +3589,10 @@ PrefabInstance:
     - target: {fileID: 1774243820076830317, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
       propertyPath: m_Name
       value: HotbarItemUI (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6479862937652077993, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
+      propertyPath: keyCodeString
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff9a03a70b15ee545b0418547321e192, type: 3}
@@ -3813,8 +3864,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 681451897450710505, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
+    - target: {fileID: 681451897450710502, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
+      propertyPath: m_Color.b
+      value: 0.39215687
+      objectReference: {fileID: 0}
+    - target: {fileID: 681451897450710502, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
+      propertyPath: m_Color.g
+      value: 0.39215687
+      objectReference: {fileID: 0}
+    - target: {fileID: 681451897450710502, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
+      propertyPath: m_Color.r
+      value: 0.39215687
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afeeaeb675513d440963c7d144b1e6d6, type: 3}
 --- !u!224 &5264781349437368765 stripped
 RectTransform:

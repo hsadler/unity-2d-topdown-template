@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -24,6 +25,11 @@ public class InventoryModalUI : MonoBehaviour
     }
 
     void Update() { }
+
+    void OnDisable()
+    {
+        PlaySceneManager.instance.inventoryClosedEvent.Invoke();
+    }
 
     // INTF METHODS
 
