@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6479862937652077993}
   m_Layer: 5
   m_Name: HotbarItemUI
-  m_TagString: InventoryItem
+  m_TagString: HotbarItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

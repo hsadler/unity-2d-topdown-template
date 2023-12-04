@@ -340,11 +340,7 @@ public class PlayerInputManager : MonoBehaviour
             if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
             {
                 this.ExitMultiPlacement();
-                // manually deactivate all inventory item flags
-                foreach (GameObject inventoryItem in GameObject.FindGameObjectsWithTag("InventoryItem"))
-                {
-                    inventoryItem.GetComponent<HotbarItemUI>().DeactivateHotbarItem();
-                }
+                this.DeselectHotbarItems();
             }
             // cancel entity drag if any entities are currently being dragged
             else if (this.isEntityDragging)
@@ -384,12 +380,28 @@ public class PlayerInputManager : MonoBehaviour
             {
                 this.InventoryModalGO.SetActive(false);
                 this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
+                return;
             }
-            else
+            else if (this.inputMode == GameSettings.INPUT_MODE_MENU)
             {
-                this.InventoryModalGO.SetActive(true);
-                this.inputMode = GameSettings.INPUT_MODE_INVENTORY;
+                // noop
+                return;
             }
+            else if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
+            {
+                this.ExitMultiPlacement();
+                this.DeselectHotbarItems();
+            }
+            this.InventoryModalGO.SetActive(true);
+            this.inputMode = GameSettings.INPUT_MODE_INVENTORY;
+        }
+    }
+
+    private void DeselectHotbarItems()
+    {
+        foreach (GameObject inventoryItem in GameObject.FindGameObjectsWithTag("HotbarItem"))
+        {
+            inventoryItem.GetComponent<HotbarItemUI>().DeactivateHotbarItem();
         }
     }
 
@@ -524,7 +536,7 @@ public class PlayerInputManager : MonoBehaviour
                     this.HandleStartSelectionBox();
                 }
             }
-            // inventory multi-placement
+            // multi-placement
             else if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT && !this.tickManager.tickIsRunning)
             {
                 this.HandleMultiEntityPlacement();

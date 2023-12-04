@@ -148,6 +148,8 @@ X refinements:
         X click and number press of inventory item should assign it to the hotbar
         - inventory hotbar selection should initiate multiplacement
         - add hotbar to game save data
+    - bugs:
+        - inventory open does not exit multi-placement mode correctly
 
 
 BUGS:

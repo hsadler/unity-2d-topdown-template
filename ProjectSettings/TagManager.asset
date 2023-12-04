@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - InventoryItem
   - GameEntity
+  - HotbarItem
   layers:
   - Default
   - TransparentFX
