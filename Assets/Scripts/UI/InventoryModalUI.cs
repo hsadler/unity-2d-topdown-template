@@ -13,14 +13,13 @@ public class InventoryModalUI : MonoBehaviour
 
 
     // debug
-    private readonly bool useLogging = false;
+    private readonly bool useLogging = true;
 
 
     // UNITY HOOKS
 
     void Start()
     {
-        this.ClearInventoryItems();
         this.PopulateInventoryItems();
     }
 
@@ -53,18 +52,6 @@ public class InventoryModalUI : MonoBehaviour
                 inventoryItem.transform.SetParent(this.panelContainer.transform, false);
                 inventoryItem.GetComponent<InventoryItemUI>().SetGameEntityRepoItem(item);
             }
-        }
-    }
-
-    private void ClearInventoryItems()
-    {
-        if (this.useLogging)
-        {
-            Debug.Log("Clearing inventory items...");
-        }
-        foreach (Transform child in this.panelContainer.transform)
-        {
-            Destroy(child.gameObject);
         }
     }
 
