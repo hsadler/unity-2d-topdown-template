@@ -150,7 +150,7 @@ X refinements:
         - add hotbar to game save data
     - bugs:
         X inventory open does not exit multi-placement mode correctly
-        - game-entity should only be assignable to one hotbar space at a time
+        X game-entity should only be assignable to one hotbar space at a time
         - hotkey press should not select hotbar item if not assigned to a game-entity
         - pressing hotkeys is not always entering multiplace-mode correctly
         - entering inventory deletes game-entities if any are selected

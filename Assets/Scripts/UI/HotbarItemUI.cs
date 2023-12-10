@@ -67,11 +67,21 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
         {
             if (this.useLogging)
             {
-                Debug.Log("Hotbar assignment. KeyCode: " + keyCode + " matches this hotbar item's KeyCode: " + this.keyCodeString);
+                Debug.Log("Assigning game-entity: " + gameEntityRepoItem.prefab.name + " to hotbar key: " + this.keyCodeString);
             }
             this.gameEntityRepoItem = gameEntityRepoItem;
             this.itemIcon.sprite = gameEntityRepoItem.icon;
             this.emptyIcon.SetActive(false);
+        }
+        else if (this.gameEntityRepoItem == gameEntityRepoItem)
+        {
+            if (this.useLogging)
+            {
+                Debug.Log("Removing game-entity: " + gameEntityRepoItem.prefab.name + " from hotbar key: " + this.keyCodeString);
+            }
+            this.gameEntityRepoItem = null;
+            this.itemIcon.sprite = null;
+            this.emptyIcon.SetActive(true);
         }
     }
 
@@ -87,7 +97,7 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
     private void HandleHotbarItemKeyPress()
     {
         if (
-            this.gameEntityRepoItem.prefab != null &&
+            this.gameEntityRepoItem != null &&
             (
                 PlaySceneManager.instance.playerInputManager.inputMode == GameSettings.INPUT_MODE_DEFAULT ||
                 PlaySceneManager.instance.playerInputManager.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public struct GameEntityRepoItem
+public class GameEntityRepoItem
 {
 
 

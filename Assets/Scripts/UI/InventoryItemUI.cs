@@ -96,7 +96,7 @@ public class InventoryItemUI : MonoBehaviour, IPointerDownHandler
         {
             if (this.useLogging)
             {
-                Debug.Log("Numeric key pressed: " + Input.inputString);
+                Debug.Log("Numeric key pressed for hotbar assignment: " + Input.inputString);
             }
             PlaySceneManager.instance.inventoryItemHotbarAssignmentEvent.Invoke(
                 this.gameEntityRepoItem,
