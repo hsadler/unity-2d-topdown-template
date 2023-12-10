@@ -12,6 +12,11 @@ public class UITelemetryManager : MonoBehaviour
     public int gameEntityCount = 0;
     private Rect guiRect = new(Screen.width - 810, 10, 800, 2000);
 
+    // lowest fps calculation
+    public float timeWindow = 10f;
+    private float elapsedTime = 0f;
+    private float lowestFPS = float.MaxValue;
+
     // refs
     private PlayerInputManager playerInputManager;
 
@@ -25,13 +30,17 @@ public class UITelemetryManager : MonoBehaviour
         this.playerInputManager = PlaySceneManager.instance.playerInputManager;
     }
 
-    void Update() { }
+    void Update()
+    {
+        this.CalculateLowestFPS();
+    }
 
     void OnGUI()
     {
         if (GameSettings.DISPLAY_TELEMETRY)
         {
             int fps = (int)(1.0f / Time.smoothDeltaTime);
+            int lowestFps = (int)this.lowestFPS;
             // hovered entity data
             GameObject gameEntityHovered = this.playerInputManager.GetHoveredEntity();
             string gameEntityHoveredName = gameEntityHovered == null ? "None" : gameEntityHovered.name;
@@ -50,6 +59,8 @@ public class UITelemetryManager : MonoBehaviour
                 "Game Name: " + SaveGameSignal.fileName +
                 "\n" +
                 "FPS: " + fps.ToString() +
+                "\n" +
+                "Lowest FPS within last " + this.timeWindow.ToString() + " seconds: " + lowestFps.ToString() +
                 "\n" +
                 "Input Mode: " + this.playerInputManager.inputMode.ToString() +
                 "\n" +
@@ -85,6 +96,27 @@ public class UITelemetryManager : MonoBehaviour
     // INTF METHODS
 
     // IMPL METHODS
+
+    private void CalculateLowestFPS()
+    {
+        // From ChatGPT
+        // Update elapsed time and frame count
+        elapsedTime += Time.deltaTime;
+        // Calculate FPS
+        float currentFPS = 1f / Time.deltaTime;
+        // Update lowest FPS if needed
+        if (currentFPS < lowestFPS)
+        {
+            lowestFPS = currentFPS;
+        }
+        // Check if the time window has passed
+        if (elapsedTime >= timeWindow)
+        {
+            // Reset variables for the next time window
+            elapsedTime = 0f;
+            lowestFPS = float.MaxValue;
+        }
+    }
 
 
 }

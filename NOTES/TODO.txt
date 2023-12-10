@@ -140,20 +140,20 @@ X refinements:
     X another pass on telemetry
     X another pass on controls instructions
 - overhaul inventory system:
-    - Additional game-entities should be simple and easy to add to the game
-    - Entity inventory bar icons should be generated at runtime if feasible
+    X Additional game-entities should be simple and easy to add to the game
     - plan:
         X create inventory modal with mode when opened
         X all game enities should be listed when inventory modal is opened
         X click and number press of inventory item should assign it to the hotbar
-        - inventory hotbar selection should initiate multiplacement
+        X hotbar hotkey selection should initiate multiplacement
+        - hotbar item click should initiate multiplacement
         - add hotbar to game save data
     - bugs:
         X inventory open does not exit multi-placement mode correctly
         X game-entity should only be assignable to one hotbar space at a time
         X hotkey press should not select hotbar item if not assigned to a game-entity
-        - inventory open should deselect hotbar
-        - pressing hotkeys is not always entering multiplace-mode correctly
+        X inventory open should deselect hotbar
+        X pressing hotkeys is not always entering multiplace-mode correctly
         - entering inventory deletes game-entities if any are selected
 
 

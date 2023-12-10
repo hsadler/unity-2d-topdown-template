@@ -16,7 +16,7 @@ public class InventoryItemUI : MonoBehaviour, IPointerDownHandler
     private bool isSelected;
 
     // debug
-    private readonly bool useLogging = true;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS

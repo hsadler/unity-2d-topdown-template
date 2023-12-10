@@ -20,7 +20,7 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
     public GameObject selectionIndicator;
 
     // debug
-    private readonly bool useLogging = true;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -31,7 +31,9 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
         this.selectionIndicator.SetActive(this.isSelected);
         this.emptyIcon.SetActive(true);
         this.inventoryKeyDisplay.GetComponent<TextMeshProUGUI>().text = this.keyCodeString;
-        PlaySceneManager.instance.inventoryItemHotbarAssignmentEvent.AddListener(this.HandleHotbarAssignment);
+        PlaySceneManager.instance.inventoryItemHotbarAssignmentEvent.AddListener(this.HandleHotbarAssignmentEvent);
+        PlaySceneManager.instance.inventoryOpenEvent.AddListener(this.Deselect);
+        PlaySceneManager.instance.hotbarItemSelectedEvent.AddListener(this.HandleHotbarItemSelectedEvent);
     }
 
     void Update()
@@ -41,7 +43,9 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
 
     void OnDestroy()
     {
-        PlaySceneManager.instance.inventoryItemHotbarAssignmentEvent.RemoveListener(this.HandleHotbarAssignment);
+        PlaySceneManager.instance.inventoryItemHotbarAssignmentEvent.RemoveListener(this.HandleHotbarAssignmentEvent);
+        PlaySceneManager.instance.inventoryOpenEvent.RemoveListener(this.Deselect);
+        PlaySceneManager.instance.hotbarItemSelectedEvent.RemoveListener(this.HandleHotbarItemSelectedEvent);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -61,7 +65,7 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
 
     // IMPL METHODS
 
-    private void HandleHotbarAssignment(GameEntityRepoItem gameEntityRepoItem, string keyCode)
+    private void HandleHotbarAssignmentEvent(GameEntityRepoItem gameEntityRepoItem, string keyCode)
     {
         if (this.keyCodeString == keyCode)
         {
@@ -85,14 +89,29 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
         }
     }
 
-    // TODO: convert these to use unity events instead to
+    private void HandleHotbarItemSelectedEvent(GameEntityRepoItem gameEntityRepoItem)
+    {
+        if (this.gameEntityRepoItem == gameEntityRepoItem)
+        {
+            PlaySceneManager.instance.playerInputManager.ExitMultiPlacement();
+            this.SetSelected(!this.isSelected);
+        }
+        else
+        {
+            this.SetSelected(false);
+        }
+    }
+
     private void HandleHotbarItemClick()
     {
-        if (this.useLogging)
+        if (this.gameEntityRepoItem != null)
         {
-            Debug.Log("Hotbar item clicked. KeyCode: " + this.keyCodeString);
+            if (this.useLogging)
+            {
+                Debug.Log("Hotbar item clicked for game-entity: " + this.gameEntityRepoItem.prefab.name);
+            }
+            PlaySceneManager.instance.hotbarItemSelectedEvent.Invoke(this.gameEntityRepoItem);
         }
-        this.SetSelected(true);
     }
 
     private void HandleHotbarItemKeyPress()
@@ -106,36 +125,34 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
             Input.anyKeyDown
         )
         {
-            if (Functions.IsNumericKey(Input.inputString))
+            if (Functions.IsNumericKey(Input.inputString) && Input.inputString == this.keyCodeString)
             {
                 if (this.useLogging)
                 {
-                    Debug.Log("Hotbar item key pressed. KeyCode: " + this.keyCodeString);
+                    Debug.Log("Hotbar item key pressed. KeyCode: " + this.keyCodeString + " for game-entity: " + this.gameEntityRepoItem.prefab.name);
                 }
-                if (Input.GetKeyDown(this.keyCodeString))
-                {
-                    this.SetSelected(!this.isSelected);
-                }
-                else
-                {
-                    this.SetSelected(false);
-                }
+                PlaySceneManager.instance.hotbarItemSelectedEvent.Invoke(this.gameEntityRepoItem);
             }
         }
     }
 
     private void SetSelected(bool isSelected)
     {
+        if (this.useLogging && isSelected)
+        {
+            Debug.Log("Selecting game-entity: " + this.gameEntityRepoItem.prefab.name + " from hotbar");
+        }
         this.isSelected = isSelected;
         this.selectionIndicator.SetActive(this.isSelected);
         if (this.isSelected)
         {
             PlaySceneManager.instance.playerInputManager.StartMultiPlacement(new List<GameObject>() { this.gameEntityRepoItem.prefab });
         }
-        else
-        {
-            PlaySceneManager.instance.playerInputManager.ExitMultiPlacement();
-        }
+    }
+
+    private void Deselect()
+    {
+        this.SetSelected(false);
     }
 
 

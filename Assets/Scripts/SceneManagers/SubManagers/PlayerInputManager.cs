@@ -17,8 +17,8 @@ public class PlayerInputManager : MonoBehaviour
     public string inputMode;
 
     // modals
-    public GameObject MenuModalGO;
-    public GameObject InventoryModalGO;
+    public GameObject menuModalGO;
+    public GameObject inventoryModalGO;
 
     // camera
     private float targetCameraSize;
@@ -69,8 +69,8 @@ public class PlayerInputManager : MonoBehaviour
         this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
         this.mouseIsUIHovered = false;
         this.isEntityDragging = false;
-        this.MenuModalGO.SetActive(false);
-        this.InventoryModalGO.SetActive(false);
+        this.menuModalGO.SetActive(false);
+        this.inventoryModalGO.SetActive(false);
         this.targetCameraSize = Camera.main.orthographicSize;
         this.targetCameraPositionWorld = Camera.main.transform.position;
         this.selectionBoxGO = Instantiate(this.selectionBoxPrefab, Vector3.zero, Quaternion.identity);
@@ -357,7 +357,7 @@ public class PlayerInputManager : MonoBehaviour
             // exit inventory mode
             else if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY)
             {
-                this.InventoryModalGO.SetActive(false);
+                this.inventoryModalGO.SetActive(false);
                 this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
             }
             // otherwise try stop tick play and enter menu mode
@@ -365,7 +365,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 PlaySceneManager.instance.tickManager.SetTickPlayState(false);
                 bool isEnteringMenuMode = !(this.inputMode == GameSettings.INPUT_MODE_MENU);
-                this.MenuModalGO.SetActive(isEnteringMenuMode);
+                this.menuModalGO.SetActive(isEnteringMenuMode);
                 this.inputMode = isEnteringMenuMode ? GameSettings.INPUT_MODE_MENU : GameSettings.INPUT_MODE_DEFAULT;
                 this.InitEntitySelect();
             }
@@ -378,7 +378,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (this.inputMode == GameSettings.INPUT_MODE_INVENTORY)
             {
-                this.InventoryModalGO.SetActive(false);
+                this.inventoryModalGO.SetActive(false);
                 this.inputMode = GameSettings.INPUT_MODE_DEFAULT;
                 return;
             }
@@ -392,7 +392,7 @@ public class PlayerInputManager : MonoBehaviour
                 this.ExitMultiPlacement();
                 this.DeselectHotbarItems();
             }
-            this.InventoryModalGO.SetActive(true);
+            this.inventoryModalGO.SetActive(true);
             this.inputMode = GameSettings.INPUT_MODE_INVENTORY;
         }
     }

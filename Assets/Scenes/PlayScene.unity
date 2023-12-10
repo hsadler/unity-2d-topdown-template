@@ -542,8 +542,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputMode: 0
-  MenuModalGO: {fileID: 7122270523773720885}
-  InventoryModalGO: {fileID: 9185953350646652437}
+  menuModalGO: {fileID: 7122270523773720885}
+  inventoryModalGO: {fileID: 9185953350646652437}
   selectionBoxPrefab: {fileID: 6734921932508682108, guid: 00096cb28fe9f86478357a27e071e049, type: 3}
   selectionBoxGO: {fileID: 0}
   isEntityDragging: 0
@@ -2116,6 +2116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameEntityCount: 0
+  timeWindow: 10
 --- !u!1001 &1134181645
 PrefabInstance:
   m_ObjectHideFlags: 0
