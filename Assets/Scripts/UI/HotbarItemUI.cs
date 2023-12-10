@@ -85,6 +85,7 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
         }
     }
 
+    // TODO: convert these to use unity events instead to
     private void HandleHotbarItemClick()
     {
         if (this.useLogging)

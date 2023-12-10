@@ -151,13 +151,16 @@ X refinements:
     - bugs:
         X inventory open does not exit multi-placement mode correctly
         X game-entity should only be assignable to one hotbar space at a time
-        - hotkey press should not select hotbar item if not assigned to a game-entity
+        X hotkey press should not select hotbar item if not assigned to a game-entity
+        - inventory open should deselect hotbar
         - pressing hotkeys is not always entering multiplace-mode correctly
         - entering inventory deletes game-entities if any are selected
 
 
 BUGS:
     X invalid move + replace doesn't replace with original rotation
+    - detection of out-of-bounds is bugged once multiple game-entities are rotated
+        while being dragged
     - dimension size of place space is off by 1
     - entering new game causes dupe registration of game entities (throws warnings)
     - (Potential) problems with action play and history controls, states are not

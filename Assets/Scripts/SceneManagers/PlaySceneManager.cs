@@ -20,9 +20,11 @@ public class PlaySceneManager : MonoBehaviour
     public UITelemetryManager uiTelemetryManager;
 
     // events
-    public InventoryItemClickedEvent inventoryItemClickedEvent;
+    public InventoryOpenEvent inventoryOpenEvent;
     public InventoryClosedEvent inventoryClosedEvent;
+    public InventoryItemClickedEvent inventoryItemClickedEvent;
     public InventoryItemHotbarAssignmentEvent inventoryItemHotbarAssignmentEvent;
+    public HotbarItemSelectedEvent hotbarItemSelectedEvent;
 
     // the static reference to the singleton instance
     public static PlaySceneManager instance;
@@ -47,9 +49,11 @@ public class PlaySceneManager : MonoBehaviour
             Destroy(this.gameObject);
         }
         // instantiate events
-        this.inventoryItemClickedEvent = new InventoryItemClickedEvent();
+        this.inventoryOpenEvent = new InventoryOpenEvent();
         this.inventoryClosedEvent = new InventoryClosedEvent();
+        this.inventoryItemClickedEvent = new InventoryItemClickedEvent();
         this.inventoryItemHotbarAssignmentEvent = new InventoryItemHotbarAssignmentEvent();
+        this.hotbarItemSelectedEvent = new HotbarItemSelectedEvent();
     }
 
     void Start()

@@ -25,8 +25,21 @@ public class InventoryModalUI : MonoBehaviour
 
     void Update() { }
 
+    void OnEnable()
+    {
+        if (this.useLogging)
+        {
+            Debug.Log("Inventory modal opened");
+        }
+        PlaySceneManager.instance.inventoryOpenEvent.Invoke();
+    }
+
     void OnDisable()
     {
+        if (this.useLogging)
+        {
+            Debug.Log("Inventory modal closed");
+        }
         PlaySceneManager.instance.inventoryClosedEvent.Invoke();
     }
 
