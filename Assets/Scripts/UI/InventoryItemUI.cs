@@ -28,10 +28,10 @@ public class InventoryItemUI : MonoBehaviour, IPointerDownHandler
         PlaySceneManager.instance.inventoryItemClickedEvent.AddListener(this.SetSelectedOrToggleEntityRepoItem);
         PlaySceneManager.instance.inventoryClosedEvent.AddListener(this.Deselect);
         // TESTING: this is temporary
-        // PlaySceneManager.instance.inventoryItemHotbarAssignmentEvent.Invoke(
-        //     this.gameEntityRepoItem,
-        //     this.gameEntityRepoItem.defaultHotbarAssignment
-        // );
+        PlaySceneManager.instance.inventoryItemHotbarAssignmentEvent.Invoke(
+            this.gameEntityRepoItem,
+            this.gameEntityRepoItem.defaultHotbarAssignment
+        );
     }
 
     void Update()

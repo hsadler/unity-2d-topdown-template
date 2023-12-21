@@ -93,7 +93,10 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
     {
         if (this.gameEntityRepoItem == gameEntityRepoItem)
         {
-            PlaySceneManager.instance.playerInputManager.ExitMultiPlacement();
+            if (PlaySceneManager.instance.playerInputManager.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
+            {
+                PlaySceneManager.instance.playerInputManager.ExitMultiPlacement();
+            }
             this.SetSelected(!this.isSelected);
         }
         else

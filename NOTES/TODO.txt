@@ -146,7 +146,7 @@ X refinements:
         X all game enities should be listed when inventory modal is opened
         X click and number press of inventory item should assign it to the hotbar
         X hotbar hotkey selection should initiate multiplacement
-        - hotbar item click should initiate multiplacement
+        X hotbar item click should initiate multiplacement
         - add hotbar to game save data
     - bugs:
         X inventory open does not exit multi-placement mode correctly
@@ -154,7 +154,8 @@ X refinements:
         X hotkey press should not select hotbar item if not assigned to a game-entity
         X inventory open should deselect hotbar
         X pressing hotkeys is not always entering multiplace-mode correctly
-        - entering inventory deletes game-entities if any are selected
+        X entering inventory deletes game-entities if any are selected
+        - esc press doesn't exit hotbar multiplacement mode
 
 
 BUGS:
