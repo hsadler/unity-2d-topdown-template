@@ -147,6 +147,7 @@ X refinements:
         X click and number press of inventory item should assign it to the hotbar
         X hotbar hotkey selection should initiate multiplacement
         X hotbar item click should initiate multiplacement
+        - hotbar should be populated by a configurable scene submanager
         - add hotbar to game save data
     - bugs:
         X inventory open does not exit multi-placement mode correctly
@@ -155,7 +156,8 @@ X refinements:
         X inventory open should deselect hotbar
         X pressing hotkeys is not always entering multiplace-mode correctly
         X entering inventory deletes game-entities if any are selected
-        - esc press doesn't exit hotbar multiplacement mode
+        X esc press doesn't exit hotbar multiplacement mode
+        - inventory hotbar item click doesn't correctly initiate multiplace
 
 
 BUGS:
