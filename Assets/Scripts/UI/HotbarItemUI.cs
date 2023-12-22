@@ -57,10 +57,6 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
 
     public void DeactivateHotbarItem()
     {
-        if (this.useLogging)
-        {
-            Debug.Log("Deactivating inventory key");
-        }
         this.Deselect();
     }
 

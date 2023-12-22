@@ -24,7 +24,7 @@ public class DestroyItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     void Update()
     {
-        if (this.canDestroy)
+        if (this.canDestroy && this.playerInputManager.inputMode == GameSettings.INPUT_MODE_DEFAULT)
         {
             if (Input.GetMouseButtonUp(0))
             {

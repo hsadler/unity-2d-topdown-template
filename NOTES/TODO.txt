@@ -157,7 +157,7 @@ X refinements:
         X pressing hotkeys is not always entering multiplace-mode correctly
         X entering inventory deletes game-entities if any are selected
         X esc press doesn't exit hotbar multiplacement mode
-        - inventory hotbar item click doesn't correctly initiate multiplace
+        X inventory hotbar item click doesn't correctly initiate multiplace
 
 
 BUGS:

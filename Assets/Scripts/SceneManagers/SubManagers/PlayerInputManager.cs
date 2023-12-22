@@ -98,7 +98,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             this.CheckInventoryKeyPress();
         }
-        if (this.inputMode != GameSettings.INPUT_MODE_MENU && this.inputMode != GameSettings.INPUT_MODE_INVENTORY)
+        if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT || this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT)
         {
             // camera interaction
             this.HandleCameraMovement();
@@ -110,7 +110,10 @@ public class PlayerInputManager : MonoBehaviour
                 this.HandleEntityDeleteByKeyDown();
                 this.HandleEntityRotation();
                 this.HandleEntityCopyPaste();
-                this.HandleEntityStateUndoRedo();
+                if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
+                {
+                    this.HandleEntityStateUndoRedo();
+                }
             }
         }
     }
@@ -562,6 +565,7 @@ public class PlayerInputManager : MonoBehaviour
             // continue multi-placement of entities
             else if (!this.mouseIsUIHovered && this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT && !this.tickManager.tickIsRunning)
             {
+                if (this.useLogging) { Debug.Log("Continuing multi-placement"); }
                 this.HandleEntityDrag();
                 this.HandleMultiEntityPlacement();
             }
@@ -596,7 +600,6 @@ public class PlayerInputManager : MonoBehaviour
         // mouse move + multi-placement
         else if (this.inputMode == GameSettings.INPUT_MODE_MULTIPLACEMENT && !this.tickManager.tickIsRunning)
         {
-            if (this.useLogging) { Debug.Log("Multi-placement mouse move"); }
             this.HandleEntityDrag();
         }
     }

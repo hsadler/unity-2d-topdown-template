@@ -18,7 +18,6 @@ public class Functions
         );
     }
 
-    // TODO: delete if not needed
     // chatgpt impl
     public static Quaternion QuantizeQuaternion(Quaternion q)
     {
