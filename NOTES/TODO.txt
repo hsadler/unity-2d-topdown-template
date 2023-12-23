@@ -139,9 +139,9 @@ X refinements:
     X don't let entities leave or be created outside of the gameplay bounds
     X another pass on telemetry
     X another pass on controls instructions
-- overhaul inventory system:
+X overhaul inventory system:
     X Additional game-entities should be simple and easy to add to the game
-    - plan:
+    X plan:
         X create inventory modal with mode when opened
         X all game enities should be listed when inventory modal is opened
         X click and number press of inventory item should assign it to the hotbar
@@ -149,15 +149,10 @@ X refinements:
         X hotbar item click should initiate multiplacement
         X hotbar should be populated by a configurable scene submanager
         X add hotbar to game save data
-    - bugs:
-        X inventory open does not exit multi-placement mode correctly
-        X game-entity should only be assignable to one hotbar space at a time
-        X hotkey press should not select hotbar item if not assigned to a game-entity
-        X inventory open should deselect hotbar
-        X pressing hotkeys is not always entering multiplace-mode correctly
-        X entering inventory deletes game-entities if any are selected
-        X esc press doesn't exit hotbar multiplacement mode
-        X inventory hotbar item click doesn't correctly initiate multiplace
+- admin system for environment design:
+    - toggleable
+    - place & move normally unmovable entities
+    - workflow for multi-scene creation
 
 
 BUGS:
@@ -168,19 +163,9 @@ BUGS:
     - dimension size of place space is off by 1
 
 
-REFACTORS:
-    - (MAYBE) refactor player inventory to have single source of truth
-        (SOT should be owned by PlayerInventoryManager)
-    - (MAYBE) convert constant groups to be enums
-
-
 LATER:
 - (maybe) make position conflict resolution randomized
 - (maybe) multilayer game entity manager
-- admin system for environment design:
-    - toggleable
-    - place & move normally unmovable entities
-    - workflow for multi-scene creation
 - more entities with behaviors:
     - (maybe) zone with effect (road, conveyor, etc.)
     - (maybe) zone without effect (decoration)
