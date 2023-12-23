@@ -64,9 +64,16 @@ public class PlaySceneManager : MonoBehaviour
         bool loadGameStatus = this.CheckLoadGame();
         if (!loadGameStatus)
         {
-            this.gameEntityManager.RegisterInitialGameEntities();
             // register initial game entities
             this.gameEntityManager.RegisterInitialGameEntities();
+            // populate inventory hotbar with default items
+            foreach (var gameEntityRepoItem in this.gameEntityRepoManager.items)
+            {
+                this.inventoryItemHotbarAssignmentEvent.Invoke(
+                    gameEntityRepoItem,
+                    gameEntityRepoItem.defaultHotbarAssignment
+                );
+            }
             this.SaveGame();
         }
     }
@@ -99,6 +106,20 @@ public class PlaySceneManager : MonoBehaviour
         SceneManager.LoadScene("GameStart");
     }
 
+    public List<HotbarItemData> GetHotbarItemDatas()
+    {
+        List<HotbarItemData> hotbarItemDatas = new List<HotbarItemData>();
+        foreach (GameObject inventoryItem in GameObject.FindGameObjectsWithTag("HotbarItem"))
+        {
+            var hotbarItemData = inventoryItem.GetComponent<HotbarItemUI>().GetHotbarItemData();
+            if (hotbarItemData != null)
+            {
+                hotbarItemDatas.Add(hotbarItemData);
+            }
+        }
+        return hotbarItemDatas;
+    }
+
     // IMPL METHODS
 
     private bool CheckLoadGame()
@@ -126,6 +147,14 @@ public class PlaySceneManager : MonoBehaviour
                         Functions.QuantizeQuaternion(gameEntityState.rotation.ToQuaternion())
                     );
                     this.gameEntityManager.AddGameEntity(newEntity, newEntity.transform.position);
+                }
+                // populate inventory hotbar with saved items
+                foreach (HotbarItemData hotbarItemData in gameData.hotbarItemDatas)
+                {
+                    this.inventoryItemHotbarAssignmentEvent.Invoke(
+                        this.gameEntityRepoManager.GetGameEntityRepoItemByName(hotbarItemData.prefabName),
+                        hotbarItemData.keyCodeString
+                    );
                 }
                 return true;
             }

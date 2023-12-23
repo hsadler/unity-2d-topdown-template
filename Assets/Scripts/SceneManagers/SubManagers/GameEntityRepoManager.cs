@@ -41,6 +41,23 @@ public class GameEntityRepoManager : MonoBehaviour
         return null;
     }
 
+    public GameEntityRepoItem GetGameEntityRepoItemByName(string name)
+    {
+        if (this.useLogging)
+        {
+            Debug.Log("Getting inventory repo item by name: " + name);
+        }
+        foreach (var item in this.items)
+        {
+            if (name == item.prefab.name)
+            {
+                return item;
+            }
+        }
+        Debug.LogWarning("Couldn't find inventory repo item by name: " + name);
+        return null;
+    }
+
     // IMPL METHODS
 
 

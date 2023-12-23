@@ -60,6 +60,16 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
         this.Deselect();
     }
 
+    public HotbarItemData GetHotbarItemData()
+    {
+        if (this.gameEntityRepoItem != null)
+        {
+            string prefabName = this.gameEntityRepoItem.prefab.GetComponent<GameEntity>().prefabName;
+            return new HotbarItemData(this.keyCodeString, prefabName, this.isSelected);
+        }
+        return null;
+    }
+
     // IMPL METHODS
 
     private void HandleHotbarAssignmentEvent(GameEntityRepoItem gameEntityRepoItem, string keyCode)

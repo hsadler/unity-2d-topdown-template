@@ -40,7 +40,8 @@ public class GameSaveLoadManager : MonoBehaviour
         var gameData = new GameData(
             cameraPosition: new SerializableVector3(cameraPosition),
             cameraSize: cameraSize,
-            gameEntityStates: serializableGameEntityStates
+            gameEntityStates: serializableGameEntityStates,
+            hotbarItemDatas: PlaySceneManager.instance.GetHotbarItemDatas()
         );
         using (FileStream stream = new(this.GetSavePath(saveName), FileMode.OpenOrCreate))
         {
