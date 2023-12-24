@@ -12,6 +12,12 @@ public class GameEntity : MonoBehaviour
     public bool isNewlyCreated = false;
     public List<GameObject> renders;
 
+    // behavior script references
+    public Selectable selectableScript;
+    public Draggable draggableScript;
+    public Rotatable rotatableScript;
+    public Movable movableScript;
+
 
     // UNITY HOOKS
 
@@ -22,6 +28,19 @@ public class GameEntity : MonoBehaviour
 
     void Start()
     {
+        this.selectableScript = this.GetComponent<Selectable>();
+        this.draggableScript = this.GetComponent<Draggable>();
+        this.rotatableScript = this.GetComponent<Rotatable>();
+        this.movableScript = this.GetComponent<Movable>();
+#pragma warning disable 0162
+        if (GameSettings.IS_ADMIN)
+        {
+            this.selectableScript.enabled = true;
+            this.draggableScript.enabled = true;
+            this.rotatableScript.enabled = true;
+            this.movableScript.enabled = true;
+        }
+#pragma warning restore 0162
         PlaySceneManager.instance.uiTelemetryManager.gameEntityCount += 1;
     }
 
@@ -33,6 +52,54 @@ public class GameEntity : MonoBehaviour
     }
 
     // INTF METHODS
+
+    public Selectable GetSelectable()
+    {
+        if (this.selectableScript != null && this.selectableScript.isActiveAndEnabled)
+        {
+            return this.selectableScript;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public Draggable GetDraggable()
+    {
+        if (this.draggableScript != null && this.draggableScript.isActiveAndEnabled)
+        {
+            return this.draggableScript;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public Rotatable GetRotatable()
+    {
+        if (this.rotatableScript != null && this.rotatableScript.isActiveAndEnabled)
+        {
+            return this.rotatableScript;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public Movable GetMovable()
+    {
+        if (this.movableScript != null && this.movableScript.isActiveAndEnabled)
+        {
+            return this.movableScript;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
     public bool EntityIsPlaying()
     {
@@ -77,6 +144,8 @@ public class GameEntity : MonoBehaviour
             }
         }
     }
+
+    // IMPL METHODS
 
 
 }

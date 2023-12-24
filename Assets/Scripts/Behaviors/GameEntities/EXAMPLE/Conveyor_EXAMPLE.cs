@@ -64,13 +64,18 @@ public class Conveyor_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
                 Debug.Log("Checking position in beam: " + beamPos.ToString());
             }
             GameObject go = this.gem.GetGameEntityAtPosition(beamPos);
-            if (go != null && go.TryGetComponent(out Movable movable))
+            if (go != null)
             {
-                if (this.useLogging)
+                var movable = go.GetComponent<GameEntity>().GetMovable();
+                if (movable != null)
                 {
-                    Debug.Log("Found movable game-entity at beam position: " + beamPos.ToString() + ". Trying to move it.");
+
+                    if (this.useLogging)
+                    {
+                        Debug.Log("Found movable game-entity at beam position: " + beamPos.ToString() + ". Trying to move it.");
+                    }
+                    movable.AddMovementForce(this.transform.up, 1);
                 }
-                movable.AddMovementForce(this.transform.up, 1);
             }
         }
     }

@@ -72,10 +72,7 @@ public class Mover_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         }
         if (rot != 0)
         {
-            if (this.TryGetComponent<Rotatable>(out Rotatable rotatable))
-            {
-                rotatable.AddRotation(rot);
-            }
+            this.GetComponent<GameEntity>().GetRotatable().AddRotation(rot);
         }
     }
 
@@ -84,10 +81,7 @@ public class Mover_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         //
         // add movement force in current direction
         //
-        if (this.TryGetComponent<Movable>(out Movable movable))
-        {
-            movable.AddMovementForce(this.transform.up, 1);
-        }
+        this.GetComponent<GameEntity>().GetMovable().AddMovementForce(this.transform.up, 1);
     }
 
 

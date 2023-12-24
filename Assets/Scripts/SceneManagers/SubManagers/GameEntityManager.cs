@@ -268,12 +268,14 @@ public class GameEntityManager : MonoBehaviour
                 if (uuidToGameEntity.ContainsKey(s.uuid))
                 {
                     GameObject gameEntity = uuidToGameEntity[s.uuid];
+                    GameEntity geScript = gameEntity.GetComponent<GameEntity>();
                     if (this.useLogging)
                     {
                         Debug.Log("Restoring game entity: " + gameEntity.name + " from state with position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
                     }
                     gameEntity.SetActive(true);
-                    if (gameEntity.TryGetComponent<Movable>(out var movable))
+                    var movable = geScript.GetMovable();
+                    if (movable != null)
                     {
                         movable.AnimateMovement(movable.transform.position, s.position, GameSettings.FAST_ANIMATION_DURATION);
                     }
@@ -281,7 +283,8 @@ public class GameEntityManager : MonoBehaviour
                     {
                         gameEntity.transform.position = s.position;
                     }
-                    if (gameEntity.TryGetComponent<Rotatable>(out var rotatable))
+                    var rotatable = geScript.GetRotatable();
+                    if (rotatable != null)
                     {
                         rotatable.AnimateRotation(rotatable.transform.rotation, s.rotation, GameSettings.FAST_ANIMATION_DURATION);
                     }
@@ -413,18 +416,26 @@ public class GameEntityManager : MonoBehaviour
         float animationDuration = GameSettings.DEFAULT_TICK_DURATION / 2f;
         foreach (GameObject entity in new List<GameObject>(this.positionToGameEntity.Values))
         {
-            if (entity != null && entity.TryGetComponent(out Rotatable rotatable))
+            if (entity != null)
             {
-                rotatable.CommitRotations(animationDuration);
+                var rotatable = entity.GetComponent<Rotatable>();
+                if (rotatable != null)
+                {
+                    rotatable.CommitRotations(animationDuration);
+                }
             }
         }
         // commit movements
         List<Movable> movables = new();
         foreach (GameObject entity in new List<GameObject>(this.positionToGameEntity.Values))
         {
-            if (entity != null && entity.TryGetComponent(out Movable movable))
+            if (entity != null)
             {
-                movables.Add(movable);
+                var movable = entity.GetComponent<GameEntity>().GetMovable();
+                if (movable)
+                {
+                    movables.Add(movable);
+                }
             }
         }
         if (movables.Count > 0)
@@ -456,9 +467,13 @@ public class GameEntityManager : MonoBehaviour
         // reset all movables movement forces
         foreach (GameObject entity in new List<GameObject>(this.positionToGameEntity.Values))
         {
-            if (entity != null && entity.TryGetComponent(out Movable movable))
+            if (entity != null)
             {
-                movable.ClearMovementForces();
+                var movable = entity.GetComponent<GameEntity>().GetMovable();
+                if (movable != null)
+                {
+                    movable.ClearMovementForces();
+                }
             }
         }
         this.TryPushEntityStateHistoryStep();

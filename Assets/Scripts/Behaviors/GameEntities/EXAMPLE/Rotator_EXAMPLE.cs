@@ -45,7 +45,8 @@ public class Rotator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         GameObject toRotate = this.gem.GetGameEntityAtPosition(rotatePos);
         if (toRotate != null)
         {
-            if (toRotate.TryGetComponent(out Rotatable rotatable))
+            var rotatable = toRotate.GetComponent<GameEntity>().GetRotatable();
+            if (rotatable != null)
             {
                 if (this.useLogging)
                 {
