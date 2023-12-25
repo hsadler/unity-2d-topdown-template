@@ -20,7 +20,7 @@ public class HotbarItemUI : MonoBehaviour, IPointerDownHandler
     public GameObject selectionIndicator;
 
     // debug
-    private readonly bool useLogging = false;
+    private readonly bool useLogging = true;
 
 
     // UNITY HOOKS

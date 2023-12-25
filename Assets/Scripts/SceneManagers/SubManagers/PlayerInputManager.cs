@@ -59,7 +59,7 @@ public class PlayerInputManager : MonoBehaviour
     public TickManager tickManager;
 
     // debug
-    private readonly bool useLogging = false;
+    private readonly bool useLogging = true;
 
 
     // UNITY HOOKS
