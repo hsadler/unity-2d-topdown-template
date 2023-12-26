@@ -29,6 +29,7 @@ public class PlayerInputManager : MonoBehaviour
     private Vector3 quantizedMousePos;
     private Vector3 initialMultiselectMousePosition;
     public GameObject selectionBoxPrefab;
+    [HideInInspector]
     public GameObject selectionBoxGO;
     private bool mouseIsUIHovered;
 
@@ -54,12 +55,15 @@ public class PlayerInputManager : MonoBehaviour
     public GameObject hotbarCanvas;
 
     // manager references
+    [HideInInspector]
     public GameEntityRepoManager gameEntityRepoManager;
+    [HideInInspector]
     public GameEntityManager gameEntityManager;
+    [HideInInspector]
     public TickManager tickManager;
 
     // debug
-    private readonly bool useLogging = true;
+    private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
@@ -220,8 +224,11 @@ public class PlayerInputManager : MonoBehaviour
         if (this.useLogging) { Debug.Log("Starting multi-placement for entity count: " + entities.Count.ToString()); }
         this.multiPlacementEntities = entities;
         List<GameObject> spawned = this.CreateMultiPlacementEntities();
+        if (this.useLogging) { Debug.Log("Spawned multi-placement entities: " + spawned.Count.ToString()); }
         // reposition using most center entity position
-        this.entityDragContainer.transform.position = Functions.MostCenterGameObject(spawned).transform.position;
+        Vector3 mostCenterPos = Functions.MostCenterGameObject(spawned).transform.position;
+        if (this.useLogging) { Debug.Log("Most center pos: " + mostCenterPos.ToString()); }
+        this.entityDragContainer.transform.position = Functions.QuantizeVector(mostCenterPos);
         foreach (var e in spawned)
         {
             if (e != null)
@@ -229,7 +236,7 @@ public class PlayerInputManager : MonoBehaviour
                 e.transform.SetParent(this.entityDragContainer.transform);
             }
         }
-        // subsequently reposition to mouse cursor
+        // reposition to mouse cursor
         this.entityDragContainer.transform.position = this.quantizedMousePos;
         this.InitEntitySelect();
         this.TrySelectEntities(spawned);
@@ -898,10 +905,13 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (Collider2D hit in hits)
         {
-            var selectable = hit.gameObject.GetComponent<GameEntity>().GetSelectable();
-            if (selectable != null)
+            if (hit != null)
             {
-                return hit.gameObject;
+                var selectable = hit.gameObject.GetComponent<GameEntity>().GetSelectable();
+                if (selectable != null)
+                {
+                    return hit.gameObject;
+                }
             }
         }
         return null;
@@ -909,6 +919,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void TrySelectEntities(List<GameObject> entities)
     {
+        if (this.useLogging) { Debug.Log("Trying to select entities: " + entities.Count.ToString()); }
         foreach (GameObject entity in entities)
         {
             var selectable = entity.GetComponent<GameEntity>().GetSelectable();

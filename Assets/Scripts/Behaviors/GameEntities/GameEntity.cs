@@ -24,10 +24,6 @@ public class GameEntity : MonoBehaviour
     void Awake()
     {
         this.uuid = Guid.NewGuid().ToString();
-    }
-
-    void Start()
-    {
         this.selectableScript = this.GetComponent<Selectable>();
         this.draggableScript = this.GetComponent<Draggable>();
         this.rotatableScript = this.GetComponent<Rotatable>();
@@ -41,6 +37,10 @@ public class GameEntity : MonoBehaviour
             this.movableScript.enabled = true;
         }
 #pragma warning restore 0162
+    }
+
+    void Start()
+    {
         PlaySceneManager.instance.uiTelemetryManager.gameEntityCount += 1;
     }
 
