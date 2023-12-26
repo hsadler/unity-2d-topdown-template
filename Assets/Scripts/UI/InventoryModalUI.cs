@@ -55,7 +55,7 @@ public class InventoryModalUI : MonoBehaviour
         }
         foreach (GameEntityRepoItem item in PlaySceneManager.instance.gameEntityRepoManager.items)
         {
-            if (item.isInventoryAvailable)
+            if (item.isInventoryAvailable || GameSettings.IS_ADMIN)
             {
                 if (this.useLogging)
                 {

@@ -64,16 +64,8 @@ public class PlaySceneManager : MonoBehaviour
         bool loadGameStatus = this.CheckLoadGame();
         if (!loadGameStatus)
         {
-            // register initial game entities
             this.gameEntityManager.RegisterInitialGameEntities();
-            // populate inventory hotbar with default items
-            foreach (var gameEntityRepoItem in this.gameEntityRepoManager.items)
-            {
-                this.inventoryItemHotbarAssignmentEvent.Invoke(
-                    gameEntityRepoItem,
-                    gameEntityRepoItem.defaultHotbarAssignment
-                );
-            }
+            this.PopulateDefaultHotbarItems();
             this.SaveGame();
         }
     }
@@ -170,6 +162,17 @@ public class PlaySceneManager : MonoBehaviour
             cameraSize: this.playerInputManager.GetCameraZoom(),
             gameEntityStates: this.gameEntityManager.GetAllGameEntityStates()
         );
+    }
+
+    private void PopulateDefaultHotbarItems()
+    {
+        foreach (var gameEntityRepoItem in this.gameEntityRepoManager.items)
+        {
+            this.inventoryItemHotbarAssignmentEvent.Invoke(
+                gameEntityRepoItem,
+                gameEntityRepoItem.defaultHotbarAssignment
+            );
+        }
     }
 
 
