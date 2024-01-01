@@ -7,7 +7,7 @@ public class GameSettings
 
 
     // general settings
-    public const int GRID_SIZE = 9; // must be odd
+    public const int GRID_SIZE = 19; // must be odd
     public const int ENTITY_STATE_MAX_HISTORY = 100;
     public const float DEFAULT_TICK_DURATION = 0.4f;
     public const float FAST_ANIMATION_DURATION = 0.07f;

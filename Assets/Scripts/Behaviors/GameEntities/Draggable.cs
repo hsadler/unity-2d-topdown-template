@@ -60,8 +60,9 @@ public class Draggable : MonoBehaviour
     public bool PositionIsValid()
     {
         // check if drag position is valid by checking if another game entity is occupying the same position
-        GameObject occupyingGameEntity = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(this.transform.position);
-        bool positionIsValid = PlaySceneManager.instance.gameEntityManager.PositionIsFree(this.transform.position) || occupyingGameEntity == this.gameObject;
+        Vector3 pos = Functions.QuantizeVector(this.transform.position);
+        GameObject occupyingGameEntity = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(pos);
+        bool positionIsValid = PlaySceneManager.instance.gameEntityManager.PositionIsFree(pos) || occupyingGameEntity == this.gameObject;
         return positionIsValid;
     }
 
