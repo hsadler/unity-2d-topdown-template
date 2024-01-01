@@ -20,7 +20,8 @@ public class GameEntityManager : MonoBehaviour
     private HistoryStack<List<GameEntityState>> entityStateHistoryStack;
 
     // debug
-    private readonly bool useLogging = false;
+    private readonly bool useEntityManagerLogging = false;
+    private readonly bool useHistoryLogging = true;
     private readonly bool useDebugIndicators = false;
     public GameObject occupiedIndicatorPrefab;
     private IDictionary<string, GameObject> positionToOccupiedIndicator;
@@ -121,7 +122,7 @@ public class GameEntityManager : MonoBehaviour
         // check if requested position is occupied
         if (this.PositionIsFree(position))
         {
-            if (this.useLogging)
+            if (this.useEntityManagerLogging)
             {
                 Debug.Log("Adding game entity " + gameEntity.name + " at position " + position.ToString());
             }
@@ -135,7 +136,7 @@ public class GameEntityManager : MonoBehaviour
             }
             return true;
         }
-        if (this.useLogging)
+        if (this.useEntityManagerLogging)
         {
             Debug.Log("Could NOT add game entity " + gameEntity.name + " at occupied position " + position.ToString());
         }
@@ -172,7 +173,7 @@ public class GameEntityManager : MonoBehaviour
         }
         if (positionKeyToRemove != null)
         {
-            if (this.useLogging)
+            if (this.useEntityManagerLogging)
             {
                 Debug.Log("Removing game entity " + gameEntity.name + " at position " + positionKeyToRemove);
             }
@@ -186,7 +187,7 @@ public class GameEntityManager : MonoBehaviour
             }
             return true;
         }
-        if (this.useLogging)
+        if (this.useEntityManagerLogging)
         {
             Debug.LogWarning(
                 "Could NOT remove game entity " + gameEntity.name + " at position " + positionKeyToRemove +
@@ -214,14 +215,14 @@ public class GameEntityManager : MonoBehaviour
         if (this.IsDiffHistorySteps(newHistoryStep, currentHistoryStep))
         {
             this.entityStateHistoryStack.Push(newHistoryStep);
-            if (this.useLogging)
+            if (this.useHistoryLogging)
             {
                 Debug.Log("pushed entity state history step with length: " + newHistoryStep.Count.ToString());
             }
         }
         else
         {
-            if (this.useLogging)
+            if (this.useHistoryLogging)
             {
                 Debug.Log("NOT pushing entity state history step since no diff detected or there is no history");
             }
@@ -230,7 +231,7 @@ public class GameEntityManager : MonoBehaviour
 
     public bool GoStateHistoryStep(string direction)
     {
-        if (this.useLogging)
+        if (this.useHistoryLogging)
         {
             Debug.Log("doing undo/redo by applying state in direction: " + direction);
         }
@@ -260,7 +261,7 @@ public class GameEntityManager : MonoBehaviour
             // 3. set entity states to history states and add to board tracking
             foreach (GameEntityState s in entityStates)
             {
-                if (this.useLogging)
+                if (this.useHistoryLogging)
                 {
                     Debug.Log("Procesing game-entity-state with UUID: " + s.uuid);
                 }
@@ -269,7 +270,7 @@ public class GameEntityManager : MonoBehaviour
                 {
                     GameObject gameEntity = uuidToGameEntity[s.uuid];
                     GameEntity geScript = gameEntity.GetComponent<GameEntity>();
-                    if (this.useLogging)
+                    if (this.useHistoryLogging)
                     {
                         Debug.Log("Restoring game entity: " + gameEntity.name + " from state with position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
                     }
@@ -299,7 +300,7 @@ public class GameEntityManager : MonoBehaviour
                 {
                     GameObject prefab = PlaySceneManager.instance.gameEntityRepoManager.GetGameEntityPrefabByName(s.prefabName);
                     GameObject spawned = Instantiate(prefab, s.position, s.rotation);
-                    if (this.useLogging)
+                    if (this.useHistoryLogging)
                     {
                         Debug.Log("Instantiated game entity: " + spawned.name + " from state with position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
                     }
@@ -352,7 +353,7 @@ public class GameEntityManager : MonoBehaviour
         {
             if (historyStep1 == null || historyStep2 == null)
             {
-                if (this.useLogging)
+                if (this.useHistoryLogging)
                 {
                     Debug.Log("One of the diffed history steps is null");
                 }
@@ -378,7 +379,7 @@ public class GameEntityManager : MonoBehaviour
                     }
                     else
                     {
-                        if (this.useLogging)
+                        if (this.useHistoryLogging)
                         {
                             Debug.Log("A history step diff was found");
                         }
@@ -387,14 +388,14 @@ public class GameEntityManager : MonoBehaviour
                 }
                 else
                 {
-                    if (this.useLogging)
+                    if (this.useHistoryLogging)
                     {
                         Debug.Log("A history step diff was found");
                     }
                     return true;
                 }
             }
-            if (this.useLogging)
+            if (this.useHistoryLogging)
             {
                 Debug.Log("A history step diff was NOT found");
             }

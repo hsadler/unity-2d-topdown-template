@@ -152,17 +152,14 @@ X overhaul inventory system:
 X admin mode:
     X toggleable
     X place & move normally unmovable entities
+- autosaving
 
 
 BUGS:
-    X dimension size of place space is off by 1
-    - detection of out-of-bounds is bugged once multiple game-entities are rotated
-        while being dragged
     - backward/forward in history causes placement warnings
 
 
 LATER:
-- autosaving
 - workflow for multi-scene creation
 - (maybe) make position conflict resolution randomized
 - (maybe) multilayer game entity manager
