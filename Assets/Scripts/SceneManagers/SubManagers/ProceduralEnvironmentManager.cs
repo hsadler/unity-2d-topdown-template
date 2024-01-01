@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ProceduralEnvironmentManager : MonoBehaviour
 {
 
@@ -30,17 +31,20 @@ public class ProceduralEnvironmentManager : MonoBehaviour
     public void GenerateGrid()
     {
         const float OFFSET = 0.5f;
-        int playAreaLowerBound = -(GameSettings.GRID_SIZE / 2);
-        int playAreaUpperBound = GameSettings.GRID_SIZE / 2;
-        for (int i = 0; i < playAreaUpperBound + 1; i++)
+        int playAreaLowerBound = -Mathf.FloorToInt(GameSettings.GRID_SIZE / 2);
+        int playAreaUpperBound = Mathf.FloorToInt(GameSettings.GRID_SIZE / 2) + 2;
+        for (int i = playAreaLowerBound; i < playAreaUpperBound; i++)
         {
-            this.CreateYGridLine(playAreaLowerBound - OFFSET, playAreaUpperBound - OFFSET, i - OFFSET);
-            this.CreateXGridLine(playAreaLowerBound - OFFSET, playAreaUpperBound - OFFSET, i - OFFSET);
-            if (i > 0)
-            {
-                this.CreateYGridLine(playAreaLowerBound - OFFSET, playAreaUpperBound - OFFSET, -i - OFFSET);
-                this.CreateXGridLine(playAreaLowerBound - OFFSET, playAreaUpperBound - OFFSET, -i - OFFSET);
-            }
+            this.CreateYGridLine(
+                lowerBound: playAreaLowerBound - OFFSET,
+                upperBound: playAreaUpperBound - (OFFSET + 1),
+                xAxisPos: i - OFFSET
+            );
+            this.CreateXGridLine(
+                lowerBound: playAreaLowerBound - OFFSET,
+                upperBound: playAreaUpperBound - (OFFSET + 1),
+                yAxisPos: i - OFFSET
+            );
         }
     }
 
@@ -57,7 +61,7 @@ public class ProceduralEnvironmentManager : MonoBehaviour
     public bool IsPositionValid(Vector3 position)
     {
         int playAreaLowerBound = -(GameSettings.GRID_SIZE / 2);
-        int playAreaUpperBound = GameSettings.GRID_SIZE / 2;
+        int playAreaUpperBound = (GameSettings.GRID_SIZE / 2) + 1;
         return position.x >= playAreaLowerBound && position.x < playAreaUpperBound
             && position.y >= playAreaLowerBound && position.y < playAreaUpperBound;
     }
