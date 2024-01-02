@@ -162,6 +162,7 @@ BUGS:
     - backward/forward in history causes visual glitches
     - history bug where back/forward causes snapping instead of animation
     - bug where rotation is not working and then starts working
+    - bug where history is missing some game-entities
 
 
 LATER:
