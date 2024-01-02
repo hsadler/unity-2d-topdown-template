@@ -140,6 +140,8 @@ public class PlaySceneManager : MonoBehaviour
                     );
                     this.gameEntityManager.AddGameEntity(newEntity, newEntity.transform.position);
                 }
+                // push history step
+                this.gameEntityManager.TryPushEntityStateHistoryStep();
                 // populate inventory hotbar with saved items
                 foreach (HotbarItemData hotbarItemData in gameData.hotbarItemDatas)
                 {

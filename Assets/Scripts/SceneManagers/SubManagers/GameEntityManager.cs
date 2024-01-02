@@ -21,7 +21,7 @@ public class GameEntityManager : MonoBehaviour
 
     // debug
     private readonly bool useEntityManagerLogging = false;
-    private readonly bool useHistoryLogging = false;
+    private readonly bool useHistoryLogging = true;
     private readonly bool useDebugIndicators = false;
     public GameObject occupiedIndicatorPrefab;
     private IDictionary<string, GameObject> positionToOccupiedIndicator;
