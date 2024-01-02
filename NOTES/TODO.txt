@@ -156,8 +156,9 @@ X admin mode:
 
 
 BUGS:
-    - backward/forward in history causes placement warnings
-
+    X backward/forward in history causes placement warnings
+    - backward/forward in history causes visual glitches if movement+rotation
+        animation has not yet completed
 
 LATER:
 - workflow for multi-scene creation
