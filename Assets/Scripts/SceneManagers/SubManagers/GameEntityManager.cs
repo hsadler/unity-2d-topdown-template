@@ -188,8 +188,8 @@ public class GameEntityManager : MonoBehaviour
             var entityState = new GameEntityState(
                 uuid: geScript.uuid,
                 prefabName: geScript.prefabName,
-                position: entity.transform.position,
-                rotation: entity.transform.rotation
+                position: Functions.QuantizeVector(entity.transform.position),
+                rotation: Functions.QuantizeQuaternion(entity.transform.rotation)
             );
             newHistoryStep.Add(entityState);
         }
