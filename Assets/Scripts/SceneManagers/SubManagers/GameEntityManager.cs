@@ -409,10 +409,10 @@ public class GameEntityManager : MonoBehaviour
         {
             // do multiple resolution passes until no more can be done
             int lastMovementCount = -1;
-            int resolutionPasses = 0;
+            int resolutionPassCount = 0;
             while (lastMovementCount < 0 || (movables.Count > 0 && movables.Count != lastMovementCount))
             {
-                resolutionPasses += 1;
+                resolutionPassCount += 1;
                 List<Movable> recheckMovables = new();
                 foreach (Movable movable in movables)
                 {
@@ -425,8 +425,7 @@ public class GameEntityManager : MonoBehaviour
                 lastMovementCount = movables.Count;
                 movables = recheckMovables;
             }
-            bool logResolutionPasses = false;
-            if (logResolutionPasses) Debug.Log("Auto-behavior resolution passes: " + resolutionPasses.ToString());
+            if (this.useEntityManagerLogging) Debug.Log("Auto-behavior resolution passes: " + resolutionPassCount.ToString());
         }
         // reset all movables movement forces
         foreach (GameObject entity in new List<GameObject>(this.positionToGameEntity.Values))

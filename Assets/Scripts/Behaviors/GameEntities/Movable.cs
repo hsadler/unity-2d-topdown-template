@@ -74,23 +74,23 @@ public class Movable : MonoBehaviour
         {
             Debug.Log("Animating to position from: " + startPosition.ToString() + " to: " + endPosition.ToString());
         }
-        this.gem.RemoveGameEntity(this.gameObject);
-        this.gem.AddGameEntity(this.gameObject, endPosition);
         if (this.movementCoroutine != null)
         {
             StopCoroutine(this.movementCoroutine);
         }
         // snap position to discrete grid and register on game-entity manager
+        this.gem.RemoveGameEntity(this.gameObject);
+        this.gem.AddGameEntity(this.gameObject, endPosition);
         this.transform.position = endPosition;
         // animate the movement of the render body (it will lag behind SOT of the transform)
         this.renderBody.transform.position = startPosition;
         this.movementCoroutine = StartCoroutine(
-                Functions.MoveOverTime(
-                    go: this.renderBody,
-                    startPos: renderBody.transform.position,
-                    endPos: endPosition,
-                    duration: animationDuration
-                )
+            Functions.MoveOverTime(
+                go: this.renderBody,
+                startPos: renderBody.transform.position,
+                endPos: endPosition,
+                duration: animationDuration
+            )
         );
     }
 

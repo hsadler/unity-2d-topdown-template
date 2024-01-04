@@ -156,13 +156,10 @@ X admin mode:
 
 
 BUGS:
-    X backward/forward in history causes placement warnings
-    X load of game with entities does not properly register loaded entities as
-        first history step
     - backward/forward in history causes visual glitches
-    - history bug where back/forward causes snapping instead of animation
-    - bug where rotation is not working and then starts working
     - bug where history is missing some game-entities
+    - (intermittent) bug where rotation is not working and then starts working
+    - (intermittent) bug where history back/forward causes snapping instead of animation
 
 
 LATER:
