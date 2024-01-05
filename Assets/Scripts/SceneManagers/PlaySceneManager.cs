@@ -68,6 +68,7 @@ public class PlaySceneManager : MonoBehaviour
             this.PopulateDefaultHotbarItems();
             this.SaveGame();
         }
+        InvokeRepeating(nameof(this.SaveGame), GameSettings.AUTOSAVE_SECONDS, GameSettings.AUTOSAVE_SECONDS);
     }
 
     void Update() { }
@@ -80,21 +81,26 @@ public class PlaySceneManager : MonoBehaviour
         {
             Debug.Log("OnClickSaveGame");
         }
-        this.gameSaveLoadManager.SaveGame(
-            SaveGameSignal.fileName,
-            cameraPosition: this.playerInputManager.GetCameraPosition(),
-            cameraSize: this.playerInputManager.GetCameraZoom(),
-            gameEntityStates: this.gameEntityManager.GetAllGameEntityStates()
-        );
+        this.SaveGame();
     }
 
     public void OnClickLoadGame()
     {
+        if (this.useLogging)
+        {
+            Debug.Log("OnClickLoadGame");
+        }
+        this.SaveGame();
         SceneManager.LoadScene("LoadGame");
     }
 
     public void OnClickExitPlayScene()
     {
+        if (this.useLogging)
+        {
+            Debug.Log("OnClickExitPlayScene");
+        }
+        this.SaveGame();
         SceneManager.LoadScene("GameStart");
     }
 
@@ -158,6 +164,10 @@ public class PlaySceneManager : MonoBehaviour
 
     private void SaveGame()
     {
+        if (this.useLogging)
+        {
+            Debug.Log("SaveGame");
+        }
         this.gameSaveLoadManager.SaveGame(
             SaveGameSignal.fileName,
             cameraPosition: this.playerInputManager.GetCameraPosition(),

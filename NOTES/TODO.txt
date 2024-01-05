@@ -152,7 +152,9 @@ X overhaul inventory system:
 X admin mode:
     X toggleable
     X place & move normally unmovable entities
-- autosaving
+X autosaving:
+    X should save every x minutes
+    X should save on game close
 
 
 BUGS:

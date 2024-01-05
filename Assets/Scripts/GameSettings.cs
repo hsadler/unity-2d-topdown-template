@@ -8,9 +8,10 @@ public class GameSettings
 
     // general settings
     public const int GRID_SIZE = 101; // must be odd
-    public const int ENTITY_STATE_MAX_HISTORY = 100;
+    public const int ENTITY_STATE_MAX_HISTORY = 1000;
     public const float DEFAULT_TICK_DURATION = 0.4f;
     public const float FAST_ANIMATION_DURATION = 0.07f;
+    public const float AUTOSAVE_SECONDS = 30f;
 
 
     // camera settings
