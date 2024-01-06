@@ -155,6 +155,14 @@ X admin mode:
 X autosaving:
     X should save every x minutes
     X should save on game close
+- refactor game-settings to be values exposed to editor and therefor possible to be exposed in-game
+- multilayer game entity manager:
+    - layers:
+        - ground: paths, conveyors, pipes, conduits, may or may not be AOEs for object layer
+        - objects: things that can be upon ground items, but cannot occupy the same space as one another
+    - game entities belong to a single layer
+    - system allows for addition of layers and querying from layer to layer
+- update README with template features
 
 
 BUGS:
@@ -167,7 +175,6 @@ BUGS:
 LATER:
 - workflow for multi-scene creation
 - (maybe) make position conflict resolution randomized
-- (maybe) multilayer game entity manager
 - more entities with behaviors:
     - (maybe) zone with effect (road, conveyor, etc.)
     - (maybe) zone without effect (decoration)
