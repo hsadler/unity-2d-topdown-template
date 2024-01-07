@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabName: Spawner
+  gridLayerName: Objects
   uuid: 
   isNewlyCreated: 0
   renders:
@@ -172,6 +173,10 @@ MonoBehaviour:
   - {fileID: 5989734657265948395}
   - {fileID: 9142094778056590178}
   - {fileID: 3973658475283295790}
+  selectableScript: {fileID: 0}
+  draggableScript: {fileID: 0}
+  rotatableScript: {fileID: 0}
+  movableScript: {fileID: 0}
 --- !u!114 &7621825404319064453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,6 +218,7 @@ MonoBehaviour:
   isDragging: 0
   invalidDragIndicator: {fileID: 3973658475283295790}
   preDragPosition: {x: 0, y: 0, z: 0}
+  preDragRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &5433251137021192336
 MonoBehaviour:
   m_ObjectHideFlags: 0

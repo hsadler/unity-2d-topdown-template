@@ -304,7 +304,6 @@ public class GameEntityManager : MonoBehaviour
     private string GetSerializedGameEntityPosition(GameObject gameEntity)
     {
         string eUUID = gameEntity.GetComponent<GameEntity>().uuid;
-
         if (this.gameEntityUUIDToSerializedPosition.ContainsKey(eUUID))
         {
             return this.gameEntityUUIDToSerializedPosition[eUUID];

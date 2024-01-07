@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabName: Mover
+  gridLayerName: Objects
   uuid: 
   isNewlyCreated: 0
   renders:
@@ -87,6 +88,10 @@ MonoBehaviour:
   - {fileID: 8424242066282145903}
   - {fileID: 7310873968425467009}
   - {fileID: 2238261914918316488}
+  selectableScript: {fileID: 0}
+  draggableScript: {fileID: 0}
+  rotatableScript: {fileID: 0}
+  movableScript: {fileID: 0}
 --- !u!114 &4476000169575208091
 MonoBehaviour:
   m_ObjectHideFlags: 0

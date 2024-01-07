@@ -161,6 +161,7 @@ X autosaving:
         - objects: things that can be upon ground items, but cannot occupy the same space as one another
     - game entities belong to a single layer
     - system allows for addition of layers and querying from layer to layer
+    - create ground-conveyor entity as POC
 - update README with template features
 
 

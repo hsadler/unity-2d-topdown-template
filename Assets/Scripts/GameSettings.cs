@@ -28,6 +28,9 @@ public class GameSettings
     public const string INPUT_MODE_MENU = "INPUT_MODE_MENU";
     public const string INPUT_MODE_INVENTORY = "INPUT_MODE_INVENTORY";
 
+    // game entity grid layers
+    public const string GAME_ENTITY_GRID_LAYER_GROUND = "Ground";
+    public const string GAME_ENTITY_GRID_LAYER_OBJECTS = "Objects";
 
     // player input mappings
     public const KeyCode ESC_KEY = KeyCode.Escape;

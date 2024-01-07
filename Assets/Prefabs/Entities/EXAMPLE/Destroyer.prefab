@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabName: Destroyer
+  gridLayerName: Objects
   uuid: 
   isNewlyCreated: 0
   renders:
@@ -206,6 +207,10 @@ MonoBehaviour:
   - {fileID: 5989734657265948395}
   - {fileID: 9142094778056590178}
   - {fileID: 3973658475283295790}
+  selectableScript: {fileID: 0}
+  draggableScript: {fileID: 0}
+  rotatableScript: {fileID: 0}
+  movableScript: {fileID: 0}
 --- !u!114 &8710175240283537755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,6 +251,7 @@ MonoBehaviour:
   isDragging: 0
   invalidDragIndicator: {fileID: 3973658475283295790}
   preDragPosition: {x: 0, y: 0, z: 0}
+  preDragRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &6176149059835739403
 MonoBehaviour:
   m_ObjectHideFlags: 0

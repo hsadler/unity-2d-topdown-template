@@ -8,6 +8,7 @@ public class GameEntity : MonoBehaviour
 
 
     public string prefabName;
+    public string gridLayerName;
     public string uuid;
     public bool isNewlyCreated = false;
     public List<GameObject> renders;
