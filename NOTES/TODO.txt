@@ -156,11 +156,11 @@ X autosaving:
     X should save every x minutes
     X should save on game close
 - multilayer game entity manager:
-    - layers:
-        - ground: paths, conveyors, pipes, conduits, may or may not be AOEs for object layer
-        - objects: things that can be upon ground items, but cannot occupy the same space as one another
-    - game entities belong to a single layer
-    - system allows for addition of layers and querying from layer to layer
+    X layers:
+        X ground: paths, conveyors, pipes, conduits, may or may not be AOEs for object layer
+        X objects: things that can be upon ground items, but cannot occupy the same space as one another
+    X game entities belong to a single layer
+    X system allows for addition of layers and querying from layer to layer
     - create ground-conveyor entity as POC
 - update README with template features
 

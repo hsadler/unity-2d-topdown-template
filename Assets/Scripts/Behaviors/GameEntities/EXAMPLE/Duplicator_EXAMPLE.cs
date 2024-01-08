@@ -6,17 +6,12 @@ public class Duplicator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
 {
 
 
-    private GameEntityManager gem;
-
     private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
 
-    void Start()
-    {
-        this.gem = PlaySceneManager.instance.gameEntityManager;
-    }
+    void Start() { }
 
     void Update() { }
 
@@ -44,8 +39,8 @@ public class Duplicator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         //
         Vector3 inputPos = Functions.QuantizeVector(this.transform.position + transform.up);
         Vector3 outputPos = Functions.QuantizeVector(this.transform.position - transform.up);
-        GameObject toDuplicate = this.gem.GetGameEntityAtPosition(inputPos);
-        GameObject entityAtOutputPos = this.gem.GetGameEntityAtPosition(outputPos);
+        GameObject toDuplicate = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(GameSettings.GAME_ENTITY_GRID_LAYER_OBJECTS, inputPos);
+        GameObject entityAtOutputPos = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(GameSettings.GAME_ENTITY_GRID_LAYER_OBJECTS, outputPos);
         if (entityAtOutputPos != null)
         {
             if (this.useLogging)
@@ -61,7 +56,7 @@ public class Duplicator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
             }
             GameObject spawnPrefab = PlaySceneManager.instance.gameEntityRepoManager.GetGameEntityPrefabByName(toDuplicate.GetComponent<GameEntity>().prefabName);
             GameObject newEntity = Instantiate(spawnPrefab, outputPos, toDuplicate.transform.rotation);
-            this.gem.AddGameEntity(newEntity, newEntity.transform.position);
+            PlaySceneManager.instance.gameEntityManager.AddGameEntity(GameSettings.GAME_ENTITY_GRID_LAYER_OBJECTS, newEntity, newEntity.transform.position);
         }
     }
 

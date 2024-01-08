@@ -42,7 +42,7 @@ public class Rotator_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         // rotates a game-entity within the target area
         //
         Vector3 rotatePos = Functions.QuantizeVector(this.transform.position + this.transform.up);
-        GameObject toRotate = this.gem.GetGameEntityAtPosition(rotatePos);
+        GameObject toRotate = this.gem.GetGameEntityAtPosition(GameSettings.GAME_ENTITY_GRID_LAYER_OBJECTS, rotatePos);
         if (toRotate != null)
         {
             var rotatable = toRotate.GetComponent<GameEntity>().GetRotatable();

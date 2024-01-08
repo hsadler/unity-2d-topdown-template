@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabName: Rotator
-  gridLayerName: Objects
+  gridLayer: Objects
   uuid: 
   isNewlyCreated: 0
   renders:
@@ -173,10 +173,6 @@ MonoBehaviour:
   - {fileID: 5989734657265948395}
   - {fileID: 9142094778056590178}
   - {fileID: 3973658475283295790}
-  selectableScript: {fileID: 0}
-  draggableScript: {fileID: 0}
-  rotatableScript: {fileID: 0}
-  movableScript: {fileID: 0}
 --- !u!114 &3214651302494865398
 MonoBehaviour:
   m_ObjectHideFlags: 0

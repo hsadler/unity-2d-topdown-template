@@ -5,25 +5,26 @@ using UnityEngine;
 public class GameEntityGridLayer
 {
 
-    private string gridLayerName;
+
+    // position state management
     private IDictionary<string, GameObject> positionToGameEntity;
     private IDictionary<string, string> gameEntityUUIDToSerializedPosition;
 
     // debug
     private readonly bool useLogging = false;
 
-    public GameEntityGridLayer(string gridLayerName)
+
+    public GameEntityGridLayer()
     {
-        this.gridLayerName = gridLayerName;
         this.positionToGameEntity = new Dictionary<string, GameObject>();
         this.gameEntityUUIDToSerializedPosition = new Dictionary<string, string>();
     }
 
     // INTF METHODS
 
-    public string GetGridLayerName()
+    public List<GameObject> GetAllGameEntities()
     {
-        return this.gridLayerName;
+        return new List<GameObject>(this.positionToGameEntity.Values);
     }
 
     public bool PositionIsOccupied(Vector3 position)
@@ -76,7 +77,7 @@ public class GameEntityGridLayer
         string eUUID = gameEntity.GetComponent<GameEntity>().uuid;
         Vector3 position = gameEntity.transform.position;
         // check that game entity transform position and tracked position match
-        string currPos = this.GetSerializedGameEntityPosition(gameEntity);
+        string currPos = gameEntity.GetComponent<GameEntity>().GetSerializedPosition();
         string sPos = position.ToString();
         // try to remove at game object's current position
         if (sPos == currPos && this.PositionIsOccupied(position))
@@ -109,19 +110,7 @@ public class GameEntityGridLayer
         return false;
     }
 
-    // IMPL METHODS
-
-    private string GetSerializedGameEntityPosition(GameObject gameEntity)
-    {
-        string eUUID = gameEntity.GetComponent<GameEntity>().uuid;
-        if (this.gameEntityUUIDToSerializedPosition.ContainsKey(eUUID))
-        {
-            return this.gameEntityUUIDToSerializedPosition[eUUID];
-        }
-        return null;
-    }
-
-    private GameObject GetEntityByUUID(string uuid)
+    public GameObject GetEntityByUUID(string uuid)
     {
         foreach (var e in this.positionToGameEntity.Values)
         {
@@ -132,5 +121,8 @@ public class GameEntityGridLayer
         }
         return null;
     }
+
+    // IMPL METHODS
+
 
 }

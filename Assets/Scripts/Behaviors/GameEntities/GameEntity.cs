@@ -8,16 +8,16 @@ public class GameEntity : MonoBehaviour
 
 
     public string prefabName;
-    public string gridLayerName;
+    public string gridLayer;
     public string uuid;
     public bool isNewlyCreated = false;
     public List<GameObject> renders;
 
     // behavior script references
-    public Selectable selectableScript;
-    public Draggable draggableScript;
-    public Rotatable rotatableScript;
-    public Movable movableScript;
+    private Selectable selectableScript;
+    private Draggable draggableScript;
+    private Rotatable rotatableScript;
+    private Movable movableScript;
 
 
     // UNITY HOOKS
@@ -105,9 +105,14 @@ public class GameEntity : MonoBehaviour
     public bool EntityIsPlaying()
     {
         Vector3 quantizedPos = Functions.QuantizeVector(this.transform.position);
-        GameObject trackedEntity = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(quantizedPos);
+        GameObject trackedEntity = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(this.gridLayer, quantizedPos);
         bool isPlaying = trackedEntity && trackedEntity == this.gameObject;
         return isPlaying;
+    }
+
+    public string GetSerializedPosition()
+    {
+        return Functions.QuantizeVector(this.transform.position).ToString();
     }
 
     public void SetUUID(string uuid)

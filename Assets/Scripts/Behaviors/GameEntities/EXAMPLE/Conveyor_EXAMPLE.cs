@@ -7,8 +7,6 @@ public class Conveyor_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
 
 
     public LineRenderer beamLineRenderer;
-
-    private GameEntityManager gem;
     private readonly int beamLength = 10;
 
     private readonly bool useLogging = false;
@@ -18,7 +16,6 @@ public class Conveyor_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
 
     void Start()
     {
-        this.gem = PlaySceneManager.instance.gameEntityManager;
         this.SetBeamLinePositions();
     }
 
@@ -63,7 +60,7 @@ public class Conveyor_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
             {
                 Debug.Log("Checking position in beam: " + beamPos.ToString());
             }
-            GameObject go = this.gem.GetGameEntityAtPosition(beamPos);
+            GameObject go = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(GameSettings.GAME_ENTITY_GRID_LAYER_OBJECTS, beamPos);
             if (go != null)
             {
                 var movable = go.GetComponent<GameEntity>().GetMovable();

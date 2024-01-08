@@ -9,7 +9,6 @@ public class Movable : MonoBehaviour
 
     public GameObject renderBody;
 
-    private GameEntityManager gem;
     private List<Vector3> movementForces = new();
     private Coroutine movementCoroutine = null;
 
@@ -18,10 +17,7 @@ public class Movable : MonoBehaviour
 
     // UNITY HOOKS
 
-    void Start()
-    {
-        this.gem = PlaySceneManager.instance.gameEntityManager;
-    }
+    void Start() { }
 
     void Update() { }
 
@@ -60,10 +56,14 @@ public class Movable : MonoBehaviour
             endPos += movementForce;
         }
         endPos = Functions.QuantizeVector(endPos);
-        if (this.gem != null && this.gem.PositionIsFree(endPos))
+        if (PlaySceneManager.instance.gameEntityManager != null)
         {
-            this.AnimateMovement(this.transform.position, endPos, animationDuration);
-            return true;
+            GameEntityGridLayer gridLayer = PlaySceneManager.instance.gameEntityManager.GetGameEntityGridLayer(GameSettings.GAME_ENTITY_GRID_LAYER_OBJECTS);
+            if (gridLayer.PositionIsValidAndFree(endPos))
+            {
+                this.AnimateMovement(this.transform.position, endPos, animationDuration);
+                return true;
+            }
         }
         return false;
     }
@@ -79,8 +79,8 @@ public class Movable : MonoBehaviour
             StopCoroutine(this.movementCoroutine);
         }
         // snap position to discrete grid and register on game-entity manager
-        this.gem.RemoveGameEntity(this.gameObject);
-        this.gem.AddGameEntity(this.gameObject, endPosition);
+        PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(GameSettings.GAME_ENTITY_GRID_LAYER_OBJECTS, this.gameObject);
+        PlaySceneManager.instance.gameEntityManager.AddGameEntity(GameSettings.GAME_ENTITY_GRID_LAYER_OBJECTS, this.gameObject, endPosition);
         this.transform.position = endPosition;
         // animate the movement of the render body (it will lag behind SOT of the transform)
         this.renderBody.transform.position = startPosition;

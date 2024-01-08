@@ -144,7 +144,7 @@ public class PlaySceneManager : MonoBehaviour
                         Functions.QuantizeVector(gameEntityState.position.ToVector3()),
                         Functions.QuantizeQuaternion(gameEntityState.rotation.ToQuaternion())
                     );
-                    this.gameEntityManager.AddGameEntity(newEntity, newEntity.transform.position);
+                    this.gameEntityManager.AddGameEntity(gameEntityState.gridLayer, newEntity, newEntity.transform.position);
                 }
                 // push history step
                 this.gameEntityManager.TryPushEntityStateHistoryStep();

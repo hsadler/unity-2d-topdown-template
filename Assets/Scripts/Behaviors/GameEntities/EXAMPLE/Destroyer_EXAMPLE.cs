@@ -6,17 +6,12 @@ public class Destroyer_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
 {
 
 
-    private GameEntityManager gem;
-
     private readonly bool useLogging = false;
 
 
     // UNITY HOOKS
 
-    void Start()
-    {
-        this.gem = PlaySceneManager.instance.gameEntityManager;
-    }
+    void Start() { }
 
     void Update() { }
 
@@ -42,14 +37,14 @@ public class Destroyer_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
         // destroy a game-entity within the target area
         //
         Vector3 destroyPos = Functions.QuantizeVector(this.transform.position + this.transform.up);
-        GameObject toDestroy = this.gem.GetGameEntityAtPosition(destroyPos);
+        GameObject toDestroy = PlaySceneManager.instance.gameEntityManager.GetGameEntityAtPosition(GameSettings.GAME_ENTITY_GRID_LAYER_OBJECTS, destroyPos);
         if (toDestroy != null)
         {
             if (this.useLogging)
             {
                 Debug.Log("Destroying entity at position: " + destroyPos.ToString());
             }
-            this.gem.RemoveGameEntity(toDestroy);
+            PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(GameSettings.GAME_ENTITY_GRID_LAYER_OBJECTS, toDestroy);
             Destroy(toDestroy);
         }
     }

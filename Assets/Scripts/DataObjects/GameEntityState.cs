@@ -9,14 +9,16 @@ public class GameEntityState
 
     public string uuid;
     public string prefabName;
+    public string gridLayer;
     public Vector3 position;
     public Quaternion rotation;
 
 
-    public GameEntityState(string uuid, string prefabName, Vector3 position, Quaternion rotation)
+    public GameEntityState(string uuid, string prefabName, string gridLayer, Vector3 position, Quaternion rotation)
     {
         this.uuid = uuid;
         this.prefabName = prefabName;
+        this.gridLayer = gridLayer;
         this.position = position;
         this.rotation = rotation;
     }
@@ -27,17 +29,6 @@ public class GameEntityState
     {
         return new SerializableGameEntityState(this);
     }
-
-    public static GameEntityState FromSerializable(SerializableGameEntityState state)
-    {
-        return new GameEntityState(
-            state.uuid,
-            state.prefabName,
-            state.position.ToVector3(),
-            state.rotation.ToQuaternion()
-        );
-    }
-
 
     // IMPLEMENTATION METHODS
 

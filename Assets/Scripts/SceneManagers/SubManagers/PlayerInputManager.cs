@@ -196,10 +196,11 @@ public class PlayerInputManager : MonoBehaviour
     {
         foreach (GameObject e in this.GetEntitiesSelected())
         {
-            var selectable = e.GetComponent<GameEntity>().GetSelectable();
+            GameEntity geScript = e.GetComponent<GameEntity>();
+            var selectable = geScript.GetSelectable();
             if (forceDelete || selectable != null)
             {
-                this.gameEntityManager.RemoveGameEntity(e);
+                this.gameEntityManager.RemoveGameEntity(geScript.gridLayer, e);
                 Destroy(e);
             }
         }
@@ -285,7 +286,8 @@ public class PlayerInputManager : MonoBehaviour
         {
             foreach (GameObject e in draggables)
             {
-                this.gameEntityManager.RemoveGameEntity(e);
+                GameEntity geScript = e.GetComponent<GameEntity>();
+                this.gameEntityManager.RemoveGameEntity(geScript.gridLayer, e);
                 Destroy(e);
             }
             this.InitEntitySelect();
@@ -312,9 +314,10 @@ public class PlayerInputManager : MonoBehaviour
         }
         foreach (GameObject e in draggables)
         {
+            GameEntity geScript = e.GetComponent<GameEntity>();
             e.GetComponent<Draggable>().SetDragging(false);
-            e.GetComponent<GameEntity>().isNewlyCreated = false;
-            this.gameEntityManager.AddGameEntity(e, e.transform.position);
+            geScript.isNewlyCreated = false;
+            this.gameEntityManager.AddGameEntity(geScript.gridLayer, e, e.transform.position);
         }
         this.UngroupDraggingEntities(this.GetEntitiesSelected());
         this.isEntityDragging = false;
@@ -705,7 +708,8 @@ public class PlayerInputManager : MonoBehaviour
         // set draggable state on entities and remove from game-entity-manager if needed
         foreach (var e in draggables)
         {
-            Draggable draggable = e.GetComponent<GameEntity>().GetDraggable();
+            GameEntity geScript = e.GetComponent<GameEntity>();
+            Draggable draggable = geScript.GetDraggable();
             // is already dragging
             if (draggable.isDragging)
             {
@@ -717,7 +721,7 @@ public class PlayerInputManager : MonoBehaviour
                 draggable.SetDragging(true);
                 if (this.inputMode == GameSettings.INPUT_MODE_DEFAULT)
                 {
-                    this.gameEntityManager.RemoveGameEntity(e);
+                    this.gameEntityManager.RemoveGameEntity(geScript.gridLayer, e);
                 }
             }
         }
@@ -874,11 +878,11 @@ public class PlayerInputManager : MonoBehaviour
             // commit placement and re-init multi-placement
             foreach (GameObject e in draggables)
             {
-                var ge = e.GetComponent<GameEntity>();
+                var geScript = e.GetComponent<GameEntity>();
                 this.TryFastForwardEntityGroupRotation();
-                ge.GetDraggable().SetDragging(false);
-                ge.isNewlyCreated = false;
-                this.gameEntityManager.AddGameEntity(e, e.transform.position);
+                geScript.GetDraggable().SetDragging(false);
+                geScript.isNewlyCreated = false;
+                this.gameEntityManager.AddGameEntity(geScript.gridLayer, e, e.transform.position);
                 e.transform.SetParent(null);
             }
             this.StartMultiPlacement(this.GetEntitiesSelected());

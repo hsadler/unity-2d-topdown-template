@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabName: ResourceData
-  gridLayerName: Objects
+  gridLayer: Objects
   uuid: 
   isNewlyCreated: 0
   renders:
@@ -291,10 +291,6 @@ MonoBehaviour:
   - {fileID: 7479950168698870634}
   - {fileID: 9142094778056590178}
   - {fileID: 3973658475283295790}
-  selectableScript: {fileID: 0}
-  draggableScript: {fileID: 0}
-  rotatableScript: {fileID: 0}
-  movableScript: {fileID: 0}
 --- !u!114 &7901279116837593360
 MonoBehaviour:
   m_ObjectHideFlags: 0
