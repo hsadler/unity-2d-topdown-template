@@ -155,13 +155,15 @@ X admin mode:
 X autosaving:
     X should save every x minutes
     X should save on game close
-- multilayer game entity manager:
+X multilayer game entity manager:
     X layers:
         X ground: paths, conveyors, pipes, conduits, may or may not be AOEs for object layer
         X objects: things that can be upon ground items, but cannot occupy the same space as one another
     X game entities belong to a single layer
     X system allows for addition of layers and querying from layer to layer
-    - create ground-conveyor entity as POC
+    X create ground-conveyor entity as POC
+    - entity history bugfixes:
+        - back in history causes multi delete and null ref bug
 - update README with template features
 
 

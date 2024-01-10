@@ -3762,14 +3762,14 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: eb8ba0b8df497074f9470bae7255d7ea, type: 3}
     defaultHotbarAssignment: 7
     isInventoryAvailable: 1
-  - prefab: {fileID: 2403585086607018275, guid: 532cebb4e65c36047bbf40635c529786, type: 3}
-    icon: {fileID: 0}
-    defaultHotbarAssignment: 
-    isInventoryAvailable: 0
   - prefab: {fileID: 1609427600843478509, guid: 46cdd73e0dec31948a1ed723ea7018c3, type: 3}
     icon: {fileID: 0}
     defaultHotbarAssignment: 8
     isInventoryAvailable: 1
+  - prefab: {fileID: 2403585086607018275, guid: 532cebb4e65c36047bbf40635c529786, type: 3}
+    icon: {fileID: 0}
+    defaultHotbarAssignment: 
+    isInventoryAvailable: 0
 --- !u!1 &1620279480
 GameObject:
   m_ObjectHideFlags: 0

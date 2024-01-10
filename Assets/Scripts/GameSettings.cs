@@ -6,6 +6,11 @@ public class GameSettings
 {
 
 
+    // dev settings
+    public const bool DISPLAY_TELEMETRY = true;
+    public const bool DISPLAY_UI_DEBUG = false;
+    public const bool IS_ADMIN = false;
+
     // general settings
     public const int GRID_SIZE = 101; // must be odd
     public const int ENTITY_STATE_MAX_HISTORY = 1000;
@@ -58,12 +63,6 @@ public class GameSettings
 
     // styling
     public const int GUI_FONT_SIZE = 20;
-
-
-    // dev settings
-    public const bool DISPLAY_TELEMETRY = true;
-    public const bool DISPLAY_UI_DEBUG = false;
-    public const bool IS_ADMIN = false;
 
 
 }

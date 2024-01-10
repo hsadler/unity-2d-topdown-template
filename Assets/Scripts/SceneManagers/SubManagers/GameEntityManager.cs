@@ -19,8 +19,7 @@ public class GameEntityManager : MonoBehaviour
     private HistoryStack<List<GameEntityState>> entityStateHistoryStack;
 
     // debug
-    private readonly bool useEntityManagerLogging = false;
-    private readonly bool useHistoryLogging = false;
+    private readonly bool useLogging = true;
     private readonly bool useDebugIndicators = false;
     public GameObject occupiedIndicatorPrefab;
     private IDictionary<string, GameObject> positionToOccupiedIndicator;
@@ -161,31 +160,31 @@ public class GameEntityManager : MonoBehaviour
         if (this.IsDiffHistorySteps(newHistoryStep, currentHistoryStep))
         {
             this.entityStateHistoryStack.Push(newHistoryStep);
-            if (this.useHistoryLogging) Debug.Log("pushed entity state history step with length: " + newHistoryStep.Count.ToString());
+            if (this.useLogging) Debug.Log("pushed entity state history step with length: " + newHistoryStep.Count.ToString());
         }
         else
         {
-            if (this.useHistoryLogging) Debug.Log("NOT pushing entity state history step since no diff detected or there is no history");
+            if (this.useLogging) Debug.Log("NOT pushing entity state history step since no diff detected or there is no history");
         }
     }
 
     public bool GoStateHistoryStep(string direction)
     {
-        if (this.useHistoryLogging) Debug.Log("doing undo/redo by applying state in direction: " + direction);
+        if (this.useLogging) Debug.Log("doing undo/redo by applying state in direction: " + direction);
         List<GameEntityState> entityStates = direction == "back" ? this.entityStateHistoryStack.Previous() : this.entityStateHistoryStack.Next();
         if (entityStates != null)
         {
             var entities = this.GetAllGameEntities();
 
             // 1. initialize all to non-active for clean slate
-            if (this.useHistoryLogging) Debug.Log("Setting all game entities to non-active");
+            if (this.useLogging) Debug.Log("Setting all game entities to non-active");
             foreach (GameObject e in entities)
             {
                 e.SetActive(false);
             }
 
             // 2. gather game entity game objects to be processed and remove from board tracking
-            if (this.useHistoryLogging) Debug.Log("Gathering game entities to be processed and removing from board tracking");
+            if (this.useLogging) Debug.Log("Gathering game entities to be processed and removing from board tracking");
             var uuidToGameEntity = new Dictionary<string, GameObject>();
             foreach (GameEntityState s in entityStates)
             {
@@ -197,30 +196,30 @@ public class GameEntityManager : MonoBehaviour
                     bool removeStatus = this.RemoveGameEntity(s.gridLayer, gameEntity);
                     if (removeStatus)
                     {
-                        if (this.useHistoryLogging) Debug.Log("Removed game entity: " + gameEntity.name + " from board tracking with UUID: " + s.uuid + " and position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
+                        if (this.useLogging) Debug.Log("Removed game entity: " + gameEntity.name + " from board tracking with UUID: " + s.uuid + " and position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
                     }
                     else
                     {
-                        if (this.useHistoryLogging) Debug.Log("Could not remove game entity: " + gameEntity.name + " from board tracking with UUID: " + s.uuid + " and position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
+                        if (this.useLogging) Debug.Log("Could not remove game entity: " + gameEntity.name + " from board tracking with UUID: " + s.uuid + " and position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
                     }
                 }
                 else
                 {
-                    if (this.useHistoryLogging) Debug.Log("Could not find game entity by instance UUID: " + s.uuid);
+                    if (this.useLogging) Debug.Log("Could not find game entity by instance UUID: " + s.uuid);
                 }
             }
 
             // 3. set entity states to history states and add to board tracking
-            if (this.useHistoryLogging) Debug.Log("Setting entity states to history states and adding to board tracking");
+            if (this.useLogging) Debug.Log("Setting entity states to history states and adding to board tracking");
             foreach (GameEntityState s in entityStates)
             {
-                if (this.useHistoryLogging) Debug.Log("Procesing game-entity-state with UUID: " + s.uuid);
+                if (this.useLogging) Debug.Log("Procesing game-entity-state with UUID: " + s.uuid);
                 // for existing game entities, restore state
                 if (uuidToGameEntity.ContainsKey(s.uuid))
                 {
                     GameObject gameEntity = uuidToGameEntity[s.uuid];
                     GameEntity geScript = gameEntity.GetComponent<GameEntity>();
-                    if (this.useHistoryLogging) Debug.Log("Restoring game entity: " + gameEntity.name + " from state with position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
+                    if (this.useLogging) Debug.Log("Restoring game entity: " + gameEntity.name + " from state with position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
                     gameEntity.SetActive(true);
                     var movable = geScript.GetMovable();
                     if (movable != null)
@@ -247,7 +246,7 @@ public class GameEntityManager : MonoBehaviour
                 {
                     GameObject prefab = PlaySceneManager.instance.gameEntityRepoManager.GetGameEntityPrefabByName(s.prefabName);
                     GameObject spawned = Instantiate(prefab, s.position, s.rotation);
-                    if (this.useHistoryLogging) Debug.Log("Instantiated game entity: " + spawned.name + " from state with position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
+                    if (this.useLogging) Debug.Log("Instantiated game entity: " + spawned.name + " from state with position: " + s.position.ToString() + " and rotation: " + s.rotation.ToString());
                     spawned.GetComponent<GameEntity>().SetUUID(s.uuid);
                     this.AddGameEntity(s.gridLayer, spawned, spawned.transform.position);
                 }
@@ -268,30 +267,6 @@ public class GameEntityManager : MonoBehaviour
 
     // IMPL METHODS
 
-    // TODO: remove
-    // private string GetSerializedGameEntityPosition(GameObject gameEntity)
-    // {
-    //     string eUUID = gameEntity.GetComponent<GameEntity>().uuid;
-    //     if (this.gameEntityUUIDToSerializedPosition.ContainsKey(eUUID))
-    //     {
-    //         return this.gameEntityUUIDToSerializedPosition[eUUID];
-    //     }
-    //     return null;
-    // }
-
-    // TODO: remove
-    // private GameObject GetEntityByInstanceUUID(string uuid)
-    // {
-    //     foreach (var e in this.positionToGameEntity.Values)
-    //     {
-    //         if (e.GetComponent<GameEntity>().uuid == uuid)
-    //         {
-    //             return e;
-    //         }
-    //     }
-    //     return null;
-    // }
-
     private bool IsDiffHistorySteps(List<GameEntityState> historyStep1, List<GameEntityState> historyStep2)
     {
         return Diff(historyStep1, historyStep2) || Diff(historyStep2, historyStep1);
@@ -299,7 +274,7 @@ public class GameEntityManager : MonoBehaviour
         {
             if (historyStep1 == null || historyStep2 == null)
             {
-                if (this.useHistoryLogging) Debug.Log("One of the diffed history steps is null");
+                if (this.useLogging) Debug.Log("One of the diffed history steps is null");
                 return true;
             }
             Dictionary<string, GameEntityState> uuidToGameEntityState = new();
@@ -322,17 +297,17 @@ public class GameEntityManager : MonoBehaviour
                     }
                     else
                     {
-                        if (this.useHistoryLogging) Debug.Log("A history step diff was found");
+                        if (this.useLogging) Debug.Log("A history step diff was found");
                         return true;
                     }
                 }
                 else
                 {
-                    if (this.useHistoryLogging) Debug.Log("A history step diff was found");
+                    if (this.useLogging) Debug.Log("A history step diff was found");
                     return true;
                 }
             }
-            if (this.useHistoryLogging) Debug.Log("A history step diff was NOT found");
+            if (this.useLogging) Debug.Log("A history step diff was NOT found");
             return false;
         }
     }
@@ -394,7 +369,7 @@ public class GameEntityManager : MonoBehaviour
                 lastMovementCount = movables.Count;
                 movables = recheckMovables;
             }
-            if (this.useEntityManagerLogging) Debug.Log("Auto-behavior resolution passes: " + resolutionPassCount.ToString());
+            if (this.useLogging) Debug.Log("Auto-behavior resolution passes: " + resolutionPassCount.ToString());
         }
         // reset all movables movement forces
         foreach (GameObject entity in gos)
