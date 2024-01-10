@@ -3766,6 +3766,10 @@ MonoBehaviour:
     icon: {fileID: 0}
     defaultHotbarAssignment: 
     isInventoryAvailable: 0
+  - prefab: {fileID: 1609427600843478509, guid: 46cdd73e0dec31948a1ed723ea7018c3, type: 3}
+    icon: {fileID: 0}
+    defaultHotbarAssignment: 8
+    isInventoryAvailable: 1
 --- !u!1 &1620279480
 GameObject:
   m_ObjectHideFlags: 0
