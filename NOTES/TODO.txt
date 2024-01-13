@@ -164,12 +164,12 @@ X multilayer game entity manager:
     X create ground-conveyor entity as POC
     X entity history bugfixes:
         X back in history causes multi delete and null ref bug
+    - make ground layer object appear behind object layer objects via texture layering
+    - make object layer objects smaller in order to create correct depth
 - update README with template features
 
 
 BUGS:
-    X backward/forward in history causes visual glitches
-    X bug where history is missing some game-entities
     - (intermittent) bug where rotation is not working and then starts working
     - (intermittent) bug where history back/forward causes snapping instead of animation
 
