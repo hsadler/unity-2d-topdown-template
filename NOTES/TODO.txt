@@ -162,14 +162,14 @@ X multilayer game entity manager:
     X game entities belong to a single layer
     X system allows for addition of layers and querying from layer to layer
     X create ground-conveyor entity as POC
-    - entity history bugfixes:
-        - back in history causes multi delete and null ref bug
+    X entity history bugfixes:
+        X back in history causes multi delete and null ref bug
 - update README with template features
 
 
 BUGS:
-    - backward/forward in history causes visual glitches
-    - bug where history is missing some game-entities
+    X backward/forward in history causes visual glitches
+    X bug where history is missing some game-entities
     - (intermittent) bug where rotation is not working and then starts working
     - (intermittent) bug where history back/forward causes snapping instead of animation
 

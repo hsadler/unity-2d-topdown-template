@@ -19,7 +19,7 @@ public class GameEntityManager : MonoBehaviour
     private HistoryStack<List<GameEntityState>> entityStateHistoryStack;
 
     // debug
-    private readonly bool useLogging = true;
+    private readonly bool useLogging = false;
     private readonly bool useDebugIndicators = false;
     public GameObject occupiedIndicatorPrefab;
     private IDictionary<string, GameObject> positionToOccupiedIndicator;
@@ -213,7 +213,6 @@ public class GameEntityManager : MonoBehaviour
             if (this.useLogging) Debug.Log("Setting entity states to history states and adding to board tracking");
             foreach (GameEntityState s in entityStates)
             {
-                if (this.useLogging) Debug.Log("Procesing game-entity-state with UUID: " + s.uuid);
                 // for existing game entities, restore state
                 if (uuidToGameEntity.ContainsKey(s.uuid))
                 {
@@ -287,7 +286,10 @@ public class GameEntityManager : MonoBehaviour
                 if (uuidToGameEntityState.ContainsKey(s2.uuid))
                 {
                     GameEntityState s1 = uuidToGameEntityState[s2.uuid];
+                    // if the states are equal, pass
                     if (
+                        s1.uuid == s2.uuid &&
+                        s1.gridLayer == s2.gridLayer &&
                         s1.prefabName == s2.prefabName &&
                         s1.position == s2.position &&
                         s1.rotation == s2.rotation

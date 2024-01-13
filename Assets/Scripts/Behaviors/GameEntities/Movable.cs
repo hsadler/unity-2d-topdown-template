@@ -79,8 +79,9 @@ public class Movable : MonoBehaviour
             StopCoroutine(this.movementCoroutine);
         }
         // snap position to discrete grid and register on game-entity manager
-        PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(GameSettings.GAME_ENTITY_GRID_LAYER_OBJECTS, this.gameObject);
-        PlaySceneManager.instance.gameEntityManager.AddGameEntity(GameSettings.GAME_ENTITY_GRID_LAYER_OBJECTS, this.gameObject, endPosition);
+        string gridLayerName = this.GetComponent<GameEntity>().gridLayer;
+        PlaySceneManager.instance.gameEntityManager.RemoveGameEntity(gridLayerName, this.gameObject);
+        PlaySceneManager.instance.gameEntityManager.AddGameEntity(gridLayerName, this.gameObject, endPosition);
         this.transform.position = endPosition;
         // animate the movement of the render body (it will lag behind SOT of the transform)
         this.renderBody.transform.position = startPosition;
