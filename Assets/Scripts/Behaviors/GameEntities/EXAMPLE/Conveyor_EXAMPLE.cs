@@ -14,10 +14,7 @@ public class Conveyor_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
 
     // UNITY HOOKS
 
-    void Start()
-    {
-        this.SetBeamLinePositions();
-    }
+    void Start() { }
 
     void Update() { }
 
@@ -36,13 +33,6 @@ public class Conveyor_EXAMPLE : MonoBehaviour, IGameEntityAutoBehavior
     }
 
     // IMPL METHODS
-
-    public void SetBeamLinePositions()
-    {
-        float offset = 0.5f;
-        this.beamLineRenderer.SetPosition(0, Vector3.zero + (Vector3.up * offset));
-        this.beamLineRenderer.SetPosition(1, Vector3.up * this.beamLength + (Vector3.up * offset));
-    }
 
     public void TryPush()
     {

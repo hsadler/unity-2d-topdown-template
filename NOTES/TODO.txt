@@ -165,7 +165,7 @@ X multilayer game entity manager:
     X entity history bugfixes:
         X back in history causes multi delete and null ref bug
     X make ground layer object appear behind object layer objects via texture layering
-    - make object layer objects smaller in order to create correct depth
+    X make object layer objects smaller in order to create correct depth
 - update README with template features
 
 
