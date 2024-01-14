@@ -35,7 +35,7 @@ public class Draggable : MonoBehaviour
 
     public void SetDragging(bool isDragging)
     {
-        // Debug.Log("setting entity dragging state to: " + isDragging.ToString());
+        GameEntity geScript = this.GetComponent<GameEntity>();
         if (this.isDragging != isDragging)
         {
             // has started dragging
@@ -49,7 +49,7 @@ public class Draggable : MonoBehaviour
                 this.CheckDragValidity();
             }
             // sorting layer for renderers
-            string sortingLayer = isDragging ? GameSettings.SORTING_LAYER_ENTITY_DRAGGING : GameSettings.SORTING_LAYER_ENTITY_SELECTED;
+            string sortingLayer = isDragging ? GameSettings.SORTING_LAYER_ENTITY_DRAGGING : geScript.gridLayer;
             this.GetComponent<GameEntity>().SetRenderersSortingLayer(sortingLayer);
             // display based on drag state
             this.SetDraggingDisplay(isDragging);

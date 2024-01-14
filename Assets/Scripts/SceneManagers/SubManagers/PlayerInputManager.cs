@@ -433,8 +433,8 @@ public class PlayerInputManager : MonoBehaviour
             float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED;
             Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
         }
-        // detect mouse at edge of viewport
-        else
+        // detect mouse at edge of viewport and scroll if setting is on
+        else if (GameSettings.CAMERA_EDGE_SCROLL_ON)
         {
             float cameraMovePaddingY = Screen.height - (Screen.height * 0.995f);
             float cameraMovePaddingX = Screen.width - (Screen.width * 0.995f);

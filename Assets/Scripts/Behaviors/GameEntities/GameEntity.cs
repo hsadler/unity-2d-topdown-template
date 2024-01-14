@@ -43,6 +43,7 @@ public class GameEntity : MonoBehaviour
     void Start()
     {
         PlaySceneManager.instance.uiTelemetryManager.gameEntityCount += 1;
+        this.SetRenderersSortingLayer(this.gridLayer);
     }
 
     void Update() { }

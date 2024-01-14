@@ -43,6 +43,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 2139982613
+    locked: 0
+  - name: Objects
+    uniqueID: 1333045559
+    locked: 0
   - name: Debug
     uniqueID: 4236820147
     locked: 0

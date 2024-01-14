@@ -17,7 +17,7 @@ public class GameSettings
     public const float DEFAULT_TICK_DURATION = 0.4f;
     public const float FAST_ANIMATION_DURATION = 0.07f;
     public const float AUTOSAVE_SECONDS = 30f;
-
+    public const bool CAMERA_EDGE_SCROLL_ON = true;
 
     // camera settings
     public const float CAMERA_SIZE_MIN = 2f;
@@ -25,7 +25,6 @@ public class GameSettings
     public const float CAMERA_ZOOM_AMOUNT = 6f;
     public const float CAMERA_ZOOM_SPEED = 8f;
     public const float CAMERA_MOVE_SPEED = 4f;
-
 
     // input modes
     public const string INPUT_MODE_DEFAULT = "INPUT_MODE_DEFAULT";
@@ -39,8 +38,6 @@ public class GameSettings
 
     // player input mappings
     public const KeyCode ESC_KEY = KeyCode.Escape;
-    public const KeyCode SMALL_ZOOM_KEY = KeyCode.LeftControl;
-    public const KeyCode LARGE_ZOOM_KEY = KeyCode.LeftShift;
     public const KeyCode ROTATE_ENTITIES_LEFT_KEY = KeyCode.Q;
     public const KeyCode ROTATE_ENTITIES_RIGHT_KEY = KeyCode.E;
     public const KeyCode DELETE_ENTITIES_KEY = KeyCode.Backspace;
@@ -50,16 +47,13 @@ public class GameSettings
     public const KeyCode CTL_KEY = KeyCode.LeftControl;
     public const KeyCode CMD_KEY = KeyCode.LeftCommand;
     public const KeyCode COPY_KEY = KeyCode.C;
-    public const KeyCode PASTE_KEY = KeyCode.V;
     public const KeyCode PLAY_PAUSE_KEY = KeyCode.Space;
     public const KeyCode INVENTORY_KEY = KeyCode.Tab;
-
 
     // renderer sorting layers
     public const string SORTING_LAYER_DEFAULT = "Default";
     public const string SORTING_LAYER_ENTITY_SELECTED = "EntitySelected";
     public const string SORTING_LAYER_ENTITY_DRAGGING = "EntityDragging";
-
 
     // styling
     public const int GUI_FONT_SIZE = 20;
