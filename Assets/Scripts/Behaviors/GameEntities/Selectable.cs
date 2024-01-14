@@ -28,10 +28,6 @@ public class Selectable : MonoBehaviour
     public void SetSelected(bool isSelected)
     {
         this.selectionIndicator.SetActive(isSelected);
-        // TODO: delete if not needed
-        // GameEntity geScript = this.GetComponent<GameEntity>();
-        // string sortingLayer = isSelected ? GameSettings.SORTING_LAYER_ENTITY_SELECTED : geScript.gridLayer;
-        // this.GetComponent<GameEntity>().SetRenderersSortingLayer(sortingLayer);
     }
 
     public void SetPendingDelete(bool status)

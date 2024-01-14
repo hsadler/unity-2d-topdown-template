@@ -166,6 +166,10 @@ X multilayer game entity manager:
         X back in history causes multi delete and null ref bug
     X make ground layer object appear behind object layer objects via texture layering
     X make object layer objects smaller in order to create correct depth
+- cleanup pass:
+    X code cleanup
+    X clear up warnings
+    - create icons for ground-conveyor and wall
 - update README with template features
 
 

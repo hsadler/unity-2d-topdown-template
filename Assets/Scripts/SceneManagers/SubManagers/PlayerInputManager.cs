@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -434,6 +433,7 @@ public class PlayerInputManager : MonoBehaviour
             Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
         }
         // detect mouse at edge of viewport and scroll if setting is on
+#pragma warning disable 0162
         else if (GameSettings.CAMERA_EDGE_SCROLL_ON)
         {
             float cameraMovePaddingY = Screen.height - (Screen.height * 0.995f);
@@ -460,6 +460,7 @@ public class PlayerInputManager : MonoBehaviour
                 Camera.main.transform.Translate(0.6f * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED * Time.deltaTime * cameraMoveDirection);
             }
         }
+#pragma warning restore 0162
         this.ClampCameraToPlayzone();
     }
 

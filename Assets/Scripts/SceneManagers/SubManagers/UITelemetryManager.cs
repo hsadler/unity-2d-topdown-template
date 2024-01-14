@@ -37,6 +37,7 @@ public class UITelemetryManager : MonoBehaviour
 
     void OnGUI()
     {
+#pragma warning disable 0162
         if (GameSettings.DISPLAY_TELEMETRY)
         {
             int fps = (int)(1.0f / Time.smoothDeltaTime);
@@ -91,6 +92,7 @@ public class UITelemetryManager : MonoBehaviour
                 style
             );
         }
+#pragma warning restore 0162
     }
 
     // INTF METHODS
