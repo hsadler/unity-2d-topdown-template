@@ -170,7 +170,7 @@ X cleanup pass:
     X code cleanup
     X clear up warnings
     X create icons for ground-conveyor and wall
-- update README with template features
+X update README with template features
 
 
 BUGS:
