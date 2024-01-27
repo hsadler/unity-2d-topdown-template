@@ -1,9 +1,9 @@
 # Unity 2D Topdown Template
 Unity template for a 2D top down, drag-and-drop style building game.
 
-Unity Version: `2021.3.13`
+Unity Version: `2022.3.17f1`
 
-## Behavior Details
+## Details
 Players can create new play scenes, select from their inventory to add 
 game-entities to a discrete grid play space, and "run" the factory they've 
 created.
